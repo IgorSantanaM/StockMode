@@ -2,7 +2,7 @@
 
 namespace StockMode.Domain.Products
 {
-    public class Product : Entity<Product>
+    public class Product : Entity<Product>, IAggregateRoot
     {
         public string Name { get; set; }
         public string? Description { get; set; }
