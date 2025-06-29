@@ -11,7 +11,7 @@ using StockMode.Domain.Enums;
 
 namespace StockMode.Domain.StockMovements
 {
-    public class StockMovement : Entity<StockMovement>
+    public class StockMovement : Entity<StockMovement>, IAggregateRoot
     {
         [Required]
         public int VariationId { get; set; }
