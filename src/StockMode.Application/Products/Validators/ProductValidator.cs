@@ -21,6 +21,7 @@ namespace StockMode.Application.Products.Validators
 
             RuleFor(x => x.Variations)
                 .NotEmpty().WithMessage("A product must have at least one variation.");
+
         }
     }
 }

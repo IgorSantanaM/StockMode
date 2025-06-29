@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StockMode.Domain.Enums
+﻿namespace StockMode.Domain.Enums
 {
     public enum StockMovementType
     {
@@ -12,7 +6,6 @@ namespace StockMode.Domain.Enums
         SaleExit = 2,
         PositiveAdjustment = 3,
         LossAdjustment = 4,
-        CustomerReturn = 5,
         SupplierReturnExit = 6
     }
 }
