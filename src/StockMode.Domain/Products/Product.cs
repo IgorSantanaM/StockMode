@@ -1,13 +1,59 @@
-﻿using StockMode.Domain.Core.Model;
+﻿using StockMode.Domain.Core.Exceptions;
+using StockMode.Domain.Core.Model;
 
 namespace StockMode.Domain.Products
 {
-    public class Product : Entity<Product>, IAggregateRoot
+    public class Product : Entity<int>, IAggregateRoot
     {
+        private readonly List<Variation> _variations = new();
         public string Name { get; set; }
         public string? Description { get; set; }
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
 
-        public ICollection<Variation> Variations { get; set; } = new List<Variation>();
+        public IReadOnlyCollection<Variation> Variations => _variations.AsReadOnly();
+
+        private Product()
+        { }
+
+        public Product(string name, string? description)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new DomainException("Product name cannot be empty.");
+
+            Name = name;
+            Description = description;
+            IsActive = true;
+        }
+
+        public void UpdateDetails(string newName, string? newDescription)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                throw new DomainException("Product name cannot be empty.");
+
+            Name = newName;
+            Description = newDescription;
+        }
+        public void Activate()
+        {
+            if (!_variations.Any())
+                throw new DomainException("Cannot activate a product with no variations.");
+
+            IsActive = true;
+        }
+
+        public void Deactivate() =>
+            IsActive = false;
+
+        public void AddVariation(string name, string sku, decimal costPrice, decimal salePrice, int initialStock)
+        {
+            if (!IsActive)
+                throw new DomainException("Cannot add a variation to an inactive product.");
+
+            if (_variations.Any(v => v.Sku == sku))
+                throw new DomainException($"A variation with SKU '{sku}' already exists for this product.");
+
+            var newVariation = new Variation(this.Id, name, sku, costPrice, salePrice, initialStock);
+            _variations.Add(newVariation);
+        }
     }
 }

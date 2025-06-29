@@ -15,11 +15,9 @@
     <Folder Include="Products\Queries\" />
     <Folder Include="Sales\Commands\" />
     <Folder Include="Sales\Events\" />
-    <Folder Include="Sales\Validators\" />
     <Folder Include="Sales\Queries\" />
     <Folder Include="StockMovements\Commands\" />
     <Folder Include="StockMovements\Events\" />
-    <Folder Include="StockMovements\Validators\" />
     <Folder Include="StockMovements\Queries\" />
   </ItemGroup>
 
