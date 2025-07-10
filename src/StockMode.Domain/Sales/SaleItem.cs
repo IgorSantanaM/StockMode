@@ -8,23 +8,11 @@ namespace StockMode.Domain.Sales
 {
     public class SaleItem : Entity<int>
     {
-        [Required]
         public int SaleId { get; set; }
-
-        [Required]
         public int VariationId { get; set; }
-
-        [Required]
         public int Quantity { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
         public decimal PriceAtSale { get; set; }
-
-        [ForeignKey("SaleId")]
         public Sale Sale { get; set; }
-
-        [ForeignKey("VariationId")]
         public Variation Variation { get; set; }
 
         private SaleItem() { }

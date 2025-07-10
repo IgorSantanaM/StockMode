@@ -6,6 +6,7 @@ namespace StockMode.Domain.Core.Model
     {
         public TId Id { get; set; }
         private readonly List<Event> _domainEvents = new();
+        public IReadOnlyCollection<Event> DomainEvents => _domainEvents.AsReadOnly();
 
         public static bool operator ==(Entity<TId> a, Entity<TId> b)
         {

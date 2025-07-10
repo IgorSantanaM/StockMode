@@ -6,12 +6,10 @@ namespace StockMode.Domain.Products
     public class Product : Entity<int>, IAggregateRoot
     {
         private readonly List<Variation> _variations = new();
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public bool IsActive { get; set; }
-
+        public string Name { get; protected set; }
+        public string? Description { get; protected set; }
+        public bool IsActive { get; protected set; }
         public IReadOnlyCollection<Variation> Variations => _variations.AsReadOnly();
-
         private Product()
         { }
 
