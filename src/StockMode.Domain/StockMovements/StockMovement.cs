@@ -9,15 +9,12 @@ namespace StockMode.Domain.StockMovements
 {
     public class StockMovement : Entity<int>, IAggregateRoot
     {
-        [Required]
         public int VariationId { get; set; }
 
         public int? SaleId { get; set; }
 
-        [Required]
         public StockMovementType Type { get; set; }
 
-        [Required]
         public int Quantity { get; set; }
 
         public int StockAfterMovement { get; set; }
@@ -28,7 +25,6 @@ namespace StockMode.Domain.StockMovements
 
         public DateTime MovementDate { get; set; } = DateTime.Now;
 
-        [ForeignKey("VariationId")]
         public Variation Variation { get; set; }
 
         private StockMovement() { }

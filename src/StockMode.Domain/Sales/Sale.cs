@@ -7,14 +7,14 @@ namespace StockMode.Domain.Sales
 {
     public class Sale : Entity<int>, IAggregateRoot
     {
-        private readonly List<SaleItem> _saleItems = new();
+        private readonly List<SaleItem> _items = new();
         public decimal TotalPrice { get; private set; }
         public decimal Discount { get; private set; }
         public decimal FinalPrice { get; private set; }
         public PaymentMethod PaymentMethod { get; private set; }
         public SaleStatus Status { get; private set; }
         public DateTime SaleDate { get; private set; }
-        public IReadOnlyCollection<SaleItem> SaleItems => _saleItems.AsReadOnly();
+        public IReadOnlyCollection<SaleItem> Items => _items.AsReadOnly();
 
         private Sale()
         { }
@@ -34,14 +34,14 @@ namespace StockMode.Domain.Sales
             if (newItem.Quantity <= 0)
                 throw new DomainException("Item quantity must be greater than zero.");
 
-            SaleItem? existingItem = _saleItems.FirstOrDefault(i => i.VariationId == newItem.VariationId);
+            SaleItem? existingItem = _items.FirstOrDefault(i => i.VariationId == newItem.VariationId);
             if (existingItem! != null!)
             {
                 existingItem.IncreaseQuantity(newItem.Quantity);
             }
             else
             {
-                _saleItems.Add(newItem);
+                _items.Add(newItem);
             }
 
             RecalculateTotals();
@@ -66,11 +66,11 @@ namespace StockMode.Domain.Sales
         {
             if (Status != SaleStatus.PaymentPending)
                 throw new DomainException("Only a pending sale can be completed.");
-            if (!_saleItems.Any())
+            if (!_items.Any())
                 throw new DomainException("Cannot complete a sale with no items.");
 
             Status = SaleStatus.Completed;
-            var saleCompletedEvent = new SaleCompletedEvent(this.Id, this.FinalPrice, this._saleItems);
+            var saleCompletedEvent = new SaleCompletedEvent(this.Id, this.FinalPrice, this._items);
             AddDomainEvent(saleCompletedEvent);
         }
 
@@ -84,7 +84,7 @@ namespace StockMode.Domain.Sales
         }
         private void RecalculateTotals()
         {
-            TotalPrice = _saleItems.Sum(item => item.PriceAtSale * item.Quantity);
+            TotalPrice = _items.Sum(item => item.PriceAtSale * item.Quantity);
             FinalPrice = TotalPrice - Discount;
         }
     }
