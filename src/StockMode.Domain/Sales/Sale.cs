@@ -14,7 +14,7 @@ namespace StockMode.Domain.Sales
         public PaymentMethod PaymentMethod { get; private set; }
         public SaleStatus Status { get; private set; }
         public DateTime SaleDate { get; private set; }
-        public IReadOnlyCollection<SaleItem> Items => _items.AsReadOnly();
+        public ICollection<SaleItem> Items { get; private set; } = new List<SaleItem>();
 
         private Sale()
         { }

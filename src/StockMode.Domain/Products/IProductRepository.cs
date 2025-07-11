@@ -6,5 +6,6 @@ namespace StockMode.Domain.Products
     {
         Task<Product> GetProductBySkuAsync(string sku);
         Task<Variation?> FindVariationByIdAsync(int variationId);
+        Task<IEnumerable<Product>> GetActiveProductsWithLowStockAsync(int lowStockThreshold);
     }
 }
