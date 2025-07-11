@@ -9,7 +9,7 @@ namespace StockMode.Domain.Products
         public string Name { get; protected set; }
         public string? Description { get; protected set; }
         public bool IsActive { get; protected set; }
-        public IReadOnlyCollection<Variation> Variations => _variations.AsReadOnly();
+        public ICollection<Variation> Variations { get; private set; } = new List<Variation>();
         private Product()
         { }
 

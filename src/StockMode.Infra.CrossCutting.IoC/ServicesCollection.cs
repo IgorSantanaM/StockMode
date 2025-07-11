@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StockMode.Domain.Core.Data;
+using StockMode.Domain.Products;
+using StockMode.Domain.Sales;
+using StockMode.Domain.StockMovements;
 using StockMode.Infra.Data.Contexts;
 using StockMode.Infra.Data.Repositories;
 using StockMode.Infra.Data.UoW;
@@ -27,6 +30,10 @@ namespace StockMode.Infra.CrossCutting.IoC
             // Infra - Data
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
+            services.AddScoped<IProductRepository, ProductRepository>(); 
+            services.AddScoped<ISaleRepository, SaleRepository>(); 
+            services.AddScoped<IStockMovementRepository, StockMovementRepository>(); 
         }
 
         public static void AddContexts(this IServiceCollection services)
