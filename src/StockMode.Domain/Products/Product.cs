@@ -1,5 +1,6 @@
 ﻿using StockMode.Domain.Core.Exceptions;
 using StockMode.Domain.Core.Model;
+using StockMode.Domain.Products.Events;
 
 namespace StockMode.Domain.Products
 {
@@ -30,13 +31,19 @@ namespace StockMode.Domain.Products
 
             Name = newName;
             Description = newDescription;
+            // Add domainevent
         }
         public void Activate()
         {
             if (!_variations.Any())
                 throw new DomainException("Cannot activate a product with no variations.");
 
+            var productAddedEvent = new ProductAddedEvent(this.Id, Name, Description, _variations.AsReadOnly());
+            AddDomainEvent(productAddedEvent);
+
             IsActive = true;
+
+
         }
 
         public void Deactivate() =>

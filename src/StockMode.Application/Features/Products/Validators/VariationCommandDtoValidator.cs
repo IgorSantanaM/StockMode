@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using StockMode.Application.DTOs;
 using StockMode.Domain.Products;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMode.Application.Products.Validators
+namespace StockMode.Application.Features.Products.Validators
 {
-    public class VariationValidator : AbstractValidator<Variation>
+    public class VariationCommandDtoValidator : AbstractValidator<VariationCommandDto>
     {
-        public VariationValidator()
+        public VariationCommandDtoValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Variation name is required.");

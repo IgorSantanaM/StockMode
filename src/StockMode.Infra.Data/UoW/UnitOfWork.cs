@@ -21,7 +21,6 @@ namespace StockMode.Infra.Data.UoW
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

@@ -6,9 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMode.Application.Sales.Validators
+namespace StockMode.Application.Features.Sales.Validators
 {
     public class SaleValidator : AbstractValidator<Sale>
     {
+        public SaleValidator()
+        {
+        }
     }
 }

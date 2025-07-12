@@ -2,9 +2,9 @@
 
 namespace StockMode.Domain.Core.Events
 {
-    public class Event : Message, INotification
+    public abstract record Event : Message, INotification
     {
-        public DateTime TimeStamp { get; set; }
+        public DateTime TimeStamp { get; init; }
 
         public Event()
         {

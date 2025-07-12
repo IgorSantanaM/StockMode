@@ -7,18 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Products\Commands\CreateProduct\" />
-    <Folder Include="Products\Commands\DeleteProduct\" />
-    <Folder Include="Products\Commands\UpdateProduct\" />
-    <Folder Include="Products\Events\" />
-    <Folder Include="Products\Queries\" />
-    <Folder Include="Sales\Commands\" />
-    <Folder Include="Sales\Events\" />
-    <Folder Include="Sales\Queries\" />
-    <Folder Include="StockMovements\Commands\" />
-    <Folder Include="StockMovements\Events\" />
-    <Folder Include="StockMovements\Queries\" />
+    <Folder Include="Features\Products\Commands\DeleteProduct\" />
+    <Folder Include="Features\Products\Commands\UpdateProduct\" />
+    <Folder Include="Features\Products\Events\" />
+    <Folder Include="Features\Products\Queries\" />
+    <Folder Include="Features\Sales\Commands\" />
+    <Folder Include="Features\Sales\Events\" />
+    <Folder Include="Features\Sales\Queries\" />
+    <Folder Include="Features\StockMovements\Commands\" />
+    <Folder Include="Features\StockMovements\Events\" />
+    <Folder Include="Features\StockMovements\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

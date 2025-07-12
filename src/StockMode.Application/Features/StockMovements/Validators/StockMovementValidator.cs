@@ -6,9 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMode.Application.StockMovements.Validators
+namespace StockMode.Application.Features.StockMovements.Validators
 {
     public class StockMovementValidator : AbstractValidator<StockMovement>
     {
+        public StockMovementValidator()
+        {
+
+        }
     }
 }
