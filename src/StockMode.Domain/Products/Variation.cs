@@ -60,6 +60,7 @@ namespace StockMode.Domain.Products
 
             CostPrice = newCostPrice;
             SalePrice = newSalePrice;
+            // add domain event - send email if the price is lower than the cost price
         }
     }
 }

@@ -1,16 +1,11 @@
 ﻿using FluentValidation;
-using StockMode.Domain.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StockMode.Application.Features.Products.Commands.CreateProduct;
 
-namespace StockMode.Application.Products.Validators
+namespace StockMode.Application.Features.Products.Validators
 {
-    public class ProductValidator : AbstractValidator<Product>
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
-        public ProductValidator()
+        public CreateProductCommandValidator()
         {
             RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product name is required.")
@@ -22,6 +17,9 @@ namespace StockMode.Application.Products.Validators
             RuleFor(x => x.Variations)
                 .NotEmpty().WithMessage("A product must have at least one variation.");
 
+            RuleForEach(x => x.Variations)
+                .SetValidator(new VariationCommandDtoValidator())
+                .WithMessage("One or more variations are invalid.");
         }
     }
 }
