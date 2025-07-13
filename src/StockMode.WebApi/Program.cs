@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
 using StockMode.Infra.CrossCutting.IoC;
 using StockMode.Infra.Data.Contexts;
+using StockMode.WebApi.Endpoints.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,6 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -36,18 +36,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.MapPost("/api/products", async (CreateProductCommand product, IMediator mediator) =>
-{
-
-    var id = await mediator.Send(product);
-
-    return Results.Created();
-});
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints<Program>();
 
 app.Run();
