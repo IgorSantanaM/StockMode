@@ -1,4 +1,4 @@
-﻿namespace StockMode.Application.DTOs
+﻿namespace StockMode.Application.Features.Products.Dtos
 {
     public record VariationCommandDto(
         string Name,

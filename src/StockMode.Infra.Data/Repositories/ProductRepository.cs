@@ -17,7 +17,7 @@ namespace StockMode.Infra.Data.Repositories
         public async Task<Variation?> FindVariationByIdAsync(int variationId)
         {
             const string sql = @"
-                SELECT * FROM ""Variations"" AS v
+                SELECT * FROM ""Variation"" AS v
                 INNER JOIN ""Products"" AS p ON v.""ProductId"" = p.""Id""
                 WHERE v.""Id"" = @VariationId;";
 
@@ -37,7 +37,7 @@ namespace StockMode.Infra.Data.Repositories
         {
             const string sql = @"
                 SELECT p.*, v.* FROM ""Products"" AS p
-                INNER JOIN ""Variations"" AS v ON p.""Id"" = v.""ProductId""
+                INNER JOIN ""Variation"" AS v ON p.""Id"" = v.""ProductId""
                 WHERE v.""Sku"" = @Sku;";
 
             var productDictionary = new Dictionary<int, Product>();
@@ -66,7 +66,7 @@ namespace StockMode.Infra.Data.Repositories
             const string sql = @"
                 SELECT p.*, v.*
                 FROM ""Products"" p
-                INNER JOIN ""Variations"" v ON p.""Id"" = v.""ProductId""
+                INNER JOIN ""Variation"" v ON p.""Id"" = v.""ProductId""
                 WHERE p.""IsActive"" = TRUE AND p.""Id"" IN (
                     SELECT ""ProductId""
                     FROM ""Variations""

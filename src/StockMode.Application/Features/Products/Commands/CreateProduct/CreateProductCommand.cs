@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StockMode.Application.DTOs;
+using StockMode.Application.Features.Products.Dtos;
 
 namespace StockMode.Application.Features.Products.Commands.CreateProduct
 {

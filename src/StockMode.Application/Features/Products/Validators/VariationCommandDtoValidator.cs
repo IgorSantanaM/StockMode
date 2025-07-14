@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using StockMode.Application.DTOs;
+using StockMode.Application.Features.Products.Dtos;
 using StockMode.Domain.Products;
 using System;
 using System.Collections.Generic;
