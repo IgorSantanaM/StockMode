@@ -9,6 +9,10 @@ using StockMode.Infra.Data.Repositories;
 using StockMode.Infra.Data.UoW;
 using StockMode.Application.Features.Products.Validators;
 using FluentValidation;
+using StockMode.Application.Features.Products.Queries.GetProductById;
+using StockMode.Application.Features.Products.Queries.GetAllProducts;
+using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace StockMode.Infra.CrossCutting.IoC
 {
@@ -19,7 +23,12 @@ namespace StockMode.Infra.CrossCutting.IoC
 
             // Application
             services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(typeof(CreateProductCommandHandler).Assembly));
+                cfg.RegisterServicesFromAssembly(typeof(CreateProductCommandHandler).Assembly)
+            );
+
+            services.AddScoped<IDbConnection>(sp =>
+                sp.GetRequiredService<StockModeContext>().Database.GetDbConnection());
+
             services.AddValidatorsFromAssembly(typeof(CreateProductCommandValidator).Assembly);
 
             // Domain

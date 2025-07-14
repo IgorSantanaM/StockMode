@@ -6,7 +6,6 @@ namespace StockMode.Domain.Products
 {
     public class Product : Entity<int>, IAggregateRoot
     {
-        private readonly List<Variation> _variations = new();
         public string Name { get; protected set; }
         public string? Description { get; protected set; }
         public bool IsActive { get; protected set; }
@@ -35,15 +34,12 @@ namespace StockMode.Domain.Products
         }
         public void Activate()
         {
-            if (!_variations.Any())
+            if (!Variations.Any())
                 throw new DomainException("Cannot activate a product with no variations.");
 
-            var productAddedEvent = new ProductAddedEvent(this.Id, Name, Description, _variations.AsReadOnly());
-            AddDomainEvent(productAddedEvent);
-
+            //var productAddedEvent = new ProductAddedEvent(this.Id, Name, Description, Variations);
+            //AddDomainEvent(productAddedEvent);
             IsActive = true;
-
-
         }
 
         public void Deactivate() =>
@@ -54,11 +50,11 @@ namespace StockMode.Domain.Products
             if (!IsActive)
                 throw new DomainException("Cannot add a variation to an inactive product.");
 
-            if (_variations.Any(v => v.Sku == sku))
+            if (Variations.Any(v => v.Sku == sku))
                 throw new DomainException($"A variation with SKU '{sku}' already exists for this product.");
 
             var newVariation = new Variation(this.Id, name, sku, costPrice, salePrice, initialStock);
-            _variations.Add(newVariation);
+            Variations.Add(newVariation);
         }
     }
 }
