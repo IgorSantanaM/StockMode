@@ -10,8 +10,6 @@
     <Folder Include="Features\Products\Commands\DeleteProduct\" />
     <Folder Include="Features\Products\Commands\UpdateProduct\" />
     <Folder Include="Features\Products\Events\" />
-    <Folder Include="Features\Products\Queries\GetProductsWithLowStock\" />
-    <Folder Include="Features\Products\Queries\GetProductBySku\" />
     <Folder Include="Features\Sales\Commands\" />
     <Folder Include="Features\Sales\Events\" />
     <Folder Include="Features\Sales\Queries\" />

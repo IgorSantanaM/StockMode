@@ -1,7 +1,6 @@
-﻿namespace StockMode.WebApi.Endpoints.Internal
+﻿namespace StockMode.WebApi.Endpoints.Internal;
+
+public interface IEndpoints
 {
-    public interface IEndpoints
-    {
-        static abstract void DefineEndpoint(WebApplication app);
-    }
+    static abstract void DefineEndpoint(WebApplication app);
 }
