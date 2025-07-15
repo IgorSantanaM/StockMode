@@ -7,7 +7,6 @@ namespace StockMode.Application.Features.Sales.Validators
     {
         public SaleItemValidator()
         {
-
         }
     }
 }
