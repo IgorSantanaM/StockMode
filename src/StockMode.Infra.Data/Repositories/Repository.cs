@@ -21,10 +21,6 @@ namespace StockMode.Infra.Data.Repositories
             Db = context ?? throw new ArgumentNullException(nameof(context));
             DbSet = Db.Set<TEntity>();
         }
-        public virtual async Task<TEntity?> GetByIdAsync(TId id)
-        {
-            return await DbSet.FindAsync(id);
-        }
 
         /// <summary>
         /// Asynchronously adds a new entity to the database.

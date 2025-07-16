@@ -5,7 +5,6 @@ namespace StockMode.Domain.Core.Data
 {
     public interface IRepository<TEntity, TId> where TEntity : IAggregateRoot
     {
-        Task<TEntity?> GetByIdAsync(TId id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);

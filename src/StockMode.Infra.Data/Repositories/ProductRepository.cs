@@ -3,15 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using StockMode.Domain.Products;
 using StockMode.Infra.Data.Contexts;
 using System.Data;
+using System.Threading;
 
 namespace StockMode.Infra.Data.Repositories
 {
     public class ProductRepository : Repository<Product, int>, IProductRepository
     {
         private readonly IDbConnection _dbConnection;
-        public ProductRepository(StockModeContext context) : base(context)
+        private readonly StockModeContext _dbContext;
+        public ProductRepository(StockModeContext context, StockModeContext dbContext) : base(context)
         {
             _dbConnection = context.Database.GetDbConnection();
+            _dbContext = dbContext;
         }
 
         public async Task<Variation?> FindVariationByIdAsync(int variationId)
@@ -29,7 +32,7 @@ namespace StockMode.Infra.Data.Repositories
                     return variation;
                 },
                 new { VariationId = variationId },
-                splitOn: "Id"); 
+                splitOn: "Id");
 
             return variation.FirstOrDefault();
         }
@@ -92,6 +95,13 @@ namespace StockMode.Infra.Data.Repositories
                 splitOn: "Id");
 
             return productDictionary.Values;
+        }
+
+        public async Task<Product?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Products
+                .Include(product => product.Variations)
+                .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
         }
     }
 }

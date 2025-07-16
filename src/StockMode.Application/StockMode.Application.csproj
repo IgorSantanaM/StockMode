@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Products\Commands\DeleteProduct\" />
-    <Folder Include="Features\Products\Commands\UpdateProduct\" />
     <Folder Include="Features\Products\Events\" />
     <Folder Include="Features\Sales\Commands\" />
     <Folder Include="Features\Sales\Events\" />
