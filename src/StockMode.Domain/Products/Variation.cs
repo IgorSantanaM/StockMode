@@ -7,12 +7,12 @@ namespace StockMode.Domain.Products
 {
     public class Variation : Entity<int>
     {
-        public int ProductId { get; set; }
-        public string Name { get; set; }
-        public string Sku { get; set; }
-        public decimal CostPrice { get; set; }
-        public decimal SalePrice { get; set; }
-        public int StockQuantity { get; set; }
+        public int ProductId { get; private set; }
+        public string Name { get; private set; }
+        public string Sku { get; private  set; }
+        public decimal CostPrice { get; private set; }
+        public decimal SalePrice { get; private set; }
+        public int StockQuantity { get; private set; }
         public Product Product { get; set; }
 
         private Variation()
@@ -53,13 +53,18 @@ namespace StockMode.Domain.Products
             StockQuantity -= quantity;
         }
 
-        public void UpdatePricing(decimal newCostPrice, decimal newSalePrice)
+        public void Update(string name, string sku, decimal costPrice, decimal salePrice, int stock)
         {
-            if (newSalePrice < 0 || newCostPrice < 0)
-                throw new DomainException("Prices cannot be negative.");
+            if (string.IsNullOrWhiteSpace(name)) throw new DomainException("Variation name cannot be empty.");
+            if (string.IsNullOrWhiteSpace(sku)) throw new DomainException("Variation SKU cannot be empty.");
+            if (salePrice < 0 || costPrice < 0) throw new DomainException("Prices cannot be negative.");
+            if (stock < 0) throw new DomainException("Stock cannot be negative.");
 
-            CostPrice = newCostPrice;
-            SalePrice = newSalePrice;
+            Name = name;
+            Sku = sku;
+            CostPrice = costPrice;
+            SalePrice = salePrice;
+            StockQuantity = stock;
             // add domain event - send email if the price is lower than the cost price
         }
     }

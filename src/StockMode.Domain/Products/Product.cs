@@ -30,8 +30,8 @@ namespace StockMode.Domain.Products
 
             Name = newName;
             Description = newDescription;
-            // Add domainevent
         }
+
         public void Activate()
         {
             if (!Variations.Any())
@@ -45,6 +45,9 @@ namespace StockMode.Domain.Products
         public void Deactivate() =>
             IsActive = false;
 
+
+        public void RemoveVariation(Variation variation) =>
+            Variations.Remove(variation);
         public void AddVariation(string name, string sku, decimal costPrice, decimal salePrice, int initialStock)
         {
             if (!IsActive)
