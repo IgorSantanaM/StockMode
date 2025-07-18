@@ -16,7 +16,7 @@ namespace StockMode.Application.Features.Products.Queries.GetAllProducts
 
         public async Task<IEnumerable<ProductSummaryDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
-            const string sql = @"
+                const string sql = @"
                 SELECT
                     p.""Id"",
                     p.""Name"",
@@ -32,9 +32,9 @@ namespace StockMode.Application.Features.Products.Queries.GetAllProducts
                 GROUP BY p.""Id"", p.""Name"", p.""Description"", p.""IsActive""
                 ORDER BY p.""Name"";";
 
-            var products = await _dbConnection.QueryAsync<ProductSummaryDto>(sql);
+                var products = await _dbConnection.QueryAsync<ProductSummaryDto>(sql);
 
-            return products;
+                return products;
         }
     }
 }
