@@ -72,7 +72,7 @@ namespace StockMode.Infra.Data.Repositories
                 INNER JOIN ""Variation"" v ON p.""Id"" = v.""ProductId""
                 WHERE p.""IsActive"" = TRUE AND p.""Id"" IN (
                     SELECT ""ProductId""
-                    FROM ""Variations""
+                    FROM ""Variation""
                     WHERE ""StockQuantity"" <= @LowStockThreshold
                 );";
 
