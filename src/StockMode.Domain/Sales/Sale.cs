@@ -80,8 +80,8 @@ namespace StockMode.Domain.Sales
                 throw new DomainException("Cannot cancel a sale that has already been completed.");
 
             Status = SaleStatus.Cancelled;
-
         }
+
         private void RecalculateTotals()
         {
             TotalPrice = _items.Sum(item => item.PriceAtSale * item.Quantity);
