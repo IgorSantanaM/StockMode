@@ -10,9 +10,23 @@ namespace StockMode.Infra.Data.Repositories
     public class SaleRepository : Repository<Sale, int>, ISaleRepository
     {
         private readonly IDbConnection _dbConnection;
-        public SaleRepository(StockModeContext context) : base(context)
-        {
+        private readonly StockModeContext _dbContext;
+        public SaleRepository(StockModeContext context, StockModeContext dbContext) : base(context)
+        {   
             _dbConnection = context.Database.GetDbConnection();
+            _dbContext = dbContext;
+        }
+
+        public async Task<Sale?> GetByIdWithItemsAsync(int saleId)
+        {
+            return await DbSet.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id == saleId);
+        }
+
+        public async Task<Sale?> GetSaleByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Sales
+                 .Include(s => s.Items)
+                 .FirstOrDefaultAsync(sale => sale.Id == id, cancellationToken);
         }
 
         public async Task<IEnumerable<Sale>> GetSalesByDateRangeAsync(DateTime startDate, DateTime endDate)

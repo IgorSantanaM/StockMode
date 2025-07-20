@@ -6,6 +6,5 @@ namespace StockMode.Application.Features.Sales.Dtos
     public record AddItemToSaleCommandDto(
         int SaleId,
         int VariationId,
-        int Quantity,
-        decimal PriceAtSale) : IRequest;
+        int Quantity) : IRequest;
 }

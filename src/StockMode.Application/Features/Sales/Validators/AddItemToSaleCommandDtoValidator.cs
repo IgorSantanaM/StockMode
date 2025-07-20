@@ -21,9 +21,6 @@ namespace StockMode.Application.Features.Sales.Validators
                 .GreaterThan(0)
                 .WithMessage("Quantity must be greater than zero.");
 
-            RuleFor(si => si.PriceAtSale)
-                .GreaterThan(0)
-                .WithMessage("Price at sale must be greater than zero.");
         }
     }
 }

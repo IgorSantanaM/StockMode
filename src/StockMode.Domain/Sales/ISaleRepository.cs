@@ -10,8 +10,10 @@ namespace StockMode.Domain.Sales
 {
     public interface ISaleRepository : IRepository<Sale, int>
     {
-        Task<Sale> GetSaleByIdAsync(int id);
+        Task<Sale?> GetSaleByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Sale>> GetSalesByStatusAsync(SaleStatus status);
         Task<IEnumerable<Sale>> GetSalesByDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<Sale?> GetByIdWithItemsAsync(int saleId);
+        
     }
 }

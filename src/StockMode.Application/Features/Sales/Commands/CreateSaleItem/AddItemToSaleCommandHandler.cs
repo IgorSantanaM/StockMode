@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
+using StockMode.Application.Features.Sales.Commands.CreateSale;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Domain.Core.Data;
 using StockMode.Domain.Core.Exceptions;
@@ -12,30 +14,33 @@ namespace StockMode.Application.Features.Sales.Commands.CreateSaleItem
         private readonly ISaleRepository _saleRepository;
         private readonly IProductRepository _productRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<AddItemToSaleCommandDto> _validator;
+
 
         public AddItemToSaleCommandHandler(
             ISaleRepository saleRepository,
             IProductRepository productRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IValidator<AddItemToSaleCommandDto> validator)
         {
             _saleRepository = saleRepository;
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
         public async Task Handle(AddItemToSaleCommandDto request, CancellationToken cancellationToken)
         {
+            await _validator.ValidateAndThrowAsync(request, cancellationToken);
             var variation = await _productRepository.FindVariationByIdAsync(request.VariationId);
             if (variation is null) throw new DomainException($"Variation not found with id '{request.VariationId}'");
 
-            var sale = await _saleRepository.GetSaleByIdAsync(request.SaleId);
+            var sale = await _saleRepository.GetByIdWithItemsAsync(request.SaleId);
             if (sale is null) throw new DomainException($"Sale not found with id '{request.SaleId}'");
 
-            var newItem = new SaleItem(variation.Id, request.Quantity, request.PriceAtSale);
+            var newItem = new SaleItem(variation.Id, request.Quantity, variation.SalePrice);
 
             sale.AddItem(newItem);
-
-            _saleRepository.Update(sale);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
