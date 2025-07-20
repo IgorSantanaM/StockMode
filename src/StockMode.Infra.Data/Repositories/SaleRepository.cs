@@ -17,11 +17,6 @@ namespace StockMode.Infra.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Sale?> GetByIdWithItemsAsync(int saleId)
-        {
-            return await DbSet.Include(s => s.Items).FirstOrDefaultAsync(s => s.Id == saleId);
-        }
-
         public async Task<Sale?> GetSaleByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _dbContext.Sales

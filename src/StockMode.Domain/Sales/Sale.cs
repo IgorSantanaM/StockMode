@@ -61,6 +61,14 @@ namespace StockMode.Domain.Sales
             RecalculateTotals();
         }
 
+        public void ChangePaymentMethod(PaymentMethod newPaymentMethod)
+        {
+            if (Status != SaleStatus.PaymentPending)
+                throw new DomainException("Não é possível alterar o método de pagamento de uma venda que não está pendente.");
+
+            PaymentMethod = newPaymentMethod;
+        }
+
         public void CompleteSale()
         {
             if (Status != SaleStatus.PaymentPending)
@@ -69,7 +77,7 @@ namespace StockMode.Domain.Sales
                 throw new DomainException("Cannot complete a sale with no items.");
 
             Status = SaleStatus.Completed;
-            var saleCompletedEvent = new SaleCompletedEvent(this.Id, this.FinalPrice, Items.ToList());
+            var saleCompletedEvent = new SaleCompletedEvent(Id, FinalPrice, Items.ToList());
             AddDomainEvent(saleCompletedEvent);
         }
 
