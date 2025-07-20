@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace StockMode.Domain.Core.Data
 {
-    public interface IRepository<TEntity, TId> where TEntity : IAggregateRoot
+    public interface IRepository<TEntity, out TId> where TEntity : IAggregateRoot
     {
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
