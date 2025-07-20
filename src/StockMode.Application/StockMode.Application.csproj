@@ -8,12 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Features\Products\Events\" />
-    <Folder Include="Features\Sales\Commands\DeleteSale\" />
-    <Folder Include="Features\Sales\Commands\UpdateSale\" />
     <Folder Include="Features\Sales\Events\" />
     <Folder Include="Features\StockMovements\Commands\" />
     <Folder Include="Features\StockMovements\Events\" />
     <Folder Include="Features\StockMovements\Queries\" />
+    <Folder Include="Features\StockMovements\Validators\" />
   </ItemGroup>
 
   <ItemGroup>

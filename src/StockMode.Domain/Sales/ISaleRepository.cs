@@ -13,7 +13,5 @@ namespace StockMode.Domain.Sales
         Task<Sale?> GetSaleByIdAsync(int id, CancellationToken cancellationToken = default);
         Task<IEnumerable<Sale>> GetSalesByStatusAsync(SaleStatus status);
         Task<IEnumerable<Sale>> GetSalesByDateRangeAsync(DateTime startDate, DateTime endDate);
-        Task<Sale?> GetByIdWithItemsAsync(int saleId);
-        
     }
 }

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using StockMode.Application.Features.Sales.Dtos;
+using StockMode.Application.Features.Sales.Commands.CreateSaleItem;
 using StockMode.Domain.Sales;
 using System.Xml;
 
