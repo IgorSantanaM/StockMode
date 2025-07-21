@@ -1,9 +1,11 @@
-﻿namespace StockMode.Application.Features.Sales.Dtos;
+﻿using StockMode.Domain.Enums;
+
+namespace StockMode.Application.Features.Sales.Dtos;
 
 public record SaleSummaryDto(
     int Id,
     DateTime SaleDate,
-    string Status,
-    string PaymentMethod,
+    SaleStatus Status,
+    PaymentMethod PaymentMethod,
     decimal FinalPrice,
     long ItemCount);

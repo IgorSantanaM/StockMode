@@ -14,30 +14,37 @@ namespace StockMode.Application.Features.Sales.Queries.GetSalesByDateRange
     {
         public async Task<IReadOnlyCollection<SaleDetailsDto>> Handle(GetSalesByDataRangeQuery request, CancellationToken cancellationToken)
         {
-            var sales = await repository.GetSalesByDateRangeAsync(request.StartDate, request.EndDate);
+            try
+            {
+                var sales = await repository.GetSalesByDateRangeAsync(request.StartDate, request.EndDate);
 
-            if (sales is null)
-                throw new NotFoundException(nameof(Sale), request.StartDate);
+                if (sales is null)
+                    throw new NotFoundException(nameof(Sale), request.StartDate);
 
-            var salesDto = sales
-                .Select(sale => new SaleDetailsDto(
-                    sale.Id,
-                    sale.SaleDate,
-                    sale.TotalPrice,
-                    sale.Discount,
-                    sale.FinalPrice,
-                    sale.PaymentMethod.ToString(),
-                    sale.Status.ToString(),
-                    sale.Items.Select(si => new SaleItemDetailsDto(
-                        si.Id,
-                        si.VariationId,
-                        si.Quantity,
-                        si.PriceAtSale
-                    )).ToList()
-                ))
-                .ToList();
+                var salesDto = sales
+                    .Select(sale => new SaleDetailsDto(
+                        sale.Id,
+                        sale.SaleDate,
+                        sale.TotalPrice,
+                        sale.Discount,
+                        sale.FinalPrice,
+                        sale.PaymentMethod.ToString(),
+                        sale.Status.ToString(),
+                        sale.Items.Select(si => new SaleItemDetailsDto(
+                            si.Id,
+                            si.VariationId,
+                            si.Quantity,
+                            si.PriceAtSale
+                        )).ToList()
+                    ))
+                    .ToList();
 
-            return salesDto;
+                return salesDto;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null!;
+            }
         }
     }
 }
