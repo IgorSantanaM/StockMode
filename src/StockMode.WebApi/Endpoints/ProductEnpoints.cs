@@ -101,101 +101,56 @@ namespace StockMode.WebApi.Endpoints
                 [FromRoute] int id,
                 IMediator mediator)
             {
-                try
-                {
-                    var query = new GetProductByIdQuery(id);
+                var query = new GetProductByIdQuery(id);
 
-                    var product = await mediator.Send(query);
+                var product = await mediator.Send(query);
 
-                    return product is not null ? Results.Ok(product) : Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while fetching the product with ID {id}.", statusCode: 500);
-                }
+                return product is not null ? Results.Ok(product) : Results.NotFound();
             }
 
             static async Task<IResult> HandleGetAllProducts(
                 IMediator mediator)
             {
-                try
-                {
-                    var query = new GetAllProductsQuery();
-                    var products = await mediator.Send(query);
-                    return Results.Ok(products);
-                }
-                catch (Exception ex)
-                {
-                    return Results.Problem("An unexpected error occurred while fetching products.", statusCode: 500);
-                }
+                var query = new GetAllProductsQuery();
+                var products = await mediator.Send(query);
+                return Results.Ok(products);
             }
 
             static async Task<IResult> HandleGetProductBySku(
                 [FromRoute] string sku,
                 IMediator mediator)
             {
-                try
-                {
-                    var query = new GetProductBySkuQuery(sku);
-                    var product = await mediator.Send(query);
-                    return product is not null ? Results.Ok(product) : Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while fetching the product with SKU {sku}.", statusCode: 500);
-                }
+                var query = new GetProductBySkuQuery(sku);
+                var product = await mediator.Send(query);
+                return product is not null ? Results.Ok(product) : Results.NotFound();
             }
 
             static async Task<IResult> HandleGetProductWithLowStock(
                 [FromRoute] int threshold,
                 IMediator mediator)
             {
-                try
-                {
-                    var query = new GetProductsWithLowStockQuery(threshold);
-                    var product = await mediator.Send(query);
-                    return product is not null ? Results.Ok(product) : Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while fetching the product with low stock.", statusCode: 500);
-                }
+                var query = new GetProductsWithLowStockQuery(threshold);
+                var product = await mediator.Send(query);
+                return product is not null ? Results.Ok(product) : Results.NotFound();
             }
 
             static async Task<IResult> HandleGetVariationById(
                 [FromRoute] int variationId,
                 IMediator mediator)
             {
-                try
-                {
-                    var query = new GetVariationByIdQuery(variationId);
-                    var variation = await mediator.Send(query);
-                    return variation is not null ? Results.Ok(variation) : Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while fetching the variation with ID {variationId}.", statusCode: 500);
-                }
+                var query = new GetVariationByIdQuery(variationId);
+                var variation = await mediator.Send(query);
+                return variation is not null ? Results.Ok(variation) : Results.NotFound();
             }
 
             static async Task<IResult> HandleDeleteProductById(
                 [FromRoute] int id,
                 IMediator mediator)
             {
-                try
-                {
-                    var command = new DeleteProductCommand(id);
-                    await mediator.Send(command);
-                    return Results.NoContent();
-                }
-                catch (NotFoundException)
-                {
-                    return Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while deleting the product with ID {id}.", statusCode: 500);
-                }
+
+                var command = new DeleteProductCommand(id);
+                await mediator.Send(command);
+                return Results.NoContent();
             }
 
             static async Task<IResult> HandleUpdateProduct(
@@ -203,20 +158,10 @@ namespace StockMode.WebApi.Endpoints
                 [FromBody] UpdateProductCommand command,
                 IMediator mediator)
             {
-                try
-                {
-                    var updateProductCommand = new UpdateProductCommand(id, command.Name, command.Description, command.Variations);
-                    var updatedProduct = await mediator.Send(updateProductCommand);
-                    return Results.Ok(updatedProduct);
-                }
-                catch (NotFoundException)
-                {
-                    return Results.NotFound();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"An unexpected error occurred while updating the product with ID {id}.", statusCode: 500);
-                }
+                var updateProductCommand = new UpdateProductCommand(id, command.Name, command.Description, command.Variations);
+                var updatedProduct = await mediator.Send(updateProductCommand);
+                return Results.Ok(updatedProduct);
+
             }
             #endregion
         }

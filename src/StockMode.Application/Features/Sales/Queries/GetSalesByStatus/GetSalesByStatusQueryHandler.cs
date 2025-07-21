@@ -14,6 +14,9 @@ namespace StockMode.Application.Features.Sales.Queries.GetSalesByStatus
     {
         public async Task<IReadOnlyCollection<SaleDetailsDto>> Handle(GetSalesByStatusQuery request, CancellationToken cancellationToken)
         {
+            try
+            {
+
             var sales = await repository.GetSalesByStatusAsync(request.Status);
 
             if (sales is null || !sales.Any())
@@ -38,6 +41,11 @@ namespace StockMode.Application.Features.Sales.Queries.GetSalesByStatus
                 .ToList();
 
             return salesDto;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null!;
+            }
         }
     }
 }

@@ -20,7 +20,6 @@ namespace StockMode.Infra.CrossCutting.IoC
     {
         public static void AddServices(this IServiceCollection services)
         {
-
             // Application
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssembly(typeof(CreateProductCommandHandler).Assembly)

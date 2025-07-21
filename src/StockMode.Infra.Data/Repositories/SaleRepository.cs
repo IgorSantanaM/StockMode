@@ -28,7 +28,7 @@ namespace StockMode.Infra.Data.Repositories
         {
             const string sql = @"
                 SELECT s.*, si.* FROM ""Sales"" AS s
-                INNER JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""
+                INNER JOIN ""SaleItem"" AS si ON s.""Id"" = si.""SaleId""
                 WHERE s.""SaleDate"" >= @StartDate AND s.""SaleDate"" <= @EndDate
                 ORDER BY s.""SaleDate"" DESC;";
 
@@ -52,13 +52,14 @@ namespace StockMode.Infra.Data.Repositories
 
             return saleDictionary.Values;
         }
+
         public async Task<IEnumerable<Sale>> GetSalesByStatusAsync(SaleStatus status)
         {
             const string sql = @"
                 SELECT s.*, si.*
                 FROM ""Sales"" AS s
-                INNER JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""
-                WHERE s.""Status"" = @Status::text
+                INNER JOIN ""SaleItem"" AS si ON s.""Id"" = si.""SaleId""
+                WHERE s.""Status"" = @Status
                 ORDER BY s.""SaleDate"" DESC;";
 
             var saleDictionary = new Dictionary<int, Sale>();
@@ -76,7 +77,7 @@ namespace StockMode.Infra.Data.Repositories
                     saleEntry.Items.Add(saleItem);
                     return saleEntry;
                 },
-                new { Status = status.ToString() },
+                new { Status = status },
                 splitOn: "Id");
 
             return saleDictionary.Values;
