@@ -55,7 +55,7 @@ namespace StockMode.Domain.StockMovements
             MovementDate = DateTime.UtcNow;
         }
 
-        public static StockMovement CreateForSale(int variationId, int quantitySold, int stockAfter, int saleId) => // add domain event
+        public static StockMovement CreateForSale(int variationId, int quantitySold, int stockAfter, int saleId) =>
              new StockMovement(variationId, -Math.Abs(quantitySold), StockMovementType.SaleExit, stockAfter, saleId, null);
 
         public static StockMovement CreateForPurchase(int variationId, int quantityReceived, int stockAfter) =>

@@ -102,37 +102,45 @@ namespace StockMode.WebApi.Endpoints
               .ProducesProblem(StatusCodes.Status500InternalServerError)
               .WithSummary("Retrieves Sales by their status.")
               .WithDescription("Retrieves all Sales that match the specified status. Returns 404 if not found.");
+
+            group.MapDelete("{id:int}", HandleDeleteSale)
+                .WithName("DeleteSale")
+                .Produces(StatusCodes.Status204NoContent)
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Deletes a Sale by its ID.")
+                .WithDescription("Deletes the specified Sale by its ID. Returns no content on success.");
         }
 
         #region Handlers
-        public static async Task<IResult> HandleCreateSale([FromBody] CreateSaleCommand command,
+        private static async Task<IResult> HandleCreateSale([FromBody] CreateSaleCommand command,
             [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(command);
             return Results.CreatedAtRoute("GetSaleById", new { Id = id });
         }
-        public static async Task<IResult> HandleAddItemToSale([FromBody] AddItemToSaleCommandDto command,
+        private static async Task<IResult> HandleAddItemToSale([FromBody] AddItemToSaleCommandDto command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);
             return Results.NoContent();
         }
 
-        public static async Task<IResult> HandleGetAllSales([FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetAllSales([FromServices] IMediator mediator)
         {
             var query = new GetAllSalesQuery();
             var sales = await mediator.Send(query);
             return Results.Ok(sales);
         }
 
-        public static async Task<IResult> HandleGetSaleById([FromRoute] int id, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetSaleById([FromRoute] int id, [FromServices] IMediator mediator)
         {
             var query = new GetSaleByIdQuery(id);
             var sale = await mediator.Send(query);
             return Results.Ok(sale);
         }
 
-        public static async Task<IResult> HandleGetSalesByDataRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetSalesByDataRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromServices] IMediator mediator)
         {
             var query = new GetSalesByDataRangeQuery(startDate, endDate);
             var sales = await mediator.Send(query);
@@ -140,7 +148,7 @@ namespace StockMode.WebApi.Endpoints
 
         }
 
-        public static async Task<IResult> HandleGetSalesByStatus([FromQuery] SaleStatus status, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetSalesByStatus([FromQuery] SaleStatus status, [FromServices] IMediator mediator)
         {
             var query = new GetSalesByStatusQuery(status);
             var sales = await mediator.Send(query);
@@ -148,14 +156,14 @@ namespace StockMode.WebApi.Endpoints
 
         }
 
-        public static async Task<IResult> HandleApplyDiscountToSale([FromBody] ApplyDiscountToSaleCommand command,
+        private static async Task<IResult> HandleApplyDiscountToSale([FromBody] ApplyDiscountToSaleCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);
             return Results.NoContent();
         }
 
-        public static async Task<IResult> HandleCompleteSale([FromRoute] int id,
+        private static async Task<IResult> HandleCompleteSale([FromRoute] int id,
             [FromServices] IMediator mediator)
         {
             var command = new CompleteSaleCommand(id);
@@ -163,7 +171,7 @@ namespace StockMode.WebApi.Endpoints
             return Results.NoContent();
         }
 
-        public static async Task<IResult> HandleCancelSale([FromRoute] int id,
+        private static async Task<IResult> HandleCancelSale([FromRoute] int id,
             [FromServices] IMediator mediator)
         {
             var command = new CancelSaleCommand(id);
@@ -171,14 +179,14 @@ namespace StockMode.WebApi.Endpoints
             return Results.NoContent();
         }
 
-        public static async Task<IResult> HandleChangeSalePaymentMethod([FromBody] ChangeSalePaymentMethodCommand command,
+        private static async Task<IResult> HandleChangeSalePaymentMethod([FromBody] ChangeSalePaymentMethodCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);
             return Results.NoContent();
         }
 
-        public async Task<IResult> HandleDeleteSale([FromRoute] int id, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleDeleteSale([FromRoute] int id, [FromServices] IMediator mediator)
         {
             var command = new DeleteSaleCommand(id);
             await mediator.Send(command);

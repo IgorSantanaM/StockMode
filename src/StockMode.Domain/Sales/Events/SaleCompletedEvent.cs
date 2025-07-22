@@ -2,7 +2,6 @@
 
 namespace StockMode.Domain.Sales.Events
 {
-
     public record SoldItemDto(int VariationId, int Quantity);
 
     public record SaleCompletedEvent(
