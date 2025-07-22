@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Products\Events\" />
-    <Folder Include="Features\Sales\Events\" />
-    <Folder Include="Features\StockMovements\Commands\" />
-    <Folder Include="Features\StockMovements\Events\" />
-    <Folder Include="Features\StockMovements\Queries\" />
-    <Folder Include="Features\StockMovements\Validators\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
   </ItemGroup>

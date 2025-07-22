@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StockMode.Application.Exceptionns;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
 using StockMode.Application.Features.Products.Commands.DeleteProduct;
 using StockMode.Application.Features.Products.Commands.UpdateProduct;
@@ -10,9 +9,7 @@ using StockMode.Application.Features.Products.Queries.GetProductById;
 using StockMode.Application.Features.Products.Queries.GetProductBySku;
 using StockMode.Application.Features.Products.Queries.GetProductsWithLowStock;
 using StockMode.Application.Features.Products.Queries.GetVariationById;
-using StockMode.Domain.Products;
 using StockMode.WebApi.Endpoints.Internal;
-using System.Threading.Tasks.Dataflow;
 
 namespace StockMode.WebApi.Endpoints
 {
@@ -85,85 +82,86 @@ namespace StockMode.WebApi.Endpoints
                 .WithSummary("Updates an existing product by its ID.")
                 .WithDescription("Updates the details of an existing product, including its variations, by providing the product ID and updated information.");
 
+        }
 
-            #region Handlers
 
-            static async Task<IResult> HandleCreateProduct(
-                [FromBody] CreateProductCommand product,
-                IMediator mediator)
-            {
-                var id = await mediator.Send(product);
+        #region Handlers
 
-                return Results.CreatedAtRoute("GetProductById", new { id = id });
-            }
+        private static async Task<IResult> HandleCreateProduct(
+            [FromBody] CreateProductCommand product,
+            IMediator mediator)
+        {
+            var id = await mediator.Send(product);
 
-            static async Task<IResult> HandleGetProductById(
+            return Results.CreatedAtRoute("GetProductById", new { id = id });
+        }
+
+        private static async Task<IResult> HandleGetProductById(
                 [FromRoute] int id,
                 IMediator mediator)
-            {
-                var query = new GetProductByIdQuery(id);
+        {
+            var query = new GetProductByIdQuery(id);
 
-                var product = await mediator.Send(query);
+            var product = await mediator.Send(query);
 
-                return product is not null ? Results.Ok(product) : Results.NotFound();
-            }
+            return product is not null ? Results.Ok(product) : Results.NotFound();
+        }
 
-            static async Task<IResult> HandleGetAllProducts(
+        private static async Task<IResult> HandleGetAllProducts(
                 IMediator mediator)
-            {
-                var query = new GetAllProductsQuery();
-                var products = await mediator.Send(query);
-                return Results.Ok(products);
-            }
+        {
+            var query = new GetAllProductsQuery();
+            var products = await mediator.Send(query);
+            return Results.Ok(products);
+        }
 
-            static async Task<IResult> HandleGetProductBySku(
+        private static async Task<IResult> HandleGetProductBySku(
                 [FromRoute] string sku,
                 IMediator mediator)
-            {
-                var query = new GetProductBySkuQuery(sku);
-                var product = await mediator.Send(query);
-                return product is not null ? Results.Ok(product) : Results.NotFound();
-            }
+        {
+            var query = new GetProductBySkuQuery(sku);
+            var product = await mediator.Send(query);
+            return product is not null ? Results.Ok(product) : Results.NotFound();
+        }
 
-            static async Task<IResult> HandleGetProductWithLowStock(
+        private static async Task<IResult> HandleGetProductWithLowStock(
                 [FromRoute] int threshold,
                 IMediator mediator)
-            {
-                var query = new GetProductsWithLowStockQuery(threshold);
-                var product = await mediator.Send(query);
-                return product is not null ? Results.Ok(product) : Results.NotFound();
-            }
+        {
+            var query = new GetProductsWithLowStockQuery(threshold);
+            var product = await mediator.Send(query);
+            return product is not null ? Results.Ok(product) : Results.NotFound();
+        }
 
-            static async Task<IResult> HandleGetVariationById(
+        private static async Task<IResult> HandleGetVariationById(
                 [FromRoute] int variationId,
                 IMediator mediator)
-            {
-                var query = new GetVariationByIdQuery(variationId);
-                var variation = await mediator.Send(query);
-                return variation is not null ? Results.Ok(variation) : Results.NotFound();
-            }
+        {
+            var query = new GetVariationByIdQuery(variationId);
+            var variation = await mediator.Send(query);
+            return variation is not null ? Results.Ok(variation) : Results.NotFound();
+        }
 
-            static async Task<IResult> HandleDeleteProductById(
+        private static async Task<IResult> HandleDeleteProductById(
                 [FromRoute] int id,
                 IMediator mediator)
-            {
+        {
 
-                var command = new DeleteProductCommand(id);
-                await mediator.Send(command);
-                return Results.NoContent();
-            }
+            var command = new DeleteProductCommand(id);
+            await mediator.Send(command);
+            return Results.NoContent();
+        }
 
-            static async Task<IResult> HandleUpdateProduct(
+        private static async Task<IResult> HandleUpdateProduct(
                 [FromRoute] int id,
                 [FromBody] UpdateProductCommand command,
                 IMediator mediator)
-            {
-                var updateProductCommand = new UpdateProductCommand(id, command.Name, command.Description, command.Variations);
-                var updatedProduct = await mediator.Send(updateProductCommand);
-                return Results.Ok(updatedProduct);
+        {
+            var updateProductCommand = new UpdateProductCommand(id, command.Name, command.Description, command.Variations);
+            var updatedProduct = await mediator.Send(updateProductCommand);
+            return Results.Ok(updatedProduct);
 
-            }
-            #endregion
         }
+        #endregion
     }
 }
