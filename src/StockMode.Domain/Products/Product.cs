@@ -37,8 +37,6 @@ namespace StockMode.Domain.Products
             if (!Variations.Any())
                 throw new DomainException("Cannot activate a product with no variations.");
 
-            //var productAddedEvent = new ProductAddedEvent(this.Id, Name, Description, Variations);
-            //AddDomainEvent(productAddedEvent);
             IsActive = true;
         }
 
@@ -48,6 +46,7 @@ namespace StockMode.Domain.Products
 
         public void RemoveVariation(Variation variation) =>
             Variations.Remove(variation);
+
         public void AddVariation(string name, string sku, decimal costPrice, decimal salePrice, int initialStock)
         {
             if (!IsActive)
