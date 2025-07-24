@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.Infra.Data", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.WebApi", "src\StockMode.WebApi\StockMode.WebApi.csproj", "{FCEB6E70-270F-4275-A3FD-44B31BC8A32C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{262A7AC3-DB80-4553-A20E-1CD1606E67F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.Domain.Tests.Unit", "StockMode.Domain.Tests.Unit\StockMode.Domain.Tests.Unit.csproj", "{CCDC298B-AEA7-4000-B5C2-AF315291D975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,10 @@ Global
 		{FCEB6E70-270F-4275-A3FD-44B31BC8A32C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCEB6E70-270F-4275-A3FD-44B31BC8A32C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCEB6E70-270F-4275-A3FD-44B31BC8A32C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCDC298B-AEA7-4000-B5C2-AF315291D975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCDC298B-AEA7-4000-B5C2-AF315291D975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCDC298B-AEA7-4000-B5C2-AF315291D975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCDC298B-AEA7-4000-B5C2-AF315291D975}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,5 +86,6 @@ Global
 		{A3B5CF6C-8DAB-4FCE-8D50-C85298A02F6E} = {5088D13A-01F9-402D-8670-5BDDBD2DB860}
 		{4B8AC63F-D6F9-42E5-827C-8C03E81A5484} = {2443FF71-20C1-49D1-8ABD-80B36740D5D5}
 		{FCEB6E70-270F-4275-A3FD-44B31BC8A32C} = {8D0D08FF-E001-42E3-A529-FB5B0DC5AD6E}
+		{CCDC298B-AEA7-4000-B5C2-AF315291D975} = {262A7AC3-DB80-4553-A20E-1CD1606E67F8}
 	EndGlobalSection
 EndGlobal
