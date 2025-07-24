@@ -8,5 +8,6 @@ namespace StockMode.Domain.Products
         Task<Product?> GetProductByIdAsync(int id, CancellationToken cancellationToken);
         Task<Variation?> FindVariationByIdAsync(int variationId);
         Task<IEnumerable<Product>> GetActiveProductsWithLowStockAsync(int lowStockThreshold);
+        Task<Product?> GetProductByVariationIdAsync(int variationId);
     }
 }

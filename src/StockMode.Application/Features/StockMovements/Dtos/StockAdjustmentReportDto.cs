@@ -1,10 +1,12 @@
-﻿namespace StockMode.Application.Features.StockMovements.Dtos;
+﻿using StockMode.Domain.Enums;
+
+namespace StockMode.Application.Features.StockMovements.Dtos;
 
 public record StockAdjustmentReportDto(
     DateTime MovementDate,
     int VariationId,
-    string MovementType,
+    StockMovementType MovementType,
     int Quantity,
     int StockAfterMovement,
     string? Observation
-);
+);  

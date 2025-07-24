@@ -21,7 +21,7 @@ namespace StockMode.WebApi.Endpoints
             var group = app.MapGroup("/api/stock-movements")
                 .WithTags("Stock Movements");
 
-            group.MapPost("/adjust", HandleAdjustStock)
+            group.MapPut("/adjust", HandleAdjustStock)
               .WithName("AdjustStock")
               .Produces(StatusCodes.Status204NoContent)
               .Produces(StatusCodes.Status400BadRequest)
