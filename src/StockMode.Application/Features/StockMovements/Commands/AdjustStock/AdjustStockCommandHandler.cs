@@ -22,9 +22,10 @@ namespace StockMode.Application.Features.StockMovements.Commands.AdjustStock
         }
         public async Task Handle(AdjustStockCommand request, CancellationToken cancellationToken)
         {
-            var variation = await _productRepository.FindVariationByIdAsync(request.VariationId);
+            var product = await _productRepository.GetProductByVariationIdAsync(request.VariationId);
+            var variation = product?.Variations.FirstOrDefault(v => v.Id == request.VariationId);
 
-            if(variation is null)
+            if (variation is null)
                 throw new NotFoundException(nameof(Variation), request.VariationId);
 
             if(request.QuantityAdjusted > 0)

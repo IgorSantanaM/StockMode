@@ -3,6 +3,7 @@ using MediatR;
 using StockMode.Application.Features.StockMovements.Dtos;
 using StockMode.Domain.Enums;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace StockMode.Application.Features.StockMovements.Queries.GetStockAdjustmentReport
 {
@@ -33,8 +34,8 @@ namespace StockMode.Application.Features.StockMovements.Queries.GetStockAdjustme
             {
                 request.StartDate,
                 request.EndDate,
-                LossAdjustment = StockMovementType.LossAdjustment.ToString(),
-                PositiveAdjustment = StockMovementType.PositiveAdjustment.ToString()
+                LossAdjustment = (int)StockMovementType.LossAdjustment,
+                PositiveAdjustment = (int)StockMovementType.PositiveAdjustment
             };
             var report = await _dbConnection.QueryAsync<StockAdjustmentReportDto>(sql, parameters);
 

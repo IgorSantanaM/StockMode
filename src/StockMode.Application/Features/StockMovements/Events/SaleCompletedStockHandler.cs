@@ -25,7 +25,8 @@ namespace StockMode.Application.Features.StockMovements.Events
         {
             foreach (var soldItem in notification.SoldItems)
             {
-                var variation = await _productRepository.FindVariationByIdAsync(soldItem.VariationId);
+                var product = await _productRepository.GetProductByVariationIdAsync(soldItem.VariationId);
+                var variation = product?.Variations.FirstOrDefault(v => v.Id == soldItem.VariationId);
                 if (variation! != null!)
                 {
                     variation.DecreaseStock(soldItem.Quantity);

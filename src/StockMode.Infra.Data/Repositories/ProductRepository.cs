@@ -103,5 +103,11 @@ namespace StockMode.Infra.Data.Repositories
                 .Include(product => product.Variations)
                 .FirstOrDefaultAsync(product => product.Id == id, cancellationToken);
         }
+
+        public async Task<Product?> GetProductByVariationIdAsync(int variationId)
+        {
+            return await _dbContext.Products.Include(product => product.Variations)
+                .FirstOrDefaultAsync(p => p.Variations.Any(v => v.Id == variationId));
+        }
     }
 }
