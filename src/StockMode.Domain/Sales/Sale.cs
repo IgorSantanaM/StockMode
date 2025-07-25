@@ -20,6 +20,9 @@ namespace StockMode.Domain.Sales
 
         public Sale(PaymentMethod paymentMethod)
         {
+            if(paymentMethod < PaymentMethod.Pix || paymentMethod > PaymentMethod.StoreCredit)
+                throw new DomainException("Invalid payment method.");
+
             Status = SaleStatus.PaymentPending;
             PaymentMethod = paymentMethod;
             SaleDate = DateTime.UtcNow;
@@ -63,8 +66,11 @@ namespace StockMode.Domain.Sales
 
         public void ChangePaymentMethod(PaymentMethod newPaymentMethod)
         {
+            if(newPaymentMethod < PaymentMethod.Pix || newPaymentMethod > PaymentMethod.StoreCredit)
+                throw new DomainException("Invalid payment method.");
+
             if (Status != SaleStatus.PaymentPending)
-                throw new DomainException("Não é possível alterar o método de pagamento de uma venda que não está pendente.");
+                throw new DomainException("Cannot change payment method for a sale that is not pending.");
 
             PaymentMethod = newPaymentMethod;
         }
@@ -83,6 +89,9 @@ namespace StockMode.Domain.Sales
 
         public void CancelSale()
         {
+            if(Status == SaleStatus.Cancelled)
+                throw new DomainException("Sale has already been cancelled.");
+
             if (Status == SaleStatus.Completed)
                 throw new DomainException("Cannot cancel a sale that has already been completed.");
 

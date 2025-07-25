@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E7459057-CD65-4A15-B958-44BAEE334354}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{886A54CC-3D8A-454E-942C-5FF1281777AC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{8D0D08FF-E001-42E3-A529-FB5B0DC5AD6E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{040F76F4-AEE4-47C6-B1E6-EEEC661D6CD7}"
@@ -31,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.Infra.Data", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.WebApi", "src\StockMode.WebApi\StockMode.WebApi.csproj", "{FCEB6E70-270F-4275-A3FD-44B31BC8A32C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{262A7AC3-DB80-4553-A20E-1CD1606E67F8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{262A7AC3-DB80-4553-A20E-1CD1606E67F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.Domain.Tests.Unit", "StockMode.Domain.Tests.Unit\StockMode.Domain.Tests.Unit.csproj", "{CCDC298B-AEA7-4000-B5C2-AF315291D975}"
 EndProject
