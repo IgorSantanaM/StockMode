@@ -2,7 +2,6 @@
 using StockMode.Domain.Core.Exceptions;
 using StockMode.Domain.Enums;
 using StockMode.Domain.Sales;
-using System.Security.Cryptography;
 
 namespace StockMode.Domain.Tests.Unit
 {
@@ -302,10 +301,10 @@ namespace StockMode.Domain.Tests.Unit
             saleItem.Quantity.Should().Be(quantity);
             saleItem.PriceAtSale.Should().Be(priceAtSale);
         }
-        
+
         [Theory]
         [InlineData(0)]
-        [InlineData(-1)] 
+        [InlineData(-1)]
         public void CreteSaleItem_ShouldThrowDomainException_WhenVariationIdIsInvalid(int variationId)
         {
             // Arrange
