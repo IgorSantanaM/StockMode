@@ -1,8 +1,11 @@
-﻿namespace StockMode.Application.Common.Interfaces
+﻿using MediatR;
+using StockMode.Application.Common.Messaging;
+
+namespace StockMode.Application.Common.Interfaces
 {
     public interface IMessageQueue
     {
-        Task AddMessageToQueue<T>(QueueMessage<T> eventData);
-        Task<QueueMessage<T>?> FetchFromQueueAsync<T>(string queueName, CancellationToken token);
+        Task AddMessageToQueue(string queueName, QueueMessageWrapper queueMessageWrapper);
+        Task<QueueMessageWrapper?> FetchFromQueueAsync(string queueName, CancellationToken token);
     }
 }

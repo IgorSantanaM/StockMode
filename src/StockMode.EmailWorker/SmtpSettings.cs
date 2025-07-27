@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StockMode.Infra.Services.Email
+namespace StockMode.EmailWorker
 {
     public class SmtpSettings
     {

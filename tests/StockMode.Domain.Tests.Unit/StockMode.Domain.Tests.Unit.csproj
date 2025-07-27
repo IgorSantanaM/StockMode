@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\StockMode.Domain\StockMode.Domain.csproj" />
+    <ProjectReference Include="..\..\src\StockMode.Domain\StockMode.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
