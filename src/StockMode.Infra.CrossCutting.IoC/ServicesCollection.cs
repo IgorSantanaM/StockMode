@@ -1,5 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EasyNetQ;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Mjml.Net;
+using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
+using StockMode.Application.Features.Products.Validators;
 using StockMode.Domain.Core.Data;
 using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
@@ -7,12 +13,9 @@ using StockMode.Domain.StockMovements;
 using StockMode.Infra.Data.Contexts;
 using StockMode.Infra.Data.Repositories;
 using StockMode.Infra.Data.UoW;
-using StockMode.Application.Features.Products.Validators;
-using FluentValidation;
-using StockMode.Application.Features.Products.Queries.GetProductById;
-using StockMode.Application.Features.Products.Queries.GetAllProducts;
+using StockMode.Infra.Services.Email;
 using System.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace StockMode.Infra.CrossCutting.IoC
 {
@@ -39,6 +42,19 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IStockMovementRepository, StockMovementRepository>();
+        }
+
+        public static void AddMailServices(this IServiceCollection services)
+        {
+            var jsonOptions = new JsonSerializerOptions();
+
+            IBus? bus = RabbitHutch.CreateBus("host=mailrabbit;username=guest;password=guest;", options => 
+            options.EnableNewtonsoftJson());
+
+            services.AddSingleton(bus);
+
+            services.AddSingleton<IMjmlRenderer>(_ => new MjmlRenderer());
+            services.AddSingleton<IHtmlMailRenderer, RazorLightMjmlMailRenderer>();
         }
     }
 }

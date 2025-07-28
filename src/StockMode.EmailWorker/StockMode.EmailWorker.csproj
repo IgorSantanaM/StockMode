@@ -2,13 +2,23 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyNetQ" Version="7.8.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StockMode.Application\StockMode.Application.csproj" />
+    <ProjectReference Include="..\StockMode.Infra.CrossCutting.IoC\StockMode.Infra.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\StockMode.Infra.Services\StockMode.Infra.Services.csproj" />
   </ItemGroup>
 
 </Project>

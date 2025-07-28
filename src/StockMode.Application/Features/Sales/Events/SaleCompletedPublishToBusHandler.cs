@@ -10,7 +10,7 @@ namespace StockMode.Application.Features.Sales.Events
     {
         public Task Handle(SaleCompletedEvent notification, CancellationToken cancellationToken)
         {
-            var command = new SendSaleConfirmationEmailCommand(notification.SaleId);
+            var command = new SendSaleConfirmationEmailCommand(notification.SaleId, "igorsantanamedeiros17@gmail.com"); // MOCK BY NOW LATER FILL IN.
 
             var messageWrapper = new QueueMessageWrapper
             {

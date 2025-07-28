@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyNetQ.Serialization.NewtonsoftJson" Version="7.8.0" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
+    <PackageReference Include="Mjml.Net" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StockMode.Application\StockMode.Application.csproj" />
     <ProjectReference Include="..\StockMode.Infra.Data\StockMode.Infra.Data.csproj" />
+    <ProjectReference Include="..\StockMode.Infra.Services\StockMode.Infra.Services.csproj" />
   </ItemGroup>
 
 </Project>

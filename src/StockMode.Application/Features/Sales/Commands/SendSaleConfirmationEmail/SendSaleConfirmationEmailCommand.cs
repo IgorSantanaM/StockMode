@@ -2,5 +2,5 @@
 
 namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmail
 {
-    public record SendSaleConfirmationEmailCommand(int SaleId) : IRequest;
+    public record SendSaleConfirmationEmailCommand(int SaleId, string Email) : IRequest;
 }

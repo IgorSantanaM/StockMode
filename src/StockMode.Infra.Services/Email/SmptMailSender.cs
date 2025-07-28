@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using MimeKit;
 using StockMode.Application.Common.Interfaces;
 using StockMode.EmailWorker;
-using System.Threading;
 
 namespace StockMode.Infra.Services.Email
 {

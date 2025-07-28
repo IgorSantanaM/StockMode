@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Features.Sales.Dtos
 {
-    public record SaleCompletedEmail(decimal FinalPrice, PaymentMethod PaymentMethod, DateTime SaleDate, IReadOnlyCollection<SaleItemDetailsDto> Items);
+    public record SaleCompletedEmail(int SaleId,string Email, decimal FinalPrice, PaymentMethod PaymentMethod, DateTime SaleDate, IReadOnlyCollection<SaleItemDetailsDto> Items);
 }
