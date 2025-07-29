@@ -13,11 +13,11 @@ services:
     networks:
       - app_network
 
-  stockmode.mailsender:
+  stockmode.mailworker:
     image: ${DOCKER_REGISTRY-}stockmodemailsender
     build:
       context: .
-      dockerfile: /src/StockMode.MailSender/Dockerfile
+      dockerfile: src/StockMode.EmailWorker/Dockerfile
     environment:
       - RABBITMQ_HOST=mailrabbit
     depends_on:
@@ -34,8 +34,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: mydb
-    volumes:
-      - pgdata:/var/lib/postgresql/data
   
   pgadmin:
     image: dpage/pgadmin4
