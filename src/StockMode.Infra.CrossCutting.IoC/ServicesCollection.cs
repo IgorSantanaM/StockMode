@@ -61,6 +61,7 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddTransient<IMessageDeliveryReporter, SignalRDeliveryReporter>();
             services.AddScoped<IMessageQueue, MessageQueue>();
             services.AddScoped<IMailSender, SmptMailSender>();
+            services.AddScoped<IMailer, Mailer>();
 
             services.AddSingleton<IMailTemplateProvider, EmbeddedResourceMailTemplateProvider>();
             services.AddSingleton<IMjmlRenderer>(_ => new MjmlRenderer());
