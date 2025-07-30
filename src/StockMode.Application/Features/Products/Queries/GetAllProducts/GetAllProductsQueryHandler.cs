@@ -28,7 +28,7 @@ namespace StockMode.Application.Features.Products.Queries.GetAllProducts
                     AVG(v.""CostPrice"") AS AverageCostPrice,
                     COALESCE(SUM(v.""StockQuantity""), 0) AS TotalStockQuantity
                 FROM ""Products"" AS p
-                LEFT JOIN ""Variation"" AS v ON p.""Id"" = v.""ProductId""
+                LEFT JOIN ""Variations"" AS v ON p.""Id"" = v.""ProductId""
                 GROUP BY p.""Id"", p.""Name"", p.""Description"", p.""IsActive""
                 ORDER BY p.""Name"";";
 

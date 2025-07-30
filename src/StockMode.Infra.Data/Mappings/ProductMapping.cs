@@ -7,7 +7,7 @@ namespace StockMode.Infra.Data.Mappings
 {
     public class ProductMapping : EntityTypeConfiguration<Product>
     {
-        public override void Map(EntityTypeBuilder<Product> builder)
+        public override void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("Products");
 
@@ -28,12 +28,11 @@ namespace StockMode.Infra.Data.Mappings
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasMany(p => p.Variations)
-                   .WithOne(o => o.Product) 
-                   .HasForeignKey(e => e.ProductId) 
+                   .WithOne(o => o.Product)
+                   .HasForeignKey(e => e.ProductId)
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Ignore(p => p.DomainEvents);
-
         }
     }
 }

@@ -7,7 +7,7 @@ namespace StockMode.Infra.Data.Mappings
 {
     public class SaleMapping : EntityTypeConfiguration<Sale>
     {
-        public override void Map(EntityTypeBuilder<Sale> builder)
+        public override void Configure(EntityTypeBuilder<Sale> builder)
         {
             builder.ToTable("Sales");
 
@@ -43,11 +43,12 @@ namespace StockMode.Infra.Data.Mappings
             navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasMany(s => s.Items)
-                .WithOne(si => si.Sale) 
-                .HasForeignKey(si => si.SaleId) 
+                .WithOne(si => si.Sale)
+                .HasForeignKey(si => si.SaleId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Ignore(s => s.DomainEvents);
         }
+
     }
 }

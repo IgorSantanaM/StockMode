@@ -7,7 +7,7 @@ namespace StockMode.Infra.Data.Mappings
 {
     public class SaleItemMapping : EntityTypeConfiguration<SaleItem>
     {
-        public override void Map(EntityTypeBuilder<SaleItem> builder)
+        public override void Configure(EntityTypeBuilder<SaleItem> builder)
         {
             builder.ToTable("SaleItems");
 

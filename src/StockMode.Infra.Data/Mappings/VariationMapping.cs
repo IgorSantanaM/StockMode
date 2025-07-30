@@ -7,7 +7,7 @@ namespace StockMode.Infra.Data.Mappings
 {
     public class VariationMapping : EntityTypeConfiguration<Variation>
     {
-        public override void Map(EntityTypeBuilder<Variation> builder)
+        public override void Configure(EntityTypeBuilder<Variation> builder)
         {
             builder.ToTable("Variations");
             builder.HasKey(v => v.Id);
@@ -42,5 +42,6 @@ namespace StockMode.Infra.Data.Mappings
 
             builder.Ignore(v => v.DomainEvents);
         }
+
     }
 }
