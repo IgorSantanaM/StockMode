@@ -1,6 +1,7 @@
 ﻿using EasyNetQ;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mjml.Net;
 using StockMode.Application.Common.Interfaces;
@@ -10,6 +11,7 @@ using StockMode.Domain.Core.Data;
 using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 using StockMode.Domain.StockMovements;
+using StockMode.EmailWorker;
 using StockMode.Infra.Data.Contexts;
 using StockMode.Infra.Data.Repositories;
 using StockMode.Infra.Data.UoW;
@@ -33,8 +35,6 @@ namespace StockMode.Infra.CrossCutting.IoC
 
             services.AddValidatorsFromAssembly(typeof(CreateProductCommandValidator).Assembly);
 
-            // Domain
-
             // Infra - Data
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
@@ -44,15 +44,25 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddScoped<IStockMovementRepository, StockMovementRepository>();
         }
 
-        public static void AddMailServices(this IServiceCollection services)
+        public static void AddMailServices(this IServiceCollection services, IConfiguration configuration)
         {
             var jsonOptions = new JsonSerializerOptions();
 
-            IBus? bus = RabbitHutch.CreateBus("host=mailrabbit;username=guest;password=guest;", options => 
+            IBus? bus = RabbitHutch.CreateBus("host=mailrabbit;username=guest;password=guest", options => 
             options.EnableNewtonsoftJson());
 
             services.AddSingleton(bus);
 
+            var smtpSettings = new SmtpSettings();
+            configuration.GetSection("SmtpSettings").Bind(smtpSettings);
+
+            services.AddSingleton(smtpSettings);
+
+            services.AddTransient<IMessageDeliveryReporter, SignalRDeliveryReporter>();
+            services.AddScoped<IMessageQueue, MessageQueue>();
+            services.AddScoped<IMailSender, SmptMailSender>();
+
+            services.AddSingleton<IMailTemplateProvider, EmbeddedResourceMailTemplateProvider>();
             services.AddSingleton<IMjmlRenderer>(_ => new MjmlRenderer());
             services.AddSingleton<IHtmlMailRenderer, RazorLightMjmlMailRenderer>();
         }

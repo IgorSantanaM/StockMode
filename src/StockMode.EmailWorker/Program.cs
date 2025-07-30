@@ -8,9 +8,7 @@ using StockMode.Infra.Services.Email;
 await Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
-        var smtpSettings = hostContext.Configuration.GetSection("SmtpSettings");
-        services.AddSingleton(smtpSettings);
-        services.AddMailServices();
+        services.AddMailServices(hostContext.Configuration);
         services.AddTransient<IMailSender, SmptMailSender>();
         services.AddTransient<IMailer, Mailer>();
 
