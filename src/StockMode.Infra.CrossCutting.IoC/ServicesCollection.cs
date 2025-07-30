@@ -48,7 +48,7 @@ namespace StockMode.Infra.CrossCutting.IoC
         {
             var jsonOptions = new JsonSerializerOptions();
 
-            IBus? bus = RabbitHutch.CreateBus("host=mailrabbit;username=guest;password=guest", options => 
+            IBus? bus = RabbitHutch.CreateBus("host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit", options => 
             options.EnableNewtonsoftJson());
 
             services.AddSingleton(bus);

@@ -4,7 +4,11 @@ services:
     build:
       context: .
       dockerfile: src/StockMode.WebApi/Dockerfile
+    ports:
+      - "8080:80"
     environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stockmodedb;Username=stockmodeuser;Password=StockMode123
       - ASPNETCORE_ENVIRONMENT=Development
       - RABBITMQ_HOST=mailrabbit
     depends_on:
@@ -19,7 +23,7 @@ services:
       context: .
       dockerfile: src/StockMode.EmailWorker/Dockerfile
     environment:
-      - RABBITMQ_HOST=mailrabbit
+      - RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
     networks:
@@ -50,12 +54,13 @@ services:
     image: rabbitmq:3-management
     container_name: mailrabbit
     hostname: mailrabbit
+    environment:
+      - RABBITMQ_DEFAULT_VHOST=mailrabbit
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app_network
 
 networks:
   app_network:

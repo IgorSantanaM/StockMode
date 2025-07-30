@@ -1,3 +1,4 @@
+using EasyNetQ;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
@@ -37,7 +38,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
