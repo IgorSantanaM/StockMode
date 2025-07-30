@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace StockMode.Infra.Data.Extensions
 {
-    public abstract class EntityTypeConfiguration<TEntity> where TEntity : class
+    public abstract class EntityTypeConfiguration<TEntity> :  IEntityTypeConfiguration<TEntity> where TEntity : class
     {
-        public abstract void Map(EntityTypeBuilder<TEntity> builder);
+        public abstract void Configure(EntityTypeBuilder<TEntity> builder);
     }
 }

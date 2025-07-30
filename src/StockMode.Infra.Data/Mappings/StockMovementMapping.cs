@@ -12,7 +12,7 @@ namespace StockMode.Infra.Data.Mappings
 {
     public class StockMovementMapping : EntityTypeConfiguration<StockMovement>
     {
-        public override void Map(EntityTypeBuilder<StockMovement> builder)
+        public override void Configure(EntityTypeBuilder<StockMovement> builder)
         {
             builder.ToTable("StockMovements");
             builder.HasKey(sm => sm.Id);
@@ -32,10 +32,10 @@ namespace StockMode.Infra.Data.Mappings
                 .IsRequired();
 
             builder.Property(sm => sm.Observation)
-                .HasMaxLength(500); 
+                .HasMaxLength(500);
 
             builder.Property(sm => sm.Note)
-                .HasMaxLength(500); 
+                .HasMaxLength(500);
 
             builder.HasOne(sm => sm.Variation)
                 .WithMany()

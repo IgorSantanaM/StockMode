@@ -28,7 +28,7 @@ namespace StockMode.Infra.Data.Repositories
         {
             const string sql = @"
                 SELECT s.*, si.* FROM ""Sales"" AS s
-                INNER JOIN ""SaleItem"" AS si ON s.""Id"" = si.""SaleId""
+                INNER JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""
                 WHERE s.""SaleDate"" >= @StartDate AND s.""SaleDate"" <= @EndDate
                 ORDER BY s.""SaleDate"" DESC;";
 
@@ -58,7 +58,7 @@ namespace StockMode.Infra.Data.Repositories
             const string sql = @"
                 SELECT s.*, si.*
                 FROM ""Sales"" AS s
-                INNER JOIN ""SaleItem"" AS si ON s.""Id"" = si.""SaleId""
+                INNER JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""
                 WHERE s.""Status"" = @Status
                 ORDER BY s.""SaleDate"" DESC;";
 

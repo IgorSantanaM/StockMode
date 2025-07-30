@@ -26,7 +26,7 @@ namespace StockMode.Application.Features.Sales.Queries.GetAllSales
                     s.""FinalPrice"",
                     COUNT(si.""Id"") AS ItemCount
                 FROM ""Sales"" AS s
-                LEFT JOIN ""SaleItem"" AS si ON s.""Id"" = si.""SaleId""
+                LEFT JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""
                 GROUP BY s.""Id"", s.""SaleDate"", s.""Status"", s.""PaymentMethod"", s.""FinalPrice""
                 ORDER BY s.""SaleDate"" DESC;";
 
