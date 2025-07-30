@@ -4,15 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Email\Templates\SaleCompleted.csmjml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Email\Templates\SaleCompleted.csmjml" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EasyNetQ" Version="7.8.0" />

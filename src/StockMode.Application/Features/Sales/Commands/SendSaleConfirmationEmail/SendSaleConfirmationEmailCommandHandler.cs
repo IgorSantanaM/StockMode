@@ -9,15 +9,15 @@ using StockMode.Domain.Sales;
 
 namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmail
 {
-    public class SendSaleConfirmationEmailCommandHandler( IServiceProvider service, IBus bus, IMessageDeliveryReporter reporter) : IRequestHandler<SendSaleConfirmationEmailCommand>
+    public class SendSaleConfirmationEmailCommandHandler(IServiceProvider service, IBus bus, IMessageDeliveryReporter reporter) : IRequestHandler<SendSaleConfirmationEmailCommand>
     {
         public async Task Handle(SendSaleConfirmationEmailCommand request, CancellationToken cancellationToken)
         {
-            using var scope = service.CreateScope();
-            var sender = scope.ServiceProvider.GetRequiredService<IMailer>();
-            var repository =  scope.ServiceProvider.GetRequiredService<ISaleRepository>();
             try
             {
+                using var scope = service.CreateScope();
+                var sender = scope.ServiceProvider.GetRequiredService<IMailer>();
+                var repository = scope.ServiceProvider.GetRequiredService<ISaleRepository>();
                 Sale? sale = await repository.GetSaleByIdAsync(request.SaleId, cancellationToken);
 
                 if (sale is null)

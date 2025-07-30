@@ -46,6 +46,11 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseCors(opt =>
+{
+    opt.AllowAnyOrigin();
+});
+
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
