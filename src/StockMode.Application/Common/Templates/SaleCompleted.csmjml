@@ -1,15 +1,102 @@
 <mjml>
-  <mj-body background-color="#f0f0f0">
-    <mj-section>
-      <mj-column>
-        <mj-text font-size="20px" color="#333333" font-family="Helvetica, Arial, sans-serif" align="center">
-          Muito obrigado por comprar em nosa loja! {{{customerName}}}
-        </mj-text>
-        <mj-divider border-color="#cccccc" />
-        <mj-text font-size="16px" color="#555555" font-family="Helvetica, Arial, sans-serif">
-          Estamos felizes em informar que sua compra foi conclu�da com sucesso. Aqui est�o os detalhes do seu pedido: TODO
-        </mj-text>
-      </mj-column>
-    </mj-section>
-  </mj-body>
+	<mj-head>
+		<mj-title>Confirmação do seu Pedido</mj-title>
+		<mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+		<mj-style>
+			.body {
+			background-color: #f3f5f7;
+			}
+
+			.main-content {
+			background-color: #ffffff;
+			border-radius: 8px;
+			}
+
+			.footer-text a {
+			color: #555555 !important;
+			text-decoration: none;
+			}
+		</mj-style>
+	</mj-head>
+	<mj-body css-class="body">
+		<mj-section padding="20px 0">
+			<mj-column>
+				<mj-image width="150px" src="https://via.placeholder.com/150x50.png?text=SuaLoja" alt="Logo da SuaLoja" />
+			</mj-column>
+		</mj-section>
+
+		<mj-section css-class="main-content" padding="20px">
+			<mj-column>
+				<mj-text font-size="24px" font-weight="bold" color="#2a3b4f" font-family="Roboto, Arial, sans-serif" align="center">
+					Obrigado pela sua compra, IGOR!!!!!!!!!
+				</mj-text>
+				<mj-text font-size="16px" color="#555555" font-family="Roboto, Arial, sans-serif" align="center" padding-top="10px">
+					Seu pedido <strong style="color: #4f46e5;">#@Model.SaleId</strong> foi confirmado com sucesso.
+				</mj-text>
+				<mj-divider border-color="#e5e7eb" border-width="1px" padding="20px 0" />
+
+				<mj-text font-size="18px" font-weight="bold" color="#333333" font-family="Roboto, Arial, sans-serif">
+					Resumo do Pedido
+				</mj-text>
+				<mj-text font-size="14px" color="#555555" font-family="Roboto, Arial, sans-serif" padding-top="5px">
+					Data: @Model.SaleDate.ToString("dd/MM/yyyy")<br />
+					Pagamento: @Model.PaymentMethod
+				</mj-text>
+
+				<mj-table font-family="Roboto, Arial, sans-serif" padding-top="10px">
+					<tr style="border-bottom:1px solid #e5e7eb; text-align:left;">
+						<th style="padding:10px 0; font-weight: bold; color: #333;">Produto</th>
+						<th style="padding:10px 0; font-weight: bold; color: #333;">Qtd.</th>
+						<th style="padding:10px 0; font-weight: bold; color: #333; text-align: right;">Preço</th>
+					</tr>
+					@foreach (var item in Model.Items)
+					{
+					<tr>
+						<td style="padding:10px 0; color: #555;">@item.Name</td>
+						<td style="padding:10px 0; color: #555;">@item.Quantity</td>
+						<td style="padding:10px 0; color: #555; text-align: right;">@item.PriceAtSale.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</td>
+					</tr>
+					}
+				</mj-table>
+
+				<mj-divider border-color="#e5e7eb" border-width="1px" padding="20px 0" />
+
+				<mj-table font-family="Roboto, Arial, sans-serif">
+					<tr>
+						<td style="padding:5px 0; color: #555;">Subtotal</td>
+						<td style="padding:5px 0; color: #555; text-align: right;">@Model.TotalPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</td>
+					</tr>
+					<tr>
+						<td style="padding:5px 0; color: #555;">Desconto</td>
+						<td style="padding:5px 0; color: #555; text-align: right;">- @Model.Discount.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</td>
+					</tr>
+					<tr style="font-weight: bold;">
+						<td style="padding:10px 0; font-size: 18px; color: #333;">Total</td>
+						<td style="padding:10px 0; font-size: 18px; color: #333; text-align: right;">@Model.FinalPrice.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</td>
+					</tr>
+				</mj-table>
+
+				<mj-divider border-color="#e5e7eb" border-width="1px" padding="20px 0" />
+			</mj-column>
+		</mj-section>
+
+		<mj-section padding="20px 0">
+			<mj-column>
+				<mj-social font-size="15px" icon-size="24px" mode="horizontal">
+					<mj-social-element name="facebook" href="https://sua-pagina.com/facebook">
+					</mj-social-element>
+					<mj-social-element name="instagram" href="https://sua-pagina.com/instagram">
+					</mj-social-element>
+					<mj-social-element name="twitter" href="https://sua-pagina.com/twitter">
+					</mj-social-element>
+				</mj-social>
+				<mj-text css-class="footer-text" color="#555555" font-size="12px" align="center" padding-top="10px">
+					Você recebeu este email porque fez uma compra em <a href="https://seu-site.com">SuaLoja</a>.<br />
+					Rua Fictícia, 123 - Campo Grande, MS<br />
+					&copy; 2025 SuaLoja. Todos os direitos reservados.
+				</mj-text>
+			</mj-column>
+		</mj-section>
+
+	</mj-body>
 </mjml>

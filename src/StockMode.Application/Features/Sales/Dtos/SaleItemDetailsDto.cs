@@ -2,6 +2,7 @@
 
 public record SaleItemDetailsDto(
     int Id, 
+    string Name,
     int VariationId,
     int Quantity,
     decimal PriceAtSale);

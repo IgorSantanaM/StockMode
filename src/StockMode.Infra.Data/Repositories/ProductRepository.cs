@@ -109,5 +109,25 @@ namespace StockMode.Infra.Data.Repositories
             return await _dbContext.Products.Include(product => product.Variations)
                 .FirstOrDefaultAsync(p => p.Variations.Any(v => v.Id == variationId));
         }
+
+        public async Task<IEnumerable<Variation>> GetVariationsWithProductsByIdsAsync(IEnumerable<int> variationIds)
+        {
+            const string sql = @"
+            SELECT v.*, p.* FROM ""Variations"" AS v
+            INNER JOIN ""Products"" AS p ON v.""ProductId"" = p.""Id""
+            WHERE v.""Id"" = ANY(@VariationIds)";
+
+            var variations = await _dbConnection.QueryAsync<Variation, Product, Variation>(
+                sql,
+                (variation, product) =>
+                {
+                    variation.Product = product;
+                    return variation;
+                },
+                new { VariationIds = variationIds.ToList() },
+                splitOn: "Id");
+
+            return variations;
+        }
     }
 }
