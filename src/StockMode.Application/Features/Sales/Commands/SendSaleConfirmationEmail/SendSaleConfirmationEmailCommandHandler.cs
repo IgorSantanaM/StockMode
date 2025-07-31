@@ -5,6 +5,7 @@ using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Common.Messaging;
 using StockMode.Application.Exceptionns;
 using StockMode.Application.Features.Sales.Dtos;
+using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 
 namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmail
@@ -17,20 +18,29 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
             {
                 using var scope = service.CreateScope();
                 var sender = scope.ServiceProvider.GetRequiredService<IMailer>();
-                var repository = scope.ServiceProvider.GetRequiredService<ISaleRepository>();
-                Sale? sale = await repository.GetSaleByIdAsync(request.SaleId, cancellationToken);
+                var saleRepository = scope.ServiceProvider.GetRequiredService<ISaleRepository>();
+                var productRepository = scope.ServiceProvider.GetRequiredService<IProductRepository>();
+
+                Sale? sale = await saleRepository.GetSaleByIdAsync(request.SaleId, cancellationToken);
 
                 if (sale is null)
                     throw new NotFoundException(nameof(Sale), request.SaleId);
 
+                var varationIds = sale?.Items.Select(i => i.VariationId).Distinct().ToList();
+                var variations = await productRepository.GetVariationsWithProductsByIdsAsync(varationIds!);
+                var variationNames = variations.ToDictionary(v => v.Id, v => $"{v.Product.Name} - {v.Name}");
+
                 var mailData = new SaleCompletedEmail(
                     sale.Id,
                     request.Email,
+                    sale.TotalPrice,
+                    sale.Discount,
                     sale.FinalPrice,
                     sale.PaymentMethod,
                     sale.SaleDate,
                     sale.Items.Select(i => new SaleItemDetailsDto(
                         i.Id,
+                        variationNames.GetValueOrDefault(i.VariationId, "Unknown Product"),
                         i.VariationId,
                         i.Quantity,
                         i.PriceAtSale
