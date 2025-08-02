@@ -12,6 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var services = builder.Services;
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+services.AddCors(opt =>
+{
+    opt.AddPolicy(name: MyAllowSpecificOrigins,
+                 policy =>
+                 {
+                     policy.AllowAnyOrigin();
+                     policy.AllowAnyMethod();
+                     policy.AllowAnyHeader();
+                 });
+});
+
 services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 services.AddMailServices(builder.Configuration);
@@ -46,10 +60,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors(opt =>
-{
-    opt.AllowAnyOrigin();
-});
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

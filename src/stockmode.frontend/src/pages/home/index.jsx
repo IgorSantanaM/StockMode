@@ -50,7 +50,7 @@ export default function App() {
         <SidebarContainer>
           <SidebarHeader>
             <Zap style={{ height: '2rem', width: '2rem', color: '#4f46e5' }} />
-            <LogoText>VendeFácil</LogoText>
+            <LogoText>StockMode</LogoText>
           </SidebarHeader>
           <Nav>
             <NavItemComponent icon={<Home size={20} />} label="Início" active />

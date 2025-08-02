@@ -1,17 +1,5 @@
 import React from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-
-export const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: #f3f5f7;
-  }
-`;
+import styled from 'styled-components';
 
 export const AppContainer = styled.div`
   display: flex;
@@ -19,7 +7,6 @@ export const AppContainer = styled.div`
 `;
 
 export const SidebarContainer = styled.aside`
-  width: 256px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   flex-shrink: 0;
@@ -33,7 +20,6 @@ export const SidebarContainer = styled.aside`
 `;
 
 export const SidebarHeader = styled.div`
-  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,7 +50,7 @@ export const NavItemLink = styled.a`
   transition: all 0.2s ease-in-out;
   text-decoration: none;
   color: ${props => props.active ? '#ffffff' : '#4b5563'};
-  background-color: ${props => props.active ? '#4f46e5' : 'transparent'};
+  background-color: ${props => props.active ? '#4840e6ff' : 'transparent'};
   box-shadow: ${props => props.active ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)' : 'none'};
 
   &:hover {
@@ -85,7 +71,6 @@ export const MainContent = styled.main`
 
 export const Header = styled.header`
   background-color: #ffffff;
-  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
