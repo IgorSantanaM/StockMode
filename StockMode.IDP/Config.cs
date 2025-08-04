@@ -22,22 +22,28 @@ public static class Config
             {
                 new Client
                 {
-                    ClientName = "StockMode Client",
+                    ClientName = "StockMode React Client",
                     ClientId = "stockmodeclient",
                     AllowedGrantTypes = GrantTypes.Code,
-                    //RedirectUris =
-                    //{
-                    //    "https://localhost:5000/signin-oidc",
-                    //},
+
+                    RedirectUris =
+                    {
+                        "https://localhost:5173/signin-oidc",
+                    },
+
+                    PostLogoutRedirectUris =
+                    {
+                        "https://localhost:5173/signout-callback-oidc",
+                    },
+
+                    AllowedCorsOrigins = { "http://localhost:5173" },
+
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email
                     },
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    }
                 }
             };
 }
