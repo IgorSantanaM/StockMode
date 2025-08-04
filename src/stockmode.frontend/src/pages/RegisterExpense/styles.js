@@ -33,16 +33,13 @@ export const Title = styled.h2`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 `;
 
-export const SectionTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #374151;
-  margin: 0;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+export const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
 `;
 
 export const FormGroup = styled.div`
@@ -60,7 +57,6 @@ export const Label = styled.label`
 const baseInputStyles = `
   padding: 0.75rem 1rem;
   border: 1px solid #d1d5db;
-  color: black;
   border-radius: 0.5rem;
   font-size: 1rem;
   background-color: #f9fafb;
@@ -81,7 +77,7 @@ const baseInputStyles = `
 `;
 
 export const Input = styled.input`${baseInputStyles}`;
-export const Textarea = styled.textarea`${baseInputStyles} min-height: 120px; resize: vertical;`;
+export const Select = styled.select`${baseInputStyles}`;
 
 export const ErrorMessage = styled.span`
   color: #ef4444;
@@ -103,7 +99,7 @@ export const Button = styled.button`
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: #ef4444; // Cor vermelha para despesa
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -113,11 +109,11 @@ export const Button = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: #dc2626;
   }
 
   &:disabled {
-    background-color: #a5b4fc;
+    background-color: #fca5a5;
     cursor: not-allowed;
   }
 `;
@@ -131,77 +127,13 @@ export const CancelButton = styled(Button)`
   }
 `;
 
-export const VariationsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-export const VariationCard = styled.div`
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-`;
-
-export const VariationHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+export const Alert = styled.div`
+  padding: 1rem;
   margin-bottom: 1.5rem;
-`;
-
-export const VariationTitle = styled.h4`
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-`;
-
-export const RemoveButton = styled.button`
-  background: none;
-  border: none;
-  color: #9ca3af;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 999px;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    color: #ef4444;
-    background-color: #fee2e2;
-  }
-`;
-
-export const VariationFormRow = styled.div`
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const AddVariationButton = styled.button`
+  border-radius: 0.5rem;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px dashed #d1d5db;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  color: #4b5563;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    border-color: #4f46e5;
-    background-color: #eef2ff;
-    color: #4f46e5;
-  }
+  color: ${props => props.type === 'success' ? '#065f46' : '#991b1b'};
+  background-color: ${props => props.type === 'success' ? '#d1fae5' : '#fee2e2'};
 `;

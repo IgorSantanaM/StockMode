@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   background-color: #ffffff;
+  width: 180vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,9 +25,9 @@ export const SearchInput = styled.input`
   border-radius: 0.5rem;
   border: 1px solid #d1d5db;
   background-color: #f9fafb;
+  color: black;
   &:focus {
     outline: none;
-    ring: 2px;
     border-color: #4f46e5;
   }
 `;
