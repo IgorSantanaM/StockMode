@@ -6,8 +6,7 @@ import {
   VariationsContainer, VariationCard, VariationHeader, VariationTitle, RemoveButton,
   VariationFormRow, AddVariationButton
 } from './styles';
-import api from '../../services/api';
-import SideBar from '../../components/Sidebar';
+import api from '../../../services/api';
 
 const ProductCreation = () => {
   const [name, setName] = useState('');

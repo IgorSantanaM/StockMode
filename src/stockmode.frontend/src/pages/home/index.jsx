@@ -62,11 +62,11 @@ export default function Home() {
                 <Card>
                   <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Ações Rápidas</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <PrimaryButton>
+                    <PrimaryButton onClick={() => navigate('/Sales/Create')}>
                       <PlusCircle size={24} style={{ marginRight: '0.75rem' }} /> Nova Venda
                     </PrimaryButton>
-                    <SecondaryButton onClick={() => navigate('/ProductRegistration')}>Adicionar Produto</SecondaryButton>
-                    <SecondaryButton>Ver Estoque</SecondaryButton>
+                    <SecondaryButton onClick={() => navigate('/Products/Create')}>Adicionar Produto</SecondaryButton>
+                    <SecondaryButton onClick={() => navigate('/Stock')}>Ver Estoque</SecondaryButton>
                   </div>
                 </Card>
                 <Card style={{ flexGrow: 1 }}>

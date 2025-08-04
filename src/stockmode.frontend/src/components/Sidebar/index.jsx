@@ -1,7 +1,7 @@
 import React from "react";
-import { Zap, Home, ShoppingCart, Package, DollarSign, Users, Settings } from "lucide-react";
+import { Zap, Home, ShoppingCart, Package, DollarSign, Users, Settings, NonBinary } from "lucide-react";
 import { SidebarContainer, SidebarHeader, LogoText, Nav } from "./styles";
-import NavItemComponent from "../NavItemComponent";
+import NavItem from "../NavItem";
 
 const SideBar = () => {
     return(
@@ -11,14 +11,14 @@ const SideBar = () => {
                 <LogoText>StockMode</LogoText>
             </SidebarHeader>
           <Nav>
-            <NavItemComponent icon={<Home size={20} />} label="Início" active />
-            <NavItemComponent icon={<ShoppingCart size={20} />} label="Vendas" />
-            <NavItemComponent icon={<Package size={20} />} label="Produtos" />
-            <NavItemComponent icon={<DollarSign size={20} />} label="Financeiro" />
-            <NavItemComponent icon={<Users size={20} />} label="Clientes" />
+            <NavItem icon={<Home size={20} />} label="Início" active />
+            <NavItem icon={<ShoppingCart size={20} />} label="Vendas" to="/sales"/>
+            <NavItem icon={<Package size={20} />} label="Produtos" to="/products"/>
+            <NavItem icon={<DollarSign size={20} />} label="Financeiro" to="/financial"/>
+            <NavItem icon={<Users size={20} />} label="Clientes" to="/customers"/>
           </Nav>
           <div style={{ padding: '1rem', borderTop: '1px solid #e5e7eb' }}>
-            <NavItemComponent icon={<Settings size={20} />} label="Configurações" />
+            <NavItem icon={<Settings size={20} />} label="Configurações" />
           </div>
         </SidebarContainer>
     );
