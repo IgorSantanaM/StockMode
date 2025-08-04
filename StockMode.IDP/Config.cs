@@ -31,13 +31,6 @@ public static class Config
                         "https://localhost:5173/signin-oidc",
                     },
 
-                    PostLogoutRedirectUris =
-                    {
-                        "https://localhost:5173/signout-callback-oidc",
-                    },
-
-                    AllowedCorsOrigins = { "http://localhost:5173" },
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

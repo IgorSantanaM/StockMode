@@ -21,7 +21,7 @@
 
                     <div class="card-body">
                         <form asp-page="/Account/Login/Index">
-                            <input type="hidden" asp-for="Input.ReturnUrl" />
+                            <input type="hidden" name="ReturnUrl" value="@Model.Input.ReturnUrl" />
 
                             <div class="form-group">
                                 <label asp-for="Input.Username"></label>

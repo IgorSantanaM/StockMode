@@ -7,6 +7,7 @@ import {
   VariationFormRow, AddVariationButton
 } from './styles';
 import api from '../../services/api';
+import SideBar from '../../components/Sidebar';
 
 const ProductCreation = () => {
   const [name, setName] = useState('');
