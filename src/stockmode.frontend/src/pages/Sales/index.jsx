@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, PlusCircle } from 'lucide-react';
 import {
   PageContainer,
@@ -17,9 +18,7 @@ import {
   StatusBadge,
   BadgeDot,
 } from './styles';
-import { useNavigate } from 'react-router-dom';
 
-// --- DADOS MOCK (Em uma aplicação real, viriam da sua API) ---
 const allSales = [
   { id: 'VENDA-00125', customer: 'Ana Clara', date: '2025-08-04', amount: 125.50, status: 'Concluída' },
   { id: 'VENDA-00124', customer: 'Marcos Silva', date: '2025-08-04', amount: 89.90, status: 'Concluída' },
@@ -29,10 +28,10 @@ const allSales = [
   { id: 'VENDA-00120', customer: 'Beatriz Lima', date: '2025-08-01', amount: 350.20, status: 'Concluída' },
 ];
 
-const Sales = () => {
+const SalesPage = () => {
   const [statusFilter, setStatusFilter] = useState('Todos');
   const [dateFilter, setDateFilter] = useState('');
-  var navigate = useNavigate();
+  const navigate = useNavigate();
 
   const filteredSales = useMemo(() => {
     return allSales.filter(sale => {
@@ -116,4 +115,4 @@ const Sales = () => {
   );
 };
 
-export default Sales;
+export default SalesPage;

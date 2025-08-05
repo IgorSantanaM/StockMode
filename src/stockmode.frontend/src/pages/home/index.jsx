@@ -3,9 +3,8 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line
 import {ShoppingCart, Package, DollarSign, PlusCircle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { AppContainer, MainContent, DashboardGrid, StatsGrid, ChartCard, Card, PrimaryButton, SecondaryButton, StatusBadge} from './styles.js';
 import Header from '../../components/Header/index.jsx';
-import SideBar from '../../components/Sidebar/index.jsx';
 import StatCard from '../../components/StatCard/index.jsx';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const dailySalesData = [
   { name: 'Seg', faturamento: 1200, lucro: 450 }, { name: 'Ter', faturamento: 1900, lucro: 700 }, { name: 'Qua', faturamento: 1500, lucro: 550 }, { name: 'Qui', faturamento: 2800, lucro: 1100 }, { name: 'Sex', faturamento: 2390, lucro: 950 }, { name: 'Sáb', faturamento: 3490, lucro: 1400 }, { name: 'Dom', faturamento: 980, lucro: 350 },
@@ -22,10 +21,7 @@ export default function Home() {
   return (
     <>
       <AppContainer>
-        <SideBar />
         <MainContent>
-          <Header />
-
           <DashboardGrid>
             <StatsGrid>
               <StatCard title="Vendas Hoje" value={statCardsData.vendasHoje.value} change={statCardsData.vendasHoje.change} isPositive={statCardsData.vendasHoje.isPositive} icon={<DollarSign size={24} style={{ color: '#9ca3af' }} />} />

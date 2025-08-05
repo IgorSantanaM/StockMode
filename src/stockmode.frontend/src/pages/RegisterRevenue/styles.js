@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const PageContainer = styled.div`
   padding: 2rem;
   background-color: #f3f5f7;
+  width: 90rem;
 `;
 
 export const Container = styled.div`
@@ -61,6 +62,7 @@ const baseInputStyles = `
   font-size: 1rem;
   background-color: #f9fafb;
   transition: all 0.2s ease-in-out;
+  color: black;
 
   &:focus {
     outline: none;

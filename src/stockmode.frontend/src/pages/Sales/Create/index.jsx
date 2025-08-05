@@ -7,7 +7,6 @@ import {
   SummaryContainer, SummaryRow, TotalRow, FinalizeButton, Select
 } from './styles';
 
-// --- DADOS MOCK (Em uma aplicação real, viriam da sua API) ---
 const searchableProducts = [
   { id: 1, name: 'Camiseta Gola V - Branca M', sku: 'CGV-BR-M', price: 39.90, stock: 50, image: 'https://placehold.co/100x100/FFFFFF/333333?text=Camiseta' },
   { id: 2, name: 'Calça Jeans Skinny - 42', sku: 'CJS-AZ-42', price: 129.90, stock: 25, image: 'https://placehold.co/100x100/336699/FFFFFF?text=Calça' },

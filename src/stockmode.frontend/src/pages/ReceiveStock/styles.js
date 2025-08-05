@@ -4,10 +4,11 @@ export const PageContainer = styled.div`
   display: flex;
   height: calc(100vh - 80px); // Altura total menos o header
   background-color: #f3f5f7;
+  width: 94rem;
 `;
 
 export const LeftPanel = styled.div`
-  width: 60%;
+  width: 40%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -15,7 +16,7 @@ export const LeftPanel = styled.div`
 `;
 
 export const RightPanel = styled.div`
-  width: 40%;
+  width: 43%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -25,6 +26,8 @@ export const RightPanel = styled.div`
 export const SearchContainer = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
+  width: 27.8rem;
+  color: black;
 `;
 
 export const Input = styled.input`
@@ -35,6 +38,7 @@ export const Input = styled.input`
   font-size: 1rem;
   background-color: #ffffff;
   transition: all 0.2s ease-in-out;
+  color: black;
 
   &:focus {
     outline: none;

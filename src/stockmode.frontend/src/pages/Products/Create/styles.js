@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const PageContainer = styled.div`
   padding: 2rem;
   background-color: #f3f5f7;
+  width: 90rem;
+  height: 40rem;
 `;
 
 export const Container = styled.div`
@@ -32,7 +34,7 @@ export const Title = styled.h2`
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 export const SectionTitle = styled.h3`

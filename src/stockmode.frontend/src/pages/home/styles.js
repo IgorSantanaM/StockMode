@@ -1,9 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const AppContainer = styled.div`
   display: flex;
-`;
+  `;
 
 export const MainContent = styled.main`
   flex: 1;
@@ -15,6 +14,9 @@ export const MainContent = styled.main`
 export const DashboardGrid = styled.div`
   padding: 2rem;
   flex-grow: 1;
+  width: 90rem;
+  height: 40rem;
+
 `;
 
 export const StatsGrid = styled.div`
