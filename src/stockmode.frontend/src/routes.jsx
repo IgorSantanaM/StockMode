@@ -15,6 +15,9 @@ import CustomerCreation from './pages/Customers/Create';
 import RegisterRevenue from './pages/RegisterRevenue';
 import RegisterExpense from './pages/RegisterExpense';
 import NotFound from './pages/NotFound';
+import Help from './pages/Help';
+import Profile from './pages/Profile';
+import SettingsPage from './pages/Settings';
 
 export default function RoutesConfig(){
     return(
@@ -33,6 +36,9 @@ export default function RoutesConfig(){
             <Route path="/receivestock" exact element={<ReceiveStock />}/>
             <Route path="/revenue/register" exact element={<RegisterRevenue />} />
             <Route path="/expense/register" exact element={<RegisterExpense />} />
+            <Route path="/help" exact element={<Help />} />
+            <Route path="/profile" exact element={<Profile />} />
+            <Route path="/settings" exact element={<SettingsPage />} />
             <Route path="*" exact element={<NotFound />} />
          </Routes>
     )

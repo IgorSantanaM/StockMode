@@ -66,8 +66,8 @@ const RegisterExpense = () => {
       setErrors({});
 
     } catch (error) {
-      console.error("Erro ao registar despesa:", error);
-      setApiStatus({ error: error.message || 'Falha ao registar despesa.', success: false });
+      console.error("Erro ao Registrar despesa:", error);
+      setApiStatus({ error: error.message || 'Falha ao Registrar despesa.', success: false });
     } finally {
       setIsSubmitting(false);
     }
@@ -78,7 +78,7 @@ const RegisterExpense = () => {
       <Container>
         <TitleContainer>
           <MinusCircle size={32} color="#ef4444" />
-          <Title>Registar Nova Despesa</Title>
+          <Title>Registrar Nova Despesa</Title>
         </TitleContainer>
 
         {apiStatus.success && <Alert type="success"><CheckCircle size={20} style={{ marginRight: '0.5rem' }}/>Despesa registada com sucesso!</Alert>}
@@ -88,7 +88,7 @@ const RegisterExpense = () => {
           <FormRow>
             <FormGroup style={{ gridColumn: '1 / -1' }}>
               <Label htmlFor="description">Descrição da Despesa</Label>
-              <Input type="text" id="description" placeholder="Ex: Pagamento do aluguer da loja, Compra fornecedor X" value={formData.description} onChange={handleChange} className={errors.description ? 'error' : ''} />
+              <Input type="text" id="description" placeholder="Ex: Pagamento do aluguel da loja, Compra fornecedor X" value={formData.description} onChange={handleChange} className={errors.description ? 'error' : ''} />
               {errors.description && <ErrorMessage>{errors.description}</ErrorMessage>}
             </FormGroup>
           </FormRow>
@@ -111,7 +111,7 @@ const RegisterExpense = () => {
               <Label htmlFor="category">Categoria</Label>
               <Select id="category" value={formData.category} onChange={handleChange}>
                 <option>Fornecedores</option>
-                <option>Aluguer</option>
+                <option>Aluguel</option>
                 <option>Salários</option>
                 <option>Marketing</option>
                 <option>Contas (Água, Luz, etc.)</option>
@@ -130,7 +130,7 @@ const RegisterExpense = () => {
               Cancelar
             </CancelButton>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Registando...' : 'Registar Despesa'}
+              {isSubmitting ? 'Registando...' : 'Registrar Despesa'}
             </Button>
           </ButtonContainer>
         </Form>

@@ -4,10 +4,11 @@ export const PageContainer = styled.div`
   display: flex;
   height: calc(100vh - 80px); // Altura total menos o header
   background-color: #f3f5f7;
+  width: 94rem;
 `;
 
 export const LeftPanel = styled.div`
-  width: 60%;
+  width: 40%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -15,7 +16,7 @@ export const LeftPanel = styled.div`
 `;
 
 export const RightPanel = styled.div`
-  width: 40%;
+  width:43%;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -25,6 +26,8 @@ export const RightPanel = styled.div`
 export const SearchContainer = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
+  width: 27.8rem;
+  color: black;
 `;
 
 export const Input = styled.input`
@@ -35,6 +38,7 @@ export const Input = styled.input`
   font-size: 1rem;
   background-color: #ffffff;
   transition: all 0.2s ease-in-out;
+  color: black;
 
   &:focus {
     outline: none;
@@ -48,6 +52,7 @@ export const SearchResultsContainer = styled.div`
   overflow-y: auto;
   margin: 1rem -0.5rem 0;
   padding-right: 0.5rem;
+  color: black;
 `;
 
 export const ProductCard = styled.div`
@@ -112,6 +117,7 @@ export const SaleItemsList = styled.div`
   overflow-y: auto;
   margin-right: -1rem;
   padding-right: 1rem;
+  color: black;
 `;
 
 export const SaleItemCard = styled.div`
@@ -134,12 +140,12 @@ export const QuantityButton = styled.button`
   border-radius: 50%;
   border: 1px solid #d1d5db;
   background-color: #ffffff;
-  color: #4b5563;
   font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
   &:hover {
     background-color: #f3f4f6;
   }
@@ -156,7 +162,7 @@ export const SummaryRow = styled.div`
   align-items: center;
   margin-bottom: 0.75rem;
   font-size: 1rem;
-  color: #4b5563;
+  color: black;
 `;
 
 export const TotalRow = styled(SummaryRow)`
@@ -193,5 +199,6 @@ export const Select = styled.select`
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 0.875rem;
+  color: black;
   background-color: #ffffff;
 `;

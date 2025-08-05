@@ -74,11 +74,11 @@ const Financial = () => {
         <ButtonGroup>
           <SecondaryButton onClick={() => navigate("/expense/register")}>
             <MinusCircle size={20} />
-            Registar Despesa
+            Registrar Despesa
           </SecondaryButton>
           <PrimaryButton onClick={() => navigate("/revenue/register")}>
             <PlusCircle size={20} />
-            Registar Receita
+            Registrar Receita
           </PrimaryButton>
         </ButtonGroup>
       </PageHeader>

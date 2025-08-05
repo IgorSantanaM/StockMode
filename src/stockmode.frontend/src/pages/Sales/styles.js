@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const PageContainer = styled.div`
   padding: 2rem;
   background-color: #f3f5f7;
-  height: 100%;
+  width: 90rem;
+  height: 40rem;
 `;
 
 export const PageHeader = styled.div`
@@ -68,6 +69,7 @@ const baseInputStyles = `
   font-size: 1rem;
   background-color: #ffffff;
   transition: all 0.2s ease-in-out;
+  color: black;
 
   &:focus {
     outline: none;

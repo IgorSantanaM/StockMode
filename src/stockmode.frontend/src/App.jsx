@@ -4,6 +4,9 @@ import Routes from './routes.jsx';
 import { useAuth } from 'react-oidc-context';
 import {GlobalStyle} from './styles/Global.jsx';
 import { LoadingContainer } from './util/LoadingContainer.js';
+import SideBar from './components/Sidebar/index.jsx';
+import { AppContainer, MainContent } from './pages/home/styles.js';
+import Header from './components/Header/index.jsx';
 function App() {
   const auth = useAuth();
 
@@ -13,7 +16,13 @@ function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Routes />
+      <AppContainer>
+        <SideBar />
+        <MainContent>
+        <Header />
+          <Routes />
+        </MainContent>
+      </AppContainer>
     </BrowserRouter>
   );
 }

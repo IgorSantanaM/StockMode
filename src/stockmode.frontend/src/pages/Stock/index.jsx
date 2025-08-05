@@ -17,8 +17,8 @@ import {
   StockStatusBadge,
   ActionButton,
 } from './styles';
+import { useNavigate } from 'react-router-dom';
 
-// --- DADOS MOCK (Numa aplicação real, viriam da sua API) ---
 const allVariations = [
   { id: 1, productName: 'Camiseta Gola V', variationName: 'Branca M', sku: 'CGV-BR-M', costPrice: 15.50, salePrice: 39.90, stockQuantity: 50 },
   { id: 2, productName: 'Camiseta Gola V', variationName: 'Preta G', sku: 'CGV-PT-G', costPrice: 15.50, salePrice: 39.90, stockQuantity: 8 },
@@ -31,6 +31,7 @@ const allVariations = [
 const Stock = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos');
+  var navigate = useNavigate();
 
   const getStatus = (stock) => {
     if (stock === 0) return 'Esgotado';
@@ -62,7 +63,7 @@ const Stock = () => {
           <Layers size={32} color="#4f46e5" />
           <Title>Controle de Estoque</Title>
         </TitleContainer>
-        <PrimaryButton>
+        <PrimaryButton onClick={() => navigate("/ReceiveStock")}>
           <PlusCircle size={20} />
           Receber Mercadoria
         </PrimaryButton>
