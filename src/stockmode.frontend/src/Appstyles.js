@@ -2,32 +2,25 @@ import styled from "styled-components";
 
 export const AppContainer = styled.div`
   display: flex;
-  flex-direction: row;
   height: 100vh;
-  width: 100%;
-  background-color: #f3f5f7;
-  overflow: hidden;
+  width: 100vw;
+  background-color: #f3f4f6;
+  overflow: hidden; 
+`;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+export const MainContent = styled.main`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-x: hidden;
 `;
 
 export const PageWrapper = styled.div`
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
-`;
-
-export const MainContent = styled.main`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
+  overflow-y: auto; 
+  padding: 1.5rem;
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
