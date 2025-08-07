@@ -8,8 +8,12 @@ export const PageContainer = styled.div`
   justify-content: center;
   text-align: center;
   height: 100%;
-  padding: 2rem;
+  padding: 1rem; // Padding base para telemóveis
   background-color: #f3f5f7;
+
+  @media (min-width: 768px) {
+    padding: 2rem; // Aumenta o padding para ecrãs maiores
+  }
 `;
 
 export const ContentWrapper = styled.div`
@@ -22,17 +26,25 @@ export const IconWrapper = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem; // Tamanho de fonte menor para telemóveis
   font-weight: bold;
   color: #1f2937;
   margin: 0;
+
+  @media (min-width: 768px) {
+    font-size: 3rem; // Aumenta o tamanho da fonte para ecrãs maiores
+  }
 `;
 
 export const Subtitle = styled.h2`
-  font-size: 1.25rem;
+  font-size: 1.125rem; // Tamanho de fonte menor para telemóveis
   font-weight: 600;
   color: #4b5563;
   margin-top: 0.5rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const Message = styled.p`

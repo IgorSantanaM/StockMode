@@ -10,7 +10,7 @@ import {
   HomeButton,
 } from './styles';
 
-const NotFound = () => {
+const NotFoundPage = () => {
   return (
     <PageContainer>
       <ContentWrapper>
@@ -32,4 +32,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

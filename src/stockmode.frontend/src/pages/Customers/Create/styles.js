@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   background-color: #f3f5f7;
-  width: 94rem;
-  height: 40rem;
 `;
 
 export const Container = styled.div`

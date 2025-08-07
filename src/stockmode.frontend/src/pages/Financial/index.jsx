@@ -16,7 +16,6 @@ import {
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 
-// --- DADOS MOCK (Numa aplicação real, viriam da sua API) ---
 const financialStats = {
   faturamentoMes: { value: 'R$ 18.750,00', change: '+8.2%', isPositive: true },
   lucroBruto: { value: 'R$ 7.200,50', change: '+5.1%', isPositive: true },

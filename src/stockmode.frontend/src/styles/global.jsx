@@ -1,8 +1,10 @@
-import { createGlobalStyle, styled } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 
-export const GlobalStyle =  createGlobalStyle`
-  body {
+export const GlobalStyle = createGlobalStyle`
+  html, body, #root {
     margin: 0;
+    padding: 0;
+    height: 100%;
     font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;
@@ -10,25 +12,4 @@ export const GlobalStyle =  createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     background-color: #f3f5f7;
   }
-`;
-
-const AppContainer = styled.div`
-  display: flex;
-  height: 100vh;
-`;
-
-// Este contêiner ocupa o espaço restante e permite a rolagem do conteúdo.
-const MainContent = styled.main`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  font-size: 1.5rem;
 `;

@@ -19,10 +19,13 @@ const Header = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // Estado para guardar o termo de busca
   const today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  var navigate = useNavigate();
+  const navigate = useNavigate();
+  
   const handleSearch = (e) => {
     if (e.key === 'Enter' && searchTerm.trim() !== '') {
+      // Em uma aplicação real, você navegaria para uma página de resultados.
       console.log('Buscando por:', searchTerm);
+      // navigate(`/search?q=${searchTerm}`);
     }
   };
 
@@ -54,10 +57,10 @@ const Header = () => {
           {userMenuOpen && (
             <UserDropdown onMouseLeave={() => setUserMenuOpen(false)}>
               <DropdownLink href="#" onClick={() => navigate("/profile")}>Meu Perfil</DropdownLink>
-              <DropdownLink href="#" onClick={() =>  navigate("/Help")}>Ajuda</DropdownLink>
+              <DropdownLink href="#" onClick={() => navigate("/help")}>Ajuda</DropdownLink>
               <div style={{ borderTop: '1px solid #e5e7eb', margin: '0.5rem 0' }}></div>
               <DropdownLink href="#" className="logout">
-                <LogOut size={20} /> Sair
+                <LogOut size={16} /> Sair
               </DropdownLink>
             </UserDropdown>
           )}

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const PageContainer = styled.div`
   padding: 2rem;
   background-color: #f3f5f7;
-  width: 90rem;
 `;
 
 export const Container = styled.div`

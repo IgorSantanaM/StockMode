@@ -1,4 +1,22 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import { NavLink, Link } from 'react-router-dom';
+
+export const Backdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
+  transition: opacity 0.3s ease-in-out;
+
+  @media (min-width: 769px) {
+    display: none; // O backdrop só existe em ecrãs móveis
+  }
+`;
 
 export const SidebarContainer = styled.aside`
   background-color: #ffffff;
@@ -6,24 +24,29 @@ export const SidebarContainer = styled.aside`
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: 16rem;
-  height: 49.5rem;
+  width: 256px;
+  height: 100vh;
   border-right: 1px solid #e5e7eb;
+  transition: transform 0.3s ease-in-out;
+  z-index: 101;
 
   @media (max-width: 768px) {
-    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
   }
-    
 `;
 
-export const SidebarHeader = styled.div`
+// ... (resto dos seus estilos da Sidebar: SidebarHeader, LogoText, Nav, etc.)
+export const SidebarHeader = styled(Link)`
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 3px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
   gap: 0.5rem;
-  padding-bottom: 8px;
-  padding-top: 8px;
+  text-decoration: none;
 `;
 
 export const LogoText = styled.span`
@@ -38,25 +61,4 @@ export const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-`;
-
-export const HomeButton = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  font-weight: 600;
-  padding: 1rem 0;
-  background-color: #ffffff;
-  color: white;
-  border-radius: 0.75rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    background-color: #554fc9ff;
-    transform: scale(1.02);
-  }
 `;
