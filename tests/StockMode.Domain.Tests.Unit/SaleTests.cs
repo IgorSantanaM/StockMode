@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using StockMode.Domain.Core.Exceptions;
+using StockMode.Domain.Customers;
 using StockMode.Domain.Enums;
 using StockMode.Domain.Sales;
 
@@ -200,10 +201,11 @@ namespace StockMode.Domain.Tests.Unit
             // Arrange
             var sale = new Sale(PaymentMethod.Pix);
             var saleItem = new SaleItem(variationId: 1, quantity: 2, priceAtSale: 100m);
+            var customerId = 1;
             sale.AddItem(saleItem);
 
             // Act
-            sale.CompleteSale();
+            sale.CompleteSale(customerId);
 
             // Assert
             sale.Status.Should().Be(SaleStatus.Completed);
@@ -214,10 +216,11 @@ namespace StockMode.Domain.Tests.Unit
         {
             // Arrange
             var sale = new Sale(PaymentMethod.Pix);
+            var customerId = 1;
             sale.CancelSale();
 
             // Act
-            Action act = () => sale.CompleteSale();
+            Action act = () => sale.CompleteSale(customerId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -229,9 +232,10 @@ namespace StockMode.Domain.Tests.Unit
         {
             // Arrange
             var sale = new Sale(PaymentMethod.Pix);
+            var customerId = 1;
 
             // Act
-            Action act = () => sale.CompleteSale();
+            Action act = () => sale.CompleteSale(customerId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -273,8 +277,9 @@ namespace StockMode.Domain.Tests.Unit
             // Arrange
             var sale = new Sale(PaymentMethod.Pix);
             var saleItem = new SaleItem(variationId: 1, quantity: 2, priceAtSale: 100m);
+            var customerId = 1;
             sale.AddItem(saleItem);
-            sale.CompleteSale();
+            sale.CompleteSale(customerId);
             // Act
             Action act = () => sale.CancelSale();
             // Assert

@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Features.StockMovements.Commands.ReceivePurchaseOrder
 {
-    public record ReceivePurchaseOrderCommand(IReadOnlyCollection<ReceivedItemsDto> Items) : IRequest;
+    public record ReceivePurchaseOrderCommand(IReadOnlyCollection<ReceivedItemsDto> Items, int SupplierId) : IRequest;
 }

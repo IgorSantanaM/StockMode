@@ -163,10 +163,10 @@ namespace StockMode.WebApi.Endpoints
             return Results.NoContent();
         }
 
-        private static async Task<IResult> HandleCompleteSale([FromRoute] int id,
+        private static async Task<IResult> HandleCompleteSale([FromRoute] int id, [FromRoute] int customerId,
             [FromServices] IMediator mediator)
         {
-            var command = new CompleteSaleCommand(id);
+            var command = new CompleteSaleCommand(id, customerId);
             await mediator.Send(command);
             return Results.NoContent();
         }

@@ -35,7 +35,8 @@ namespace StockMode.Application.Features.StockMovements.Events
                         variation.Id,
                         soldItem.Quantity,
                         variation.StockQuantity,
-                        notification.SaleId);
+                        notification.SaleId,
+                        notification.CustomerId);
 
                     await _stockMovementRepository.AddAsync(movement!);
                 }

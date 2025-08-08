@@ -37,7 +37,8 @@ namespace StockMode.Application.Features.StockMovements.Commands.AdjustStock
                 variation.Id,
                 request.QuantityAdjusted,
                 variation.StockQuantity,
-                request.Reason);
+                request.Reason,
+                request.EntityId);
 
             await _stockMovementRepository.AddAsync(movement);
 

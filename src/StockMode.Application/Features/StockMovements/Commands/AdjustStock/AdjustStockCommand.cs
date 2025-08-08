@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Features.StockMovements.Commands.AdjustStock
 {
-    public record AdjustStockCommand(int VariationId, int QuantityAdjusted, string Reason) : IRequest;
+    public record AdjustStockCommand(int VariationId, int QuantityAdjusted, string Reason, int EntityId) : IRequest;
 }

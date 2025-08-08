@@ -16,6 +16,13 @@ namespace StockMode.Infra.Data.Repositories
             _dbContext = context;
         }
 
+        public Task<Customer?> GetCustomerById(int id)
+        {
+            string sql = @"SELECT * FROM Customers WHERE Id = @Id";
+
+            return _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { Id = id });
+        }
+
         public Task<Customer?> GetCustomerByName(string name)
         {
             string sql = @"SELECT * FROM Customers WHERE Name = @Name";
