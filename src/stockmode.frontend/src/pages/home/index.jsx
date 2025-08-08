@@ -1,4 +1,3 @@
-import React from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { ShoppingCart, Package, DollarSign, PlusCircle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { 
@@ -12,6 +11,7 @@ import {
     ActionsAndSalesContainer, ActionCard, SalesCard 
 } from './styles.js';
 import StatCard from '../../components/StatCard/index.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const dailySalesData = [
   { name: 'Seg', faturamento: 1200, lucro: 450 }, { name: 'Ter', faturamento: 1900, lucro: 700 }, { name: 'Qua', faturamento: 1500, lucro: 550 }, { name: 'Qui', faturamento: 2800, lucro: 1100 }, { name: 'Sex', faturamento: 2390, lucro: 950 }, { name: 'Sáb', faturamento: 3490, lucro: 1400 }, { name: 'Dom', faturamento: 980, lucro: 350 },
@@ -27,6 +27,7 @@ const statCardsData = {
 };
 
 export default function Home() {
+  var navigate = useNavigate();
   return (
     <DashboardGrid>
       <StatsGrid>
@@ -64,11 +65,11 @@ export default function Home() {
           <ActionCard>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem', marginTop: 0 }}>Ações Rápidas</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <PrimaryButton>
+              <PrimaryButton onClick={() => navigate("/sales/create")}>
                 <PlusCircle size={18} style={{ marginRight: '0.5rem' }} /> Nova Venda
               </PrimaryButton>
-              <SecondaryButton>Adicionar Produto</SecondaryButton>
-              <SecondaryButton>Ver Estoque</SecondaryButton>
+              <SecondaryButton onClick={() => navigate("/products/create")}>Adicionar Produto</SecondaryButton>
+              <SecondaryButton onClick={() => navigate("/stock")}>Ver Estoque</SecondaryButton>
             </div>
           </ActionCard>
           <SalesCard>

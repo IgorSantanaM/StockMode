@@ -14,6 +14,7 @@ namespace StockMode.Domain.Sales
         public SaleStatus Status { get; private set; }
         public DateTime SaleDate { get; private set; }
         public ICollection<SaleItem> Items { get; private set; } = new List<SaleItem>();
+        public int CustomerId { get; set; }
 
         private Sale()
         { }

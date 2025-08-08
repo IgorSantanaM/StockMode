@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using StockMode.Domain.Products;
 using StockMode.Infra.Data.Contexts;
 using System.Data;
-using System.Threading;
 
 namespace StockMode.Infra.Data.Repositories
 {
@@ -19,7 +18,7 @@ namespace StockMode.Infra.Data.Repositories
 
         public async Task<Variation?> FindVariationByIdAsync(int variationId)
         {
-            const string sql = @"
+            const string sql = @" 
                 SELECT * FROM ""Variations"" AS v
                 INNER JOIN ""Products"" AS p ON v.""ProductId"" = p.""Id""
                 WHERE v.""Id"" = @VariationId;";
