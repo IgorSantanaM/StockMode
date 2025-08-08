@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Features.Customers.Queries.GetCustomerByName;
 
-public record GetCustomerByNameQuery(string Name) : IRequest<CustomerDetailsDto>;
+public record GetCustomerByNameQuery(string Name) : IRequest<IEnumerable<CustomerSummaryDto>>;
