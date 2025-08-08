@@ -10,17 +10,15 @@ export const DashboardGrid = styled.div`
 
 export const StatsGrid = styled.div`
   display: grid;
-  /* A more robust responsive grid that wraps items automatically */
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
 `;
 
 export const MainLayoutGrid = styled.div`
   display: flex;
-  flex-direction: column; /* Stacks chart and actions on mobile */
+  flex-direction: column; 
   gap: 1.5rem;
 
-  /* On large desktops, show chart and actions side-by-side */
   @media (min-width: 1280px) {
     flex-direction: row;
     align-items: flex-start;
@@ -34,14 +32,13 @@ export const Card = styled.div`
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   display: flex;
   flex-direction: column;
-  height: 100%; /* Makes cards in a row have equal height */
+  height: 100%; 
 `;
 
 export const ChartCard = styled(Card)`
-  /* On large desktops, the chart takes up 2/3 of the space */
   @media (min-width: 1280px) {
     flex: 2;
-    min-width: 0; /* Prevents flex items from overflowing their container */
+    min-width: 0;
   }
 `;
 
@@ -50,12 +47,10 @@ export const ActionsAndSalesContainer = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  /* On tablets, show action cards side-by-side */
   @media (min-width: 768px) and (max-width: 1279px) {
      flex-direction: row;
   }
 
-  /* On large desktops, this container takes up 1/3 of the space */
   @media (min-width: 1280px) {
     flex: 1;
     min-width: 0;
@@ -63,7 +58,6 @@ export const ActionsAndSalesContainer = styled.div`
 `;
 
 export const ActionCard = styled(Card)`
-    /* On tablets, each card takes half the space */
     @media (min-width: 768px) and (max-width: 1279px) {
         flex: 1;
     }
@@ -116,7 +110,6 @@ export const StatusBadge = styled.span`
   color: ${props => props.status === 'Concluída' ? '#065f46' : '#92400e'};
 `;
 
-// Re-styled StatCard for a cleaner look
 export const StatCardContainer = styled(Card)`
     padding: 1rem;
     gap: 0.5rem;

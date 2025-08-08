@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using StockMode.Domain.Core.Events;
 using StockMode.Domain.Core.Model;
+using StockMode.Domain.Customers;
 using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 using StockMode.Domain.StockMovements;
+using StockMode.Domain.Suppliers;
 
 namespace StockMode.Infra.Data.Contexts
 {
@@ -14,6 +16,8 @@ namespace StockMode.Infra.Data.Contexts
         public DbSet<Product> Products { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
         /// <summary>
         /// The constructor now correctly accepts DbContextOptions, which is how the

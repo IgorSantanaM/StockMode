@@ -8,9 +8,11 @@ using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
 using StockMode.Application.Features.Products.Validators;
 using StockMode.Domain.Core.Data;
+using StockMode.Domain.Customers;
 using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 using StockMode.Domain.StockMovements;
+using StockMode.Domain.Suppliers;
 using StockMode.EmailWorker;
 using StockMode.Infra.Data.Contexts;
 using StockMode.Infra.Data.Repositories;
@@ -42,6 +44,8 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IStockMovementRepository, StockMovementRepository>();
+            services.AddScoped<ICustumerRepository, CustomerRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
         }
 
         public static void AddMailServices(this IServiceCollection services, IConfiguration configuration)
