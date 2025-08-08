@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Users, PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { Users, PlusCircle, Edit, Trash2, Info } from 'lucide-react';
 import {
   PageContainer,
   PageHeader,
@@ -97,6 +97,9 @@ const Customers = () => {
                 <Td style={{ fontWeight: 500 }}>{formatCurrency(customer.totalSpent)}</Td>
                 <Td>
                   <div style={{display: 'flex', justifyContent: 'flex-end', gap: '0.5rem'}}>
+                    <ActionButton title="Editar Cliente">
+                      <Info size={18} />
+                    </ActionButton>
                     <ActionButton title="Editar Cliente">
                       <Edit size={18} />
                     </ActionButton>

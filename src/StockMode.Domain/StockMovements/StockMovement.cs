@@ -27,9 +27,14 @@ namespace StockMode.Domain.StockMovements
 
         public Variation Variation { get; set; }
 
+        public int? CustomerId { get; set; }
+
+        public int? SupplierId { get; set; }
+
+
         private StockMovement() { }
 
-        private StockMovement(int variationId, int quantity, StockMovementType type, int stockAfterMovement, int? saleId, string? observation)
+        private StockMovement(int variationId, int quantity, StockMovementType type, int stockAfterMovement, int? saleId, string? observation, int entityId)
         {
             if (variationId <= 0)
                 throw new DomainException("Stock Movement must be associated with a valid product variation.");
@@ -53,18 +58,24 @@ namespace StockMode.Domain.StockMovements
             SaleId = saleId;
             Observation = observation;
             MovementDate = DateTime.UtcNow;
+
+            if(type is StockMovementType.SaleExit or StockMovementType.LossAdjustment)
+                CustomerId = entityId;
+
+            else if (type is StockMovementType.PurchaseEntry or StockMovementType.PositiveAdjustment)
+                SupplierId = entityId;
         }
 
-        public static StockMovement CreateForSale(int variationId, int quantitySold, int stockAfter, int saleId) =>
-             new StockMovement(variationId, -Math.Abs(quantitySold), StockMovementType.SaleExit, stockAfter, saleId, null);
+        public static StockMovement CreateForSale(int variationId, int quantitySold, int stockAfter, int saleId, int customerId) =>
+             new StockMovement(variationId, -Math.Abs(quantitySold), StockMovementType.SaleExit, stockAfter, saleId, null, customerId);
 
-        public static StockMovement CreateForPurchase(int variationId, int quantityReceived, int stockAfter) =>
-             new StockMovement(variationId, Math.Abs(quantityReceived), StockMovementType.PurchaseEntry, stockAfter, null, "Stock received from supplier.");
+        public static StockMovement CreateForPurchase(int variationId, int quantityReceived, int stockAfter, int supplierId) =>
+             new StockMovement(variationId, Math.Abs(quantityReceived), StockMovementType.PurchaseEntry, stockAfter, null, "Stock received from supplier.", supplierId);
 
-        public static StockMovement CreateForAdjustment(int variationId, int quantityAdjusted, int stockAfter, string reason)
+        public static StockMovement CreateForAdjustment(int variationId, int quantityAdjusted, int stockAfter, string reason, int entityId)
         {
             var type = quantityAdjusted > 0 ? StockMovementType.PositiveAdjustment : StockMovementType.LossAdjustment;
-            return new StockMovement(variationId, quantityAdjusted, type, stockAfter, null, reason);
+            return new StockMovement(variationId, quantityAdjusted, type, stockAfter, null, reason, entityId);
         }
     }
 }

@@ -23,9 +23,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantitySold = 5;
             int stockAfter = 10;
             int saleId = 100;
+            int customerId = 1;
 
             // Act
-            var stockMovement = StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId);
+            var stockMovement = StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId, customerId);
 
             // Assert
             Assert.NotNull(stockMovement);
@@ -45,9 +46,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantitySold = 5;
             int stockAfter = 10;
             int saleId = 100;
+            int customerId = 1;
 
             // Act
-            Action act = () => StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId);
+            Action act = () => StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId, customerId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -62,9 +64,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantitySold = 0; 
             int stockAfter = 10;
             int saleId = 100;
+            int customerId = 1;
 
             // Act
-            Action act = () => StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId);
+            Action act = () => StockMovement.CreateForSale(variationId, quantitySold, stockAfter, saleId, customerId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -81,9 +84,10 @@ namespace StockMode.Domain.Tests.Unit
             int variationId = 1;
             int quantityReceived = 5;
             int stockAfter = 10;
+            int supplierId = 1;
 
             // Act
-            var stockMovement = StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter);
+            var stockMovement = StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter, supplierId);
 
             // Assert
             Assert.NotNull(stockMovement);
@@ -101,9 +105,10 @@ namespace StockMode.Domain.Tests.Unit
             // Arrange
             int quantityReceived = 5;
             int stockAfter = 10;
+            int supplierId = 1;
 
             // Act
-            Action act = () => StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter);
+            Action act = () => StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter, supplierId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -117,9 +122,9 @@ namespace StockMode.Domain.Tests.Unit
             int variationId = 1;
             int quantityReceived = 0;
             int stockAfter = 10;
-
+            int supplierId = 1;
             // Act
-            Action act = () => StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter);
+            Action act = () => StockMovement.CreateForPurchase(variationId, quantityReceived, stockAfter, supplierId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -137,9 +142,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantityAdjusted = -3;
             int stockAfter = 10;
             string reason = "Inventory correction";
+            int customerId = 1;
 
             // Act
-            var stockMovement = StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason);
+            var stockMovement = StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason, customerId);
 
             // Assert
             Assert.NotNull(stockMovement);
@@ -159,9 +165,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantityAdjusted = -3;
             int stockAfter = 10;
             string reason = "Inventory correction";
+            int customerId = 1;
 
             // Act
-            Action act = () => StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason);
+            Action act = () => StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason, customerId);
 
             // Assert
             act.Should().Throw<DomainException>()
@@ -176,8 +183,10 @@ namespace StockMode.Domain.Tests.Unit
             int quantityAdjusted = 0;
             int stockAfter = 10;
             string reason = "Inventory correction";
+            int customerId = 1;
+
             // Act
-            Action act = () => StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason);
+            Action act = () => StockMovement.CreateForAdjustment(variationId, quantityAdjusted, stockAfter, reason, customerId);
             // Assert
             act.Should().Throw<DomainException>()
                 .WithMessage("Stock Movement quantity cannot be zero.");

@@ -76,7 +76,7 @@ namespace StockMode.Domain.Sales
             PaymentMethod = newPaymentMethod;
         }
 
-        public void CompleteSale()
+        public void CompleteSale(int customerId)
         {
             if (Status != SaleStatus.PaymentPending)
                 throw new DomainException("Only a pending sale can be completed.");
@@ -84,7 +84,8 @@ namespace StockMode.Domain.Sales
                 throw new DomainException("Cannot complete a sale with no items.");
 
             Status = SaleStatus.Completed;
-            var saleCompletedEvent = new SaleCompletedEvent(Id, FinalPrice, Items.ToList());
+            CustomerId = customerId;
+            var saleCompletedEvent = new SaleCompletedEvent(Id, FinalPrice, Items.ToList(), CustomerId);
             AddDomainEvent(saleCompletedEvent);
         }
 

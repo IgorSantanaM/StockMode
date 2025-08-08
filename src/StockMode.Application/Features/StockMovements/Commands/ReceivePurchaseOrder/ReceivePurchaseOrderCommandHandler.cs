@@ -34,7 +34,8 @@ namespace StockMode.Application.Features.StockMovements.Commands.ReceivePurchase
                 var movement = StockMovement.CreateForPurchase(
                     variation.Id,
                     item.QuantityReceived,
-                    variation.StockQuantity);
+                    variation.StockQuantity,
+                    request.SupplierId);
 
                 await _stockMovementRepository.AddAsync(movement);
             }
