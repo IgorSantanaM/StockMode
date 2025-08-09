@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StockMode.Application.Features.Customers.Dtos;
+using StockMode.Application.Common.Dtos;
 
 namespace StockMode.Application.Features.Customers.Commands.UpdateCustomer
 {

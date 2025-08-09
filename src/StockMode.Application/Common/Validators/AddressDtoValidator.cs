@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using StockMode.Application.Features.Customers.Dtos;
+using StockMode.Application.Common.Dtos;
 
-namespace StockMode.Application.Features.Customers.Validators
+namespace StockMode.Application.Common.Validators
 {
     public class AddressDtoValidator : AbstractValidator<AddressDto>
     {

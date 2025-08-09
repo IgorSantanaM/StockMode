@@ -33,5 +33,17 @@ namespace StockMode.Domain.Suppliers
             Address = address ?? throw new DomainException("Address cannot be null");
             Notes = notes;
         }
+
+        public void UpdateDetails(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes = null)
+        {
+            Name = name ?? throw new DomainException("Name cannot be null");
+            CorporateName = corporateName ?? throw new DomainException("Corporate name cannot be null");
+            CNPJ = cnpj ?? throw new DomainException("CNPJ cannot be null");
+            ContatctPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
+            Email = email ?? throw new DomainException("Email cannot be null");
+            PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
+            Address = address ?? throw new DomainException("Address cannot be null");
+            Notes = notes;
+        }
     }
 }
