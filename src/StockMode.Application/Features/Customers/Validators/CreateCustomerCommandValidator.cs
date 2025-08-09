@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using StockMode.Application.Common.Validators;
 using StockMode.Application.Features.Customers.Commands.CreateCustomer;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,13 @@ namespace StockMode.Application.Features.Customers.Validators
                 .Length(2, 150).WithMessage("Customer name must be between 2 and 150 characters.");
 
             RuleFor(c => c.Email)
-                .NotEmpty().WithMessage("Email is required.")
-                .EmailAddress().WithMessage("A valid email is required.")
-                .MaximumLength(150).WithMessage("Email cannot exceed 150 characters.");
+               .NotEmpty().WithMessage("Email is required.")
+               .EmailAddress().WithMessage("Invalid email format.")
+               .MaximumLength(100).WithMessage("Email cannot exceed 100 characters.");
 
             RuleFor(c => c.PhoneNumber)
-                .MaximumLength(15)
-                .WithMessage("Phone number cannot exceed 15 characters.");
+                .NotEmpty().WithMessage("Phone number is required.")
+                .Matches(@"^\(\d{2}\) \d{4,5}-\d{4}$").WithMessage("Phone number must be in the format (XX) XXXX-XXXX or (XX) XXXXX-XXXX.");
 
             RuleFor(c => c.AddressDto)
                 .NotNull().WithMessage("Address is required.")

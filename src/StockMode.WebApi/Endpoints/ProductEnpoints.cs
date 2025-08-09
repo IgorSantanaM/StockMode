@@ -80,7 +80,6 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Updates an existing product by its ID.")
                 .WithDescription("Updates the details of an existing product, including its variations, by providing the product ID and updated information.");
-
         }
 
 

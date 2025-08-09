@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Home, ShoppingCart, Package, DollarSign, Users, Settings } from "lucide-react";
+import { Zap, Home, ShoppingCart, Package, DollarSign, Users, Settings, Handshake  } from "lucide-react";
 import { SidebarContainer, SidebarHeader, LogoText, Nav, Backdrop } from "./styles";
 import NavItem from "../NavItem";
 
@@ -18,6 +18,7 @@ const Sidebar = ({ isMobileOpen, onClose }) => {
                 <div onClick={onClose}><NavItem to="/products" icon={<Package size={20} />} label="Produtos" /></div>
                 <div onClick={onClose}><NavItem to="/financial" icon={<DollarSign size={20} />} label="Financeiro" /></div>
                 <div onClick={onClose}><NavItem to="/customers" icon={<Users size={20} />} label="Clientes" /></div>
+                <div onClick={onClose}><NavItem to="/suppliers" icon={<Handshake size={20} />} label="Fornecedores" /></div>
               </Nav>
               <div style={{ padding: '1rem', borderTop: '1px solid #e5e7eb' }}>
                 <div onClick={onClose}><NavItem to="/settings" icon={<Settings size={20} />} label="Configurações" /></div>

@@ -34,6 +34,13 @@ namespace StockMode.WebApi.Middlewares
         {
             var (statusCode, title, errors) = exception switch
             {
+
+                ArgumentException argumentException => (
+                    HttpStatusCode.BadRequest,
+                    argumentException.Message,
+                    null
+                ),
+
                 ValidationException validationEx => (
                     HttpStatusCode.BadRequest,
                     "Validation failed",

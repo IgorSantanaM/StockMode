@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using StockMode.Application.Features.StockMovements.Commands.AdjustStock;
 using StockMode.Application.Features.StockMovements.Dtos;
@@ -7,10 +6,6 @@ using StockMode.Application.Features.StockMovements.Queries.GetFullStockMovement
 using StockMode.Application.Features.StockMovements.Queries.GetMovementHistoryByVariationId;
 using StockMode.Application.Features.StockMovements.Queries.GetStockAdjustmentReport;
 using StockMode.WebApi.Endpoints.Internal;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks.Dataflow;
 
 namespace StockMode.WebApi.Endpoints
 {

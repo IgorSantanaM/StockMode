@@ -16,18 +16,11 @@ namespace StockMode.Infra.Data.Repositories
             _dbContext = context;
         }
 
-        public Task<Supplier?> GetSupplierByCNPJAsync(string cnpj)
+        public async Task<Supplier> GetSupplierById(int id)
         {
-            string sql = @"SELECT * FROM Suppliers WHERE Cnpj = @Cnpj";
+            const string sql = @"SELECT * FROM ""Suppliers"" WHERE ""Id"" = @SupplierId;";
 
-            return _dbConnection.QueryFirstOrDefaultAsync<Supplier>(sql, new { Cnpj = cnpj });
-        }
-
-        public Task<IEnumerable<Supplier>> GetSupplierByNameAsync(string name)
-        {
-            string sql = @"SELECT * FROM Suppliers WHERE Name = @Name";
-
-            return _dbConnection.QueryAsync<Supplier>(sql, new { Name = name });
+            return await _dbConnection.QueryFirstOrDefaultAsync<Supplier>(sql, new { Id = id });
         }
     }
 }

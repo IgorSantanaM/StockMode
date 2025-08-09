@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using StockMode.Application.Exceptionns;
 using StockMode.Application.Features.Sales.Commands.ApplyDiscountToSale;
 using StockMode.Application.Features.Sales.Commands.CancelSale;
 using StockMode.Application.Features.Sales.Commands.ChangeSalePaymentMethod;
@@ -15,8 +14,6 @@ using StockMode.Application.Features.Sales.Queries.GetSalesByDateRange;
 using StockMode.Application.Features.Sales.Queries.GetSalesByStatus;
 using StockMode.Domain.Enums;
 using StockMode.WebApi.Endpoints.Internal;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks.Dataflow;
 
 namespace StockMode.WebApi.Endpoints
 {

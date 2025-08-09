@@ -22,8 +22,4 @@
     <ProjectReference Include="..\StockMode.Domain\StockMode.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Suppliers\" />
-  </ItemGroup>
-
 </Project>

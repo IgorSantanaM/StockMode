@@ -18,6 +18,8 @@ import NotFound from './pages/NotFound';
 import Help from './pages/Help';
 import Profile from './pages/Profile';
 import SettingsPage from './pages/Settings';
+import Suppliers from './pages/Suppliers';
+import SupplierCreation from './pages/Suppliers/Create';
 
 export default function RoutesConfig(){
     return(
@@ -39,6 +41,8 @@ export default function RoutesConfig(){
             <Route path="/help" exact element={<Help />} />
             <Route path="/profile" exact element={<Profile />} />
             <Route path="/settings" exact element={<SettingsPage />} />
+            <Route path="/suppliers" exact element={<Suppliers />} />
+            <Route path="/suppliers/register" exact element={<SupplierCreation />} />
             <Route path="*" exact element={<NotFound />} />
          </Routes>
     )
