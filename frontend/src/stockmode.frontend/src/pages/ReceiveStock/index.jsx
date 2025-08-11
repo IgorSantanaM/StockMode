@@ -6,7 +6,6 @@ import {
   SectionTitle, ReceivedItemsList, ReceivedItemCard, QuantityInput, FinalizeButton
 } from './styles';
 
-// --- DADOS MOCK (Numa aplicação real, viriam da sua API) ---
 const searchableProducts = [
   { id: 1, name: 'Camiseta Gola V - Branca M', sku: 'CGV-BR-M', stock: 50, image: 'https://placehold.co/100x100/FFFFFF/333333?text=Camiseta' },
   { id: 2, name: 'Calça Jeans Skinny - 42', sku: 'CJS-AZ-42', stock: 25, image: 'https://placehold.co/100x100/336699/FFFFFF?text=Calça' },

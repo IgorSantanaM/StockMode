@@ -1,3 +1,4 @@
+import React from 'react'
 import { AuthProvider } from 'react-oidc-context'
 import { createRoot } from 'react-dom/client'
 import './index.css'
