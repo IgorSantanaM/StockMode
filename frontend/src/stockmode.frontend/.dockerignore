@@ -1,0 +1,23 @@
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+
+# Build output
+build
+dist
+
+# Environment files
+.env
+.env.*
+!/.env.production
+
+# IDE & OS files
+.idea
+.vscode
+*.suo
+*.user
+*.log
+Thumbs.db

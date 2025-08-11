@@ -32,10 +32,9 @@ const FaqItem = ({ faq }) => {
 const EmailModal = ({ onClose }) => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // Lógica para enviar os dados para a sua API
         console.log("Formulário de email enviado!");
         alert("Sua mensagem foi enviada com sucesso!");
-        onClose(); // Fecha o modal após o envio
+        onClose(); 
     };
 
     return (
