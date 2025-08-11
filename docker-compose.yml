@@ -16,10 +16,20 @@ services:
             condition: service_started
          postgres:
             condition: service_healthy
-
     networks:
       - app_network
-
+    
+  stockmode.frontend:
+    image: ${DODKCER_REGISTRY-}stockmodefrontend
+    build:
+      context: .
+      dockerfile: src/stockmode.frontend
+    ports:
+      - "80:80"
+    depends_on:
+      stockmode.webapi:
+        condition: service_started
+        
   stockmode.mailworker:
     image: ${DOCKER_REGISTRY-}stockmodemailsender
     build:
