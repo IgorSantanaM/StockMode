@@ -20,7 +20,7 @@ namespace StockMode.Application.Features.Sales.Commands.CompleteSale
             if (sale is null)
                 throw new NotFoundException(nameof(Sale), request.SaleId);
 
-            sale.CompleteSale(request.customerId);
+            sale.CompleteSale(request.CustomerId);
 
             _repository.Update(sale);
 

@@ -45,7 +45,7 @@ namespace StockMode.WebApi.Endpoints
               .WithSummary("Applies a discount to an existing Sale.")
               .WithDescription("Applies a discount to the specified Sale. Returns no content on success.");
 
-            group.MapPut("/complete/{id:int}", HandleCompleteSale)
+            group.MapPut("/complete/{id:int}/{customerId:int}", HandleCompleteSale)
                 .WithName("CompleteSale")
                 .Produces(StatusCodes.Status204NoContent)
                 .ProducesProblem(StatusCodes.Status404NotFound)

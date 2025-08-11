@@ -26,6 +26,7 @@ namespace StockMode.WebApi.Endpoints
               .ProducesProblem(StatusCodes.Status500InternalServerError)
               .WithSummary("Creates a new product.")
               .WithDescription("Creates a new product with the specified details, including its variations. Returns the created product's ID on success.");
+
             group.MapGet("/{id:int}", HandleGetProductById)
               .WithName("GetProductById")
               .Produces<ProductDetailsDto>(StatusCodes.Status200OK)

@@ -64,7 +64,7 @@ namespace StockMode.WebApi.Endpoints
         private static async Task<IResult> HandleCreateCustomer([FromBody] CreateCustomerCommand createCustomerCommand, [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(createCustomerCommand);
-            return Results.CreatedAtRoute($"GetCustomerById", new { Id = id });
+            return Results.CreatedAtRoute($"GetCustomerById", new { id = id  });
         }
 
         private static async Task<IResult> HandleGetCustomerById([FromRoute] int id, [FromServices] IMediator mediator)
