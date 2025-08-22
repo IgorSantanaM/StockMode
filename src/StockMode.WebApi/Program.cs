@@ -1,7 +1,6 @@
 using EasyNetQ;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using StockMode.Application.Features.Products.Commands.CreateProduct;
 using StockMode.Infra.CrossCutting.IoC;
 using StockMode.Infra.Data.Contexts;
 using StockMode.WebApi.Endpoints.Internal;
@@ -27,8 +26,9 @@ services.AddCors(opt =>
 });
 
 services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 services.AddMailServices(builder.Configuration);
+
+services.ConfigureOpenTelemetry();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddServices();

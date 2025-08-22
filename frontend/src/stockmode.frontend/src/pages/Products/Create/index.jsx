@@ -7,8 +7,10 @@ import {
   VariationFormRow, AddVariationButton
 } from './styles';
 import api from '../../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCreation = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [variations, setVariations] = useState([
@@ -74,14 +76,9 @@ const ProductCreation = () => {
 
     try {
       const response = await api.post("products", commandPayload);
-      console.log("Data sent successfully:", response.data);
-      
-      alert('Produto cadastrado com sucesso!');
-      setName('');
-      setDescription('');
-      setVariations([{ name: '', sku: '', costPrice: '', salePrice: '', stockQuantity: '' }]);
-      setErrors({});
+      console.log("Data send successfully! ", response.data);
 
+      navigate("/products");
     } catch (error) {
       console.error("Erro ao cadastrar produto:", error);
       alert('Erro ao cadastrar produto. Verifique o console.');
