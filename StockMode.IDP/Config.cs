@@ -28,7 +28,11 @@ public static class Config
 
                     RedirectUris =
                     {
-                        "https://localhost:5173/signin-oidc",
+                        "https://localhost/signin-oidc",
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "https://localhost/signout-callback-oidc",
                     },
 
                     AllowedScopes =
@@ -37,6 +41,7 @@ public static class Config
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email
                     },
+                    RequireConsent = true,
                 }
             };
 }

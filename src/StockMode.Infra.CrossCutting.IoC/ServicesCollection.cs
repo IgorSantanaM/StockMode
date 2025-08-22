@@ -20,6 +20,11 @@ using StockMode.Infra.Data.UoW;
 using StockMode.Infra.Services.Email;
 using System.Data;
 using System.Text.Json;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using System.Reflection;
+using Npgsql;
 
 namespace StockMode.Infra.CrossCutting.IoC
 {
@@ -70,6 +75,17 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddSingleton<IMailTemplateProvider, EmbeddedResourceMailTemplateProvider>();
             services.AddSingleton<IMjmlRenderer>(_ => new MjmlRenderer());
             services.AddSingleton<IHtmlMailRenderer, RazorLightMjmlMailRenderer>();
+        }
+
+        public static void ConfigureOpenTelemetry(this IServiceCollection services)
+        {
+            services.AddOpenTelemetry()
+                .ConfigureResource(resource => resource.AddService("StockMode.WebApi",
+                serviceNamespace: "StockMode.OpenTelemetry",
+                serviceVersion: Assembly.GetExecutingAssembly().GetName().Version!.ToString()))
+                .WithTracing(tracing =>
+                        tracing.AddAspNetCoreInstrumentation().AddNpgsql()
+                        .AddConsoleExporter());
         }
     }
 }
