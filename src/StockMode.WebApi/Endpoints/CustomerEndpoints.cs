@@ -64,7 +64,7 @@ namespace StockMode.WebApi.Endpoints
         private static async Task<IResult> HandleCreateCustomer([FromBody] CreateCustomerCommand createCustomerCommand, [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(createCustomerCommand);
-            return Results.CreatedAtRoute($"GetCustomerById", new { id = id  });
+            return Results.CreatedAtRoute($"GetCustomerById", new { id  });
         }
 
         private static async Task<IResult> HandleGetCustomerById([FromRoute] int id, [FromServices] IMediator mediator)
@@ -87,18 +87,18 @@ namespace StockMode.WebApi.Endpoints
             return Results.Ok();
         }
 
-        private static Task<IResult> HandleGetAllCustomers([FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetAllCustomers([FromServices] IMediator mediator)
         {
             var query = new GetAllCustomersQuery();
-            var customers = mediator.Send(query);
-            return Task.FromResult(Results.Ok(customers));
+            var customers = await mediator.Send(query);
+            return Results.Ok(customers);
         }
 
-        private static Task<IResult> HandleGetCustomersByName([FromQuery] string name, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetCustomersByName([FromQuery] string name, [FromServices] IMediator mediator)
         {
             var query = new GetCustomerByNameQuery(name);
-            var customers = mediator.Send(query);
-            return Task.FromResult(Results.Ok(customers));
+            var customers = await mediator.Send(query);
+            return Results.Ok(customers);
         }
 
     }
