@@ -33,6 +33,7 @@ namespace StockMode.Domain.Customers
             Name = name;
             Email = email;
             PhoneNumber = phoneNumber;
+            Address = address;
         }
 
         public void UpdateDetails(string newName, string newEmail, string newPhoneNumber, Address newAddress)
@@ -42,6 +43,7 @@ namespace StockMode.Domain.Customers
             Name = newName;
             Email = newEmail ?? throw new DomainException("Email cannot be null");
             PhoneNumber = newPhoneNumber ?? throw new DomainException("Phone number cannot be null");
+            Address = newAddress ?? throw new DomainException("Address cannot be null");
         }
     }
 }

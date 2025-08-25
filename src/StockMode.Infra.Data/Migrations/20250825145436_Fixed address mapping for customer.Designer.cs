@@ -12,8 +12,8 @@ using StockMode.Infra.Data.Contexts;
 namespace StockMode.Infra.Data.Migrations
 {
     [DbContext(typeof(StockModeContext))]
-    [Migration("20250825001818_Fixed Address properties fields")]
-    partial class FixedAddresspropertiesfields
+    [Migration("20250825145436_Fixed address mapping for customer")]
+    partial class Fixedaddressmappingforcustomer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -314,8 +314,8 @@ namespace StockMode.Infra.Data.Migrations
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasMaxLength(20)
-                                .HasColumnType("character varying(20)")
+                                .HasMaxLength(10)
+                                .HasColumnType("character varying(10)")
                                 .HasColumnName("ZipCode");
 
                             b1.HasKey("CustomerId");

@@ -311,8 +311,8 @@ namespace StockMode.Infra.Data.Migrations
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasMaxLength(20)
-                                .HasColumnType("character varying(20)")
+                                .HasMaxLength(10)
+                                .HasColumnType("character varying(10)")
                                 .HasColumnName("ZipCode");
 
                             b1.HasKey("CustomerId");

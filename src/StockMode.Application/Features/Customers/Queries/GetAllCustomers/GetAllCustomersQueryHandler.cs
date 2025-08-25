@@ -22,8 +22,8 @@ namespace StockMode.Application.Features.Customers.Queries.GetAllCustomers
                     c.""Name"",
                     c.""Email"",
                     c.""PhoneNumber"",
-                    MAX(s.""SaleDate"") AS LastPurchase,
-                    COALESCE(SUM(s.""FinalPrice""), 0)::decimal AS TotalSpent
+                    MAX(s.""SaleDate"") AS ""LastPurchase"",
+                    COALESCE(SUM(s.""FinalPrice""), 0)::decimal AS ""TotalSpent""
                 FROM ""Customers"" AS c
                 LEFT JOIN ""Sales"" AS s ON c.""Id"" = s.""CustomerId""
                 GROUP BY c.""Id"", c.""Name"", c.""Email"", c.""PhoneNumber""

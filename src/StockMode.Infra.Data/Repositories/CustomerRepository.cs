@@ -16,18 +16,18 @@ namespace StockMode.Infra.Data.Repositories
             _dbContext = context;
         }
 
-        public Task<Customer?> GetCustomerById(int id)
+        public async Task<Customer?> GetCustomerById(int id)
         {
-            string sql = @"SELECT * FROM Customers WHERE Id = @Id";
+            string sql = @"SELECT * FROM ""Customers"" WHERE ""Id"" = @Id";
 
-            return _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { Id = id });
+            return await _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { Id = id });
         }
 
-        public Task<Customer?> GetCustomerByName(string name)
+        public async Task<Customer?> GetCustomerByName(string name)
         {
-            string sql = @"SELECT * FROM Customers WHERE Name = @Name";
+            string sql = @"SELECT * FROM ""Customers"" WHERE ""Name"" = @Name";
 
-            return _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { Name = name });
+            return await _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { Name = name });
         }
     }
 }

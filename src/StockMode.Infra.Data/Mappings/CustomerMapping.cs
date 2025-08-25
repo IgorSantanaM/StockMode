@@ -24,27 +24,13 @@ namespace StockMode.Infra.Data.Mappings
             builder.Property(c => c.PhoneNumber)
                 .HasMaxLength(15);
 
-            builder.OwnsOne(s => s.Address, addressBuilder =>
+            builder.OwnsOne(c => c.Address, addressBuilder =>
             {
-                addressBuilder.Property(a => a.Number)
-                    .HasMaxLength(10)
-                    .HasColumnName("Number");
-                addressBuilder.Property(a => a.Street)
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnName("Street");
-                addressBuilder.Property(a => a.City)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .HasColumnName("City");
-                addressBuilder.Property(a => a.State)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("State");
-                addressBuilder.Property(a => a.ZipCode)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnName("ZipCode");
+                addressBuilder.Property(a => a.Street).HasMaxLength(200).HasColumnName("Street").IsRequired();
+                addressBuilder.Property(a => a.City).HasMaxLength(100).HasColumnName("City").IsRequired();
+                addressBuilder.Property(a => a.State).HasMaxLength(50).HasColumnName("State").IsRequired();
+                addressBuilder.Property(a => a.ZipCode).HasMaxLength(10).HasColumnName("ZipCode").IsRequired();
+                addressBuilder.Property(a => a.Number).HasMaxLength(10).HasColumnName("Number").IsRequired();
             });
 
             builder.Ignore(c => c.DomainEvents);
