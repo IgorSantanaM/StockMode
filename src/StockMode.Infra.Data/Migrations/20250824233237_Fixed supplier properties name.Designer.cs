@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using StockMode.Infra.Data.Contexts;
@@ -11,9 +12,11 @@ using StockMode.Infra.Data.Contexts;
 namespace StockMode.Infra.Data.Migrations
 {
     [DbContext(typeof(StockModeContext))]
-    partial class StockModeContextModelSnapshot : ModelSnapshot
+    [Migration("20250824233237_Fixed supplier properties name")]
+    partial class Fixedsupplierpropertiesname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,8 +244,8 @@ namespace StockMode.Infra.Data.Migrations
 
                     b.Property<string>("CNPJ")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasMaxLength(14)
+                        .HasColumnType("character varying(14)");
 
                     b.Property<string>("ContactPerson")
                         .IsRequired()

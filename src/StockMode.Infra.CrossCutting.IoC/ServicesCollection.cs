@@ -84,8 +84,14 @@ namespace StockMode.Infra.CrossCutting.IoC
                 serviceNamespace: "StockMode.OpenTelemetry",
                 serviceVersion: Assembly.GetExecutingAssembly().GetName().Version!.ToString()))
                 .WithTracing(tracing =>
-                        tracing.AddAspNetCoreInstrumentation().AddNpgsql()
-                        .AddConsoleExporter());
+                        tracing.AddAspNetCoreInstrumentation()
+                        .AddNpgsql()
+                        .AddHttpClientInstrumentation()
+                        .AddOtlpExporter(opt =>
+                        {
+                            opt.Endpoint = new Uri("http://jeager:4318");
+                            opt.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
+                        }));
         }
     }
 }

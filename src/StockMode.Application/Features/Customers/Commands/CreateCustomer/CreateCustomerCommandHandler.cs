@@ -17,19 +17,19 @@ namespace StockMode.Application.Features.Customers.Commands.CreateCustomer
             _validator = validator;
             _unitOfWork = unitOfWork;
         }
-
+        
         public async Task<int> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             await _validator.ValidateAndThrowAsync(request, cancellationToken);
-           
+
             var address = new Address(request.AddressDto.Number, request.AddressDto.Street, request.AddressDto.City, request.AddressDto.State, request.AddressDto.ZipCode);
 
-            var consumer = new Customer(request.Name, request.Email, request.PhoneNumber, address);
+            var constumer = new Customer(request.Name, request.Email, request.PhoneNumber, address);
 
-            await _customerRepository.AddAsync(consumer);
+            await _customerRepository.AddAsync(constumer);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return consumer.Id;
+            return constumer.Id;
 
         }
     }

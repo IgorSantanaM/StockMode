@@ -24,7 +24,7 @@ namespace StockMode.Infra.Data.Mappings
             builder.Property(c => c.PhoneNumber)
                 .HasMaxLength(15);
 
-            builder.OwnsOne(c => c.Address, addressBuilder =>
+            builder.OwnsOne(s => s.Address, addressBuilder =>
             {
                 addressBuilder.Property(a => a.Number)
                     .HasMaxLength(10)

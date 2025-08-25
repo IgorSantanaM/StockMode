@@ -16,8 +16,7 @@ namespace StockMode.Domain.Products
         public Product Product { get; set; }
 
         private Variation()
-        {
-        }
+        { }
 
         public Variation(int productId, string name, string sku, decimal costPrice, decimal salePrice, int initialStock)
         {

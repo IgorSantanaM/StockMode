@@ -14,7 +14,7 @@ namespace StockMode.Domain.Suppliers
         public string Name { get; set; }
         public string CorporateName { get; set; }
         public string CNPJ { get; set; }
-        public string ContatctPerson { get; set; }
+        public string ContactPerson { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
@@ -27,7 +27,7 @@ namespace StockMode.Domain.Suppliers
             Name = name ?? throw new DomainException("Name cannot be null");
             CorporateName = corporateName ?? throw new DomainException("Corporate name cannot be null");
             CNPJ = cnpj ?? throw new DomainException("CNPJ cannot be null");
-            ContatctPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
+            ContactPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
             Email = email ?? throw new DomainException("Email cannot be null");
             PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
             Address = address ?? throw new DomainException("Address cannot be null");
@@ -39,7 +39,7 @@ namespace StockMode.Domain.Suppliers
             Name = name ?? throw new DomainException("Name cannot be null");
             CorporateName = corporateName ?? throw new DomainException("Corporate name cannot be null");
             CNPJ = cnpj ?? throw new DomainException("CNPJ cannot be null");
-            ContatctPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
+            ContactPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
             Email = email ?? throw new DomainException("Email cannot be null");
             PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
             Address = address ?? throw new DomainException("Address cannot be null");

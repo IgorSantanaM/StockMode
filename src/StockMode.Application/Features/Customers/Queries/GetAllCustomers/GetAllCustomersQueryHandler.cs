@@ -13,7 +13,8 @@ namespace StockMode.Application.Features.Customers.Queries.GetAllCustomers
         {
             _dbConnection = dbConnection;
         }
-        public Task<IEnumerable<CustomerSummaryDto>> Handle(GetAllCustomersQuery request, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<CustomerSummaryDto>> Handle(GetAllCustomersQuery request, CancellationToken cancellationToken)
         {
             const string sql = @"
                 SELECT
@@ -22,13 +23,13 @@ namespace StockMode.Application.Features.Customers.Queries.GetAllCustomers
                     c.""Email"",
                     c.""PhoneNumber"",
                     MAX(s.""SaleDate"") AS LastPurchase,
-                    COALESCE(SUM(s.""FinalPrice""), 0) AS TotalSpent
+                    COALESCE(SUM(s.""FinalPrice""), 0)::decimal AS TotalSpent
                 FROM ""Customers"" AS c
                 LEFT JOIN ""Sales"" AS s ON c.""Id"" = s.""CustomerId""
                 GROUP BY c.""Id"", c.""Name"", c.""Email"", c.""PhoneNumber""
                 ORDER BY c.""Name"";";
 
-            var customers = _dbConnection.QueryAsync<CustomerSummaryDto>(sql);
+            var customers = await _dbConnection.QueryAsync<CustomerSummaryDto>(sql);
 
             return customers;
         }

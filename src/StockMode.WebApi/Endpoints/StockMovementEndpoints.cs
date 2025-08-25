@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StockMode.Application.Features.StockMovements.Commands.AdjustStock;
+using StockMode.Application.Features.StockMovements.Commands.ReceivePurchaseOrder;
 using StockMode.Application.Features.StockMovements.Dtos;
 using StockMode.Application.Features.StockMovements.Queries.GetFullStockMovementReport;
 using StockMode.Application.Features.StockMovements.Queries.GetMovementHistoryByVariationId;
@@ -64,7 +65,7 @@ namespace StockMode.WebApi.Endpoints
         }
 
         private static async Task<IResult> HandleReceivePurchaseOrder(
-            [FromBody] AdjustStockCommand command,
+            [FromBody] ReceivePurchaseOrderCommand command,
             [FromServices] IMediator mediator)
         {
             await mediator.Send(command);

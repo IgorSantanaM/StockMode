@@ -4,6 +4,6 @@ namespace StockMode.Domain.Suppliers
 {
     public interface ISupplierRepository : IRepository<Supplier, int>
     {
-        Task<Supplier> GetSupplierById(int id);
+        Task<Supplier?> GetSupplierById(int id);
     }
 }

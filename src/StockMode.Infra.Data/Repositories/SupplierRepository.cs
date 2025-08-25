@@ -16,11 +16,11 @@ namespace StockMode.Infra.Data.Repositories
             _dbContext = context;
         }
 
-        public async Task<Supplier> GetSupplierById(int id)
+        public async Task<Supplier?> GetSupplierById(int id)
         {
             const string sql = @"SELECT * FROM ""Suppliers"" WHERE ""Id"" = @SupplierId;";
 
-            return await _dbConnection.QueryFirstOrDefaultAsync<Supplier>(sql, new { Id = id });
+            return await _dbConnection.QueryFirstOrDefaultAsync<Supplier>(sql, new { SupplierId = id });
         }
     }
 }

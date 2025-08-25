@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using MediatR;
+using StockMode.Application.Exceptionns;
 using StockMode.Application.Features.Customers.Dtos;
+using StockMode.Domain.Customers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,6 +40,9 @@ namespace StockMode.Application.Features.Customers.Queries.GetCustomerById
                 GROUP BY c.""Id"", c.""Name"", c.""Email"", c.""PhoneNumber"", c.""Street"", c.""City"", c.""State"", c.""ZipCode"";";
 
             var customerDetailsDto = await _dbConnection.QueryFirstOrDefaultAsync<CustomerDetailsDto>(sql, new { request.CustomerId });
+
+            if (customerDetailsDto is null)
+                throw new NotFoundException(nameof(Customer), request.CustomerId);
 
             return customerDetailsDto!;
         }

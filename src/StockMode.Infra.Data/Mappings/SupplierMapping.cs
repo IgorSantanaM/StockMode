@@ -25,6 +25,23 @@ namespace StockMode.Infra.Data.Mappings
                 .IsRequired()
                 .HasMaxLength(15);
 
+            builder.Property(s => s.CorporateName)
+                .IsRequired()
+                .HasMaxLength(150);
+
+            builder.Property(s => s.ContactPerson)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(s => s.CNPJ)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            builder.Property(s => s.Notes)
+                .HasMaxLength(500)
+                .HasColumnName("Notes");
+
+
             builder.OwnsOne(s => s.Address, addressBuilder =>
             {
                 addressBuilder.Property(a => a.Number)
