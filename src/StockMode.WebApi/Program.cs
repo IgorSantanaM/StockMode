@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StockMode.Infra.CrossCutting.IoC;
 using StockMode.Infra.Data.Contexts;
+using StockMode.WebApi.Diagnostics.Extensions;
 using StockMode.WebApi.Endpoints.Internal;
 using StockMode.WebApi.Middlewares;
 
@@ -28,7 +29,7 @@ services.AddCors(opt =>
 services.AddControllers();
 services.AddMailServices(builder.Configuration);
 
-services.ConfigureOpenTelemetry(builder.Configuration);
+builder.AddOpenTelemetry();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddServices();
@@ -75,6 +76,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+
+
 //app.UseHttpsRedirection();
 
 app.UseRouting();
@@ -82,5 +85,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseEndpoints<Program>();
+app.MapHealthChecks("/healthz");
+app.MapGet("/", () => "StockMode API is running.");
 
 app.Run();

@@ -5,6 +5,7 @@ using StockMode.Application.Features.Customers.Commands.DeleteCustomer;
 using StockMode.Application.Features.Customers.Commands.UpdateCustomer;
 using StockMode.Application.Features.Customers.Queries.GetAllCustomers;
 using StockMode.Application.Features.Customers.Queries.GetCustomerById;
+using StockMode.WebApi.Diagnostics;
 using StockMode.WebApi.Endpoints.Internal;
 
 namespace StockMode.WebApi.Endpoints
@@ -56,6 +57,8 @@ namespace StockMode.WebApi.Endpoints
         private static async Task<IResult> HandleCreateCustomer([FromBody] CreateCustomerCommand createCustomerCommand, [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(createCustomerCommand);
+
+            ApplicationDiagnostics.CustomerCreatedCounter.Add(1, new KeyValuePair<string, object?>("customer-id", id));
             return Results.CreatedAtRoute($"GetCustomerById", new { id  });
         }
 
