@@ -85,7 +85,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseEndpoints<Program>();
-app.MapHealthChecks("/healthz");
 app.MapGet("/", () => "StockMode API is running.");
 
 app.Run();

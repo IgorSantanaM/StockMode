@@ -7,6 +7,7 @@ using StockMode.Application.Features.Customers.Queries.GetAllCustomers;
 using StockMode.Application.Features.Customers.Queries.GetCustomerById;
 using StockMode.WebApi.Diagnostics;
 using StockMode.WebApi.Endpoints.Internal;
+using System.Diagnostics;
 
 namespace StockMode.WebApi.Endpoints
 {
