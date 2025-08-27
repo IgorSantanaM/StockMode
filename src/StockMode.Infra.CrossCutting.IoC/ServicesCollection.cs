@@ -77,44 +77,44 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddSingleton<IHtmlMailRenderer, RazorLightMjmlMailRenderer>();
         }
 
-        public static void ConfigureOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
-        {
-            var resourceBuilder = ResourceBuilder.CreateDefault()
-                .AddService("StockMode.WebApi",
-                    serviceNamespace: "StockMode.OpenTelemetry",
-                    serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0")
-                .AddTelemetrySdk();
+        //public static void ConfigureOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
+        //{
+        //    var resourceBuilder = ResourceBuilder.CreateDefault()
+        //        .AddService("StockMode.WebApi",
+        //            serviceNamespace: "StockMode.OpenTelemetry",
+        //            serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0")
+        //        .AddTelemetrySdk();
 
-            services.AddOpenTelemetry()
-                .WithTracing(tracerProviderBuilder =>
-                {
-                    tracerProviderBuilder
-                        .SetResourceBuilder(resourceBuilder)
-                        .AddSource("StockMode.WebApi") 
-                        .AddAspNetCoreInstrumentation(options =>
-                        {
-                            options.Filter = (httpContext) =>
-                            {
-                                return !httpContext.Request.Path.Value?.Contains("swagger") ?? true;
-                            };
-                        })
-                        .AddHttpClientInstrumentation() 
-                        .AddNpgsql(); 
-                    var otlpEndpoint = "http://jaeger:4318";
+        //    services.AddOpenTelemetry()
+        //        .WithTracing(tracerProviderBuilder =>
+        //        {
+        //            tracerProviderBuilder
+        //                .SetResourceBuilder(resourceBuilder)
+        //                .AddSource("StockMode.WebApi") 
+        //                .AddAspNetCoreInstrumentation(options =>
+        //                {
+        //                    options.Filter = (httpContext) =>
+        //                    {
+        //                        return !httpContext.Request.Path.Value?.Contains("swagger") ?? true;
+        //                    };
+        //                })
+        //                .AddHttpClientInstrumentation() 
+        //                .AddNpgsql(); 
+        //            var otlpEndpoint = "http://jaeger:4318";
 
-                    if (!string.IsNullOrEmpty(otlpEndpoint))
-                    {
-                        tracerProviderBuilder.AddOtlpExporter(opt =>
-                        {
-                            opt.Endpoint = new Uri(otlpEndpoint);
-                            opt.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                        });
-                    }
-                    else
-                    {
-                        tracerProviderBuilder.AddConsoleExporter();
-                    }
-                });
-        }
+        //            if (!string.IsNullOrEmpty(otlpEndpoint))
+        //            {
+        //                tracerProviderBuilder.AddOtlpExporter(opt =>
+        //                {
+        //                    opt.Endpoint = new Uri(otlpEndpoint);
+        //                    opt.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
+        //                });
+        //            }
+        //            else
+        //            {
+        //                tracerProviderBuilder.AddConsoleExporter();
+        //            }
+        //        });
+        //}
     }
 }
