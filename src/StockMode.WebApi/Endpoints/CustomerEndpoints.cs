@@ -5,7 +5,6 @@ using StockMode.Application.Features.Customers.Commands.DeleteCustomer;
 using StockMode.Application.Features.Customers.Commands.UpdateCustomer;
 using StockMode.Application.Features.Customers.Queries.GetAllCustomers;
 using StockMode.Application.Features.Customers.Queries.GetCustomerById;
-using StockMode.Application.Features.Customers.Queries.GetCustomerByName;
 using StockMode.WebApi.Endpoints.Internal;
 
 namespace StockMode.WebApi.Endpoints
@@ -52,13 +51,6 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Retrieves all customers.")
                 .WithDescription("Gets a list of all customers in the system.");
-
-            group.MapGet("/search", HandleGetCustomersByName)
-                .WithName("GetCustomersByName")
-                .Produces<IEnumerable<object>>(StatusCodes.Status200OK)
-                .ProducesProblem(StatusCodes.Status500InternalServerError)
-                .WithSummary("Searches for customers by name.")
-                .WithDescription("Gets a list of customers whose names match the specified query.");
         }
 
         private static async Task<IResult> HandleCreateCustomer([FromBody] CreateCustomerCommand createCustomerCommand, [FromServices] IMediator mediator)
@@ -87,19 +79,11 @@ namespace StockMode.WebApi.Endpoints
             return Results.Ok();
         }
 
-        private static async Task<IResult> HandleGetAllCustomers([FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetAllCustomers(string? name, int page, int pageSize, [FromServices] IMediator mediator)
         {
-            var query = new GetAllCustomersQuery();
+            var query = new GetAllCustomersQuery(name, page, pageSize); 
             var customers = await mediator.Send(query);
             return Results.Ok(customers);
         }
-
-        private static async Task<IResult> HandleGetCustomersByName([FromQuery] string name, [FromServices] IMediator mediator)
-        {
-            var query = new GetCustomerByNameQuery(name);
-            var customers = await mediator.Send(query);
-            return Results.Ok(customers);
-        }
-
     }
 }

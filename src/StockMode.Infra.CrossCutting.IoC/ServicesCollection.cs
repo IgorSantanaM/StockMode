@@ -49,7 +49,7 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ISaleRepository, SaleRepository>();
             services.AddScoped<IStockMovementRepository, StockMovementRepository>();
-            services.AddScoped<ICustumerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
         }
 
@@ -77,21 +77,44 @@ namespace StockMode.Infra.CrossCutting.IoC
             services.AddSingleton<IHtmlMailRenderer, RazorLightMjmlMailRenderer>();
         }
 
-        public static void ConfigureOpenTelemetry(this IServiceCollection services)
+        public static void ConfigureOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
         {
+            var resourceBuilder = ResourceBuilder.CreateDefault()
+                .AddService("StockMode.WebApi",
+                    serviceNamespace: "StockMode.OpenTelemetry",
+                    serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0")
+                .AddTelemetrySdk();
+
             services.AddOpenTelemetry()
-                .ConfigureResource(resource => resource.AddService("StockMode.WebApi",
-                serviceNamespace: "StockMode.OpenTelemetry",
-                serviceVersion: Assembly.GetExecutingAssembly().GetName().Version!.ToString()))
-                .WithTracing(tracing =>
-                        tracing.AddAspNetCoreInstrumentation()
-                        .AddNpgsql()
-                        .AddHttpClientInstrumentation()
-                        .AddOtlpExporter(opt =>
+                .WithTracing(tracerProviderBuilder =>
+                {
+                    tracerProviderBuilder
+                        .SetResourceBuilder(resourceBuilder)
+                        .AddSource("StockMode.WebApi") 
+                        .AddAspNetCoreInstrumentation(options =>
                         {
-                            opt.Endpoint = new Uri("http://jeager:4318");
+                            options.Filter = (httpContext) =>
+                            {
+                                return !httpContext.Request.Path.Value?.Contains("swagger") ?? true;
+                            };
+                        })
+                        .AddHttpClientInstrumentation() 
+                        .AddNpgsql(); 
+                    var otlpEndpoint = "http://jaeger:4318";
+
+                    if (!string.IsNullOrEmpty(otlpEndpoint))
+                    {
+                        tracerProviderBuilder.AddOtlpExporter(opt =>
+                        {
+                            opt.Endpoint = new Uri(otlpEndpoint);
                             opt.Protocol = OpenTelemetry.Exporter.OtlpExportProtocol.HttpProtobuf;
-                        }));
+                        });
+                    }
+                    else
+                    {
+                        tracerProviderBuilder.AddConsoleExporter();
+                    }
+                });
         }
     }
 }

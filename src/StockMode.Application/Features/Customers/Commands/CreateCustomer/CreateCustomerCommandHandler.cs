@@ -8,10 +8,10 @@ namespace StockMode.Application.Features.Customers.Commands.CreateCustomer
 {
     public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, int>
     {
-        private readonly ICustumerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IValidator<CreateCustomerCommand> _validator;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateCustomerCommandHandler(ICustumerRepository customerRepository, IValidator<CreateCustomerCommand> validator, IUnitOfWork unitOfWork)
+        public CreateCustomerCommandHandler(ICustomerRepository customerRepository, IValidator<CreateCustomerCommand> validator, IUnitOfWork unitOfWork)
         {
             _customerRepository = customerRepository;
             _validator = validator;

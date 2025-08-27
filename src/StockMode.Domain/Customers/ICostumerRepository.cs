@@ -1,10 +1,10 @@
-﻿using StockMode.Domain.Core.Data;
+﻿using StockMode.Domain.Common;
+using StockMode.Domain.Core.Data;
 
 namespace StockMode.Domain.Customers
 {
-    public interface ICustumerRepository : IRepository<Customer, int>
+    public interface ICustomerRepository : IRepository<Customer, int>
     {
         Task<Customer?> GetCustomerById(int id);
-        Task<Customer?> GetCustomerByName(string name);
     }
 }

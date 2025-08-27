@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using StockMode.Application.Features.Products.Dtos;
+using StockMode.Domain.Common;
 
 namespace StockMode.Application.Features.Products.Queries.GetAllProducts;
 
-public class GetAllProductsQuery() : IRequest<IEnumerable<ProductSummaryDto>>;
+public record GetAllProductsQuery(int? LowStockThreshold, string? Sku,int Page, int PageSize) : IRequest<PagedResult<ProductSummaryDto>>;

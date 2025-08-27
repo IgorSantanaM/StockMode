@@ -1,11 +1,7 @@
 ﻿using MediatR;
 using StockMode.Application.Features.Suppliers.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StockMode.Domain.Common;
 
 namespace StockMode.Application.Features.Suppliers.Queries.GetAllSuppliers;
 
-public record GetAllSuppliersQuery : IRequest<IEnumerable<SupplierSummaryDto>>;
+public record GetAllSuppliersQuery(string? Name, int Page, int PageSize) : IRequest<PagedResult<SupplierSummaryDto>>;

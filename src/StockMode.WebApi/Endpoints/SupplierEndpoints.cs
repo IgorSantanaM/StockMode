@@ -5,9 +5,7 @@ using StockMode.Application.Features.Suppliers.Commands.DeleteSupplier;
 using StockMode.Application.Features.Suppliers.Commands.UpdateSupplier;
 using StockMode.Application.Features.Suppliers.Queries.GetAllSuppliers;
 using StockMode.Application.Features.Suppliers.Queries.GetSupplierById;
-using StockMode.Application.Features.Suppliers.Queries.GetSuppliersByName;
 using StockMode.WebApi.Endpoints.Internal;
-using System.Threading.Tasks.Dataflow;
 
 namespace StockMode.WebApi.Endpoints
 {
@@ -54,13 +52,6 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Retrieves all suppliers.")
                 .WithDescription("Gets a list of all suppliers in the system.");
-
-            group.MapGet("/search", HandleGetSuppliersByName)
-                .WithName("GetSuppliersByName")
-                .Produces<IEnumerable<object>>(StatusCodes.Status200OK)
-                .ProducesProblem(StatusCodes.Status500InternalServerError)
-                .WithSummary("Searches for suppliers by name.")
-                .WithDescription("Searches for suppliers by their name. Returns a list of suppliers matching the search criteria.");
         }
 
         private static async Task<IResult> HandleCreateSupplier(
@@ -97,19 +88,10 @@ namespace StockMode.WebApi.Endpoints
             return Results.Ok();
         }
 
-        private static async Task<IResult> HandleGetAllSuppliers(
+        private static async Task<IResult> HandleGetAllSuppliers(string? name, int page, int pageSize,
             [FromServices] IMediator mediator)
         {
-            var query = new GetAllSuppliersQuery();
-            var suppliers = await mediator.Send(query);
-            return Results.Ok(suppliers);
-        }
-
-        private static async Task<IResult> HandleGetSuppliersByName(
-            [FromQuery] string name,
-            [FromServices] IMediator mediator)
-        {
-            var query = new GetSuppliersByNameQuery(name);
+            var query = new GetAllSuppliersQuery(name, page, pageSize);
             var suppliers = await mediator.Send(query);
             return Results.Ok(suppliers);
         }
