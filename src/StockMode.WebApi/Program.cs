@@ -28,7 +28,7 @@ services.AddCors(opt =>
 services.AddControllers();
 services.AddMailServices(builder.Configuration);
 
-services.ConfigureOpenTelemetry();
+services.ConfigureOpenTelemetry(builder.Configuration);
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddServices();

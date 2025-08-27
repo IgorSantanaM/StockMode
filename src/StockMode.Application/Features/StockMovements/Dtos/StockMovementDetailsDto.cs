@@ -4,6 +4,7 @@ using StockMode.Domain.Products;
 namespace StockMode.Application.Features.StockMovements.Dtos;
 
 public record StockMovementDetailsDto(
+    int Id,
     int VariationId,
     int? SaleId,
     StockMovementType Type,
@@ -11,4 +12,6 @@ public record StockMovementDetailsDto(
     int StockAfterMovement,
     string? Note,
     string? Observation,
-    DateTime MovementDate);
+    DateTime MovementDate,
+    int? CustomerId,
+    int? SupplierId);

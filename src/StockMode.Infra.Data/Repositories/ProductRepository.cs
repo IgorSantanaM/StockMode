@@ -63,39 +63,6 @@ namespace StockMode.Infra.Data.Repositories
             return products.FirstOrDefault()!;
         }
 
-        public async Task<IEnumerable<Product>> GetActiveProductsWithLowStockAsync(int lowStockThreshold)
-        {
-            const string sql = @"
-                SELECT p.*, v.*
-                FROM ""Products"" p
-                INNER JOIN ""Variations"" v ON p.""Id"" = v.""ProductId""
-                WHERE p.""IsActive"" = TRUE AND p.""Id"" IN (
-                    SELECT ""ProductId""
-                    FROM ""Variations""
-                    WHERE ""StockQuantity"" <= @LowStockThreshold
-                );";
-
-            var productDictionary = new Dictionary<int, Product>();
-
-            await _dbConnection.QueryAsync<Product, Variation, Product>(
-                sql,
-                (product, variation) =>
-                {
-                    if (!productDictionary.TryGetValue(product.Id, out var productEntry))
-                    {
-                        productEntry = product;
-                        productDictionary.Add(productEntry.Id, productEntry);
-                    }
-
-                    productEntry.Variations.Add(variation);
-                    return productEntry;
-                },
-                new { LowStockThreshold = lowStockThreshold },
-                splitOn: "Id");
-
-            return productDictionary.Values;
-        }
-
         public async Task<Product?> GetProductByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Products

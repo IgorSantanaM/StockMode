@@ -14,9 +14,9 @@ namespace StockMode.Application.Features.Customers.Commands.UpdateCustomer
 {
     public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
     {
-        private readonly ICustumerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateCustomerCommandHandler(ICustumerRepository customerRepository, IUnitOfWork unitOfWork)
+        public UpdateCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
         {
             _customerRepository = customerRepository;
             _unitOfWork = unitOfWork;

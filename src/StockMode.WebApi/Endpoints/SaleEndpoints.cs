@@ -10,8 +10,6 @@ using StockMode.Application.Features.Sales.Commands.DeleteSale;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Application.Features.Sales.Queries.GetAllSales;
 using StockMode.Application.Features.Sales.Queries.GetSaleById;
-using StockMode.Application.Features.Sales.Queries.GetSalesByDateRange;
-using StockMode.Application.Features.Sales.Queries.GetSalesByStatus;
 using StockMode.Domain.Enums;
 using StockMode.WebApi.Endpoints.Internal;
 
@@ -84,22 +82,6 @@ namespace StockMode.WebApi.Endpoints
               .WithSummary("Retrieves a Sale by its ID.")
               .WithDescription("Retrieves the details of a Sale by its ID. Returns 404 if not found.");
 
-            group.MapGet("/date-range", HandleGetSalesByDataRange)
-              .WithName("GetSalesByDataRange")
-              .Produces<IEnumerable<SaleDetailsDto>>(StatusCodes.Status200OK)
-              .ProducesProblem(StatusCodes.Status404NotFound)
-              .ProducesProblem(StatusCodes.Status500InternalServerError)
-              .WithSummary("Retrieves Sales by their status.")
-              .WithDescription("Retrieves all Sales that match the specified status. Returns 404 if not found.");
-
-            group.MapGet("/status", HandleGetSalesByStatus)
-              .WithName("GetSalesByStatus")
-              .Produces<IEnumerable<SaleDetailsDto>>(StatusCodes.Status200OK)
-              .ProducesProblem(StatusCodes.Status404NotFound)
-              .ProducesProblem(StatusCodes.Status500InternalServerError)
-              .WithSummary("Retrieves Sales by their status.")
-              .WithDescription("Retrieves all Sales that match the specified status. Returns 404 if not found.");
-
             group.MapDelete("{id:int}", HandleDeleteSale)
                 .WithName("DeleteSale")
                 .Produces(StatusCodes.Status204NoContent)
@@ -123,9 +105,9 @@ namespace StockMode.WebApi.Endpoints
             return Results.NoContent();
         }
 
-        private static async Task<IResult> HandleGetAllSales([FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetAllSales(DateTime? startDate, DateTime? endDate, SaleStatus? status, int page, int pageSize, [FromServices] IMediator mediator)
         {
-            var query = new GetAllSalesQuery();
+            var query = new GetAllSalesQuery(startDate, endDate, status, page, pageSize);
             var sales = await mediator.Send(query);
             return Results.Ok(sales);
         }
@@ -135,22 +117,6 @@ namespace StockMode.WebApi.Endpoints
             var query = new GetSaleByIdQuery(id);
             var sale = await mediator.Send(query);
             return Results.Ok(sale);
-        }
-
-        private static async Task<IResult> HandleGetSalesByDataRange([FromQuery] DateTime startDate, [FromQuery] DateTime endDate, [FromServices] IMediator mediator)
-        {
-            var query = new GetSalesByDataRangeQuery(startDate, endDate);
-            var sales = await mediator.Send(query);
-            return Results.Ok(sales);
-
-        }
-
-        private static async Task<IResult> HandleGetSalesByStatus([FromQuery] SaleStatus status, [FromServices] IMediator mediator)
-        {
-            var query = new GetSalesByStatusQuery(status);
-            var sales = await mediator.Send(query);
-            return Results.Ok(sales);
-
         }
 
         private static async Task<IResult> HandleApplyDiscountToSale([FromBody] ApplyDiscountToSaleCommand command,

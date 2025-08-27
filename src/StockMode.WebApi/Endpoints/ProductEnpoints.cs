@@ -6,8 +6,6 @@ using StockMode.Application.Features.Products.Commands.UpdateProduct;
 using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Products.Queries.GetAllProducts;
 using StockMode.Application.Features.Products.Queries.GetProductById;
-using StockMode.Application.Features.Products.Queries.GetProductBySku;
-using StockMode.Application.Features.Products.Queries.GetProductsWithLowStock;
 using StockMode.Application.Features.Products.Queries.GetVariationById;
 using StockMode.WebApi.Endpoints.Internal;
 
@@ -41,22 +39,6 @@ namespace StockMode.WebApi.Endpoints
               .ProducesProblem(StatusCodes.Status500InternalServerError)
               .WithSummary("Retrieves a list of all products")
               .WithDescription("Gets a summary list of all products in the system, including their price range and total stock quantity.");
-
-            group.MapGet("/{sku}", HandleGetProductBySku)
-              .WithName("GetProductBySku")
-              .Produces<ProductDetailsDto>(StatusCodes.Status200OK)
-              .Produces(StatusCodes.Status404NotFound)
-              .ProducesProblem(StatusCodes.Status500InternalServerError)
-              .WithSummary("Retrieves a product by its SKU.")
-              .WithDescription("Gets the details of a product by its SKU, including its variations and stock information.");
-
-            group.MapGet("/lowstock/{threshold:int}", HandleGetProductWithLowStock)
-              .WithName("GetProductsWithLowStock")
-              .Produces<IEnumerable<ProductDetailsDto>>(StatusCodes.Status200OK)
-              .Produces(StatusCodes.Status404NotFound)
-              .ProducesProblem(StatusCodes.Status500InternalServerError)
-              .WithSummary("Retrieves a list of products with low stock.")
-              .WithDescription("Gets a list of products that have stock below a specified threshold, useful for inventory management.");
 
             group.MapGet("/variation/{variationId:int}", HandleGetVariationById)
                 .WithName("GetVariationById")
@@ -106,30 +88,15 @@ namespace StockMode.WebApi.Endpoints
             return product is not null ? Results.Ok(product) : Results.NotFound();
         }
 
-        private static async Task<IResult> HandleGetAllProducts(
-                IMediator mediator)
+        private static async Task<IResult> HandleGetAllProducts(int? lowStockThreshold,
+            string? sku,
+            int page,
+            int pageSize,
+            IMediator mediator)
         {
-            var query = new GetAllProductsQuery();
+            var query = new GetAllProductsQuery(lowStockThreshold, sku, page, pageSize);
             var products = await mediator.Send(query);
             return Results.Ok(products);
-        }
-
-        private static async Task<IResult> HandleGetProductBySku(
-                [FromRoute] string sku,
-                IMediator mediator)
-        {
-            var query = new GetProductBySkuQuery(sku);
-            var product = await mediator.Send(query);
-            return product is not null ? Results.Ok(product) : Results.NotFound();
-        }
-
-        private static async Task<IResult> HandleGetProductWithLowStock(
-                [FromRoute] int threshold,
-                IMediator mediator)
-        {
-            var query = new GetProductsWithLowStockQuery(threshold);
-            var product = await mediator.Send(query);
-            return product is not null ? Results.Ok(product) : Results.NotFound();
         }
 
         private static async Task<IResult> HandleGetVariationById(

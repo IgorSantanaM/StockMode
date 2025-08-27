@@ -12,9 +12,9 @@ namespace StockMode.Application.Features.Customers.Commands.DeleteCustomer
 {
     public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
     {
-        private readonly ICustumerRepository _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteCustomerCommandHandler(ICustumerRepository customerRepository, IUnitOfWork unitOfWork)
+        public DeleteCustomerCommandHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
         {
             _customerRepository = customerRepository;
             _unitOfWork = unitOfWork;
