@@ -25,7 +25,7 @@ namespace StockMode.Application.Features.Suppliers.Validators
                 .NotEmpty().WithMessage("CNPJ is required.")
                 .Matches(@"^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$").WithMessage("CNPJ must be in the format XX.XXX.XXX/XXXX-XX.");
 
-            RuleFor(command => command.ContatctPerson)
+            RuleFor(command => command.ContactPerson)
                 .NotEmpty().WithMessage("Contact person is required.")
                 .MaximumLength(100).WithMessage("Contact person cannot exceed 100 characters.");
 
