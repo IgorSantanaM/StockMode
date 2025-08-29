@@ -10,8 +10,6 @@ import AppRoutes from './routes';
 import { MainContent, AppContainer, PageWrapper } from './Appstyles';
 import { LoadingContainer } from './util/LoadingContainer';
 
-
-
 function App() {
   const auth = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

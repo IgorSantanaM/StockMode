@@ -25,7 +25,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.UpdateSupplier
 
             var address = new Address(request.AddressDto.Number, request.AddressDto.Street, request.AddressDto.City, request.AddressDto.State, request.AddressDto.ZipCode);
 
-            supplier.UpdateDetails(request.Name, request.CorporateName, request.CNPJ, request.ContatctPerson, request.Email, request.PhoneNumber, address, request.Notes);
+            supplier.UpdateDetails(request.Name, request.CorporateName, request.CNPJ, request.ContactPerson, request.Email, request.PhoneNumber, address, request.Notes);
 
             _supplierRepository.Update(supplier);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

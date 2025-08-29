@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Users, PlusCircle, Edit, Trash2, Info } from 'lucide-react';
 import {
   PageContainer,
@@ -14,38 +14,77 @@ import {
   Td,
   Tr,
   CustomerInfo,
-  Avatar,
   ActionButton,
+  PaginationContainer, // Import pagination styles
+  PaginationButton,  // Import pagination styles
+  PageInfo           // Import pagination styles
 } from './styles';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import api from '../../services/api';
 
-// --- DADOS MOCK (Numa aplicação real, viriam da sua API) ---
-const allCustomers = [
-  { id: 1, name: 'Ana Clara', email: 'anaclara@email.com', phone: '(67) 99999-1111', lastPurchaseDate: '2025-08-04', totalSpent: 125.50, avatar: 'https://i.pravatar.cc/40?img=1' },
-  { id: 2, name: 'Marcos Silva', email: 'marcos.silva@email.com', phone: '(67) 98888-2222', lastPurchaseDate: '2025-08-04', totalSpent: 89.90, avatar: 'https://i.pravatar.cc/40?img=2' },
-  { id: 3, name: 'Juliana Costa', email: 'juliana.costa@email.com', phone: '(67) 97777-3333', lastPurchaseDate: '2025-08-03', totalSpent: 210.00, avatar: 'https://i.pravatar.cc/40?img=3' },
-  { id: 4, name: 'Ricardo Alves', email: 'ricardo.alves@email.com', phone: '(67) 96666-4444', lastPurchaseDate: '2025-08-02', totalSpent: 75.00, avatar: 'https://i.pravatar.cc/40?img=4' },
-  { id: 5, name: 'Beatriz Lima', email: 'beatriz.lima@email.com', phone: '(67) 95555-5555', lastPurchaseDate: '2025-08-01', totalSpent: 350.20, avatar: 'https://i.pravatar.cc/40?img=5' },
-];
+const ITEMS_PER_PAGE = 10;
 
 const Customers = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  var navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [customers, setCustomers] = useState([]);
 
-  const filteredCustomers = useMemo(() => {
-    return allCustomers.filter(customer =>
-      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    // When a new search is performed, reset to the first page
+    setCurrentPage(1);
   }, [searchTerm]);
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('name', searchTerm);
+        params.append('page', currentPage);
+        params.append('pageSize', ITEMS_PER_PAGE);
+
+        const response = await api.get(`/customers?${params.toString()}`);
+        
+        setCustomers(response.data.items || []);
+        setTotalPages(response.data.totalPages || 0);
+      } catch (error) {
+        console.error("Failed to fetch customers: ", error);
+        toast.error("Falha ao buscar clientes.");
+        setCustomers([]); // Clear customers on error
+        setTotalPages(0);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    // Debounce the API call
+    const handler = setTimeout(() => {
+      fetchCustomers();
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, currentPage]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return new Intl.DateTimeFormat('pt-BR', {timeZone: 'UTC'}).format(date);
+    return new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(date);
+  };
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+    }
   };
 
   const formatCurrency = (value) => {
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
   return (
@@ -82,7 +121,8 @@ const Customers = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredCustomers.map((customer) => (
+            {/* CORRECTED: Map over `customers` state */}
+            {!isLoading && customers.map((customer) => (
               <Tr key={customer.id}>
                 <Td>
                   <CustomerInfo>
@@ -92,12 +132,13 @@ const Customers = () => {
                     </div>
                   </CustomerInfo>
                 </Td>
-                <Td>{customer.phone}</Td>
-                <Td>{formatDate(customer.lastPurchaseDate)}</Td>
+                <Td>{customer.phoneNumber}</Td>
+                {/* Assuming lastPurchaseDate and totalSpent exist, otherwise handle nulls */}
+                <Td>{customer.lastPurchaseDate ? formatDate(customer.lastPurchaseDate) : 'N/A'}</Td>
                 <Td style={{ fontWeight: 500 }}>{formatCurrency(customer.totalSpent)}</Td>
                 <Td>
                   <div style={{display: 'flex', justifyContent: 'flex-end', gap: '0.5rem'}}>
-                    <ActionButton title="Editar Cliente">
+                    <ActionButton title="Detalhes do Cliente">
                       <Info size={18} />
                     </ActionButton>
                     <ActionButton title="Editar Cliente">
@@ -112,10 +153,40 @@ const Customers = () => {
             ))}
           </tbody>
         </Table>
-        {filteredCustomers.length === 0 && (
+
+        {/* ADDED: Loading and Empty States */}
+        {isLoading && (
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
+            Carregando...
+          </div>
+        )}
+        {!isLoading && customers.length === 0 && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
             Nenhum cliente encontrado.
           </div>
+        )}
+        
+        {/* ADDED: Pagination UI */}
+        {!isLoading && totalPages > 0 && (
+          <PaginationContainer>
+            <PageInfo>
+              Página {currentPage} de {totalPages}
+            </PageInfo>
+            <div style={{display: 'flex', gap: '0.5rem'}}>
+              <PaginationButton
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Anterior
+              </PaginationButton>
+              <PaginationButton
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                Próxima
+              </PaginationButton>
+            </div>
+          </PaginationContainer>
         )}
       </Card>
     </PageContainer>

@@ -70,6 +70,7 @@ const baseInputStyles = `
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   font-size: 1rem;
+  color: black;
   background-color: #f9fafb;
   transition: all 0.2s ease-in-out;
 
