@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { Truck, PlusCircle, Edit, Trash2, Info } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
+import { Truck, PlusCircle, Edit, Trash2, Info, SearchCheck } from 'lucide-react';
 import {
   PageContainer,
   PageHeader,
@@ -14,26 +15,66 @@ import {
   Td,
   Tr,
   ActionButton,
+  PaginationContainer,
+  PaginationButton,
+  PageInfo
 } from './styles';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-const allSuppliers = [
-  { id: 1, name: 'Fornecedor Têxtil S.A.', contactPerson: 'Carlos Pereira', email: 'carlos@textilsa.com', phone: '(11) 99999-1111' },
-  { id: 2, name: 'Malhas & Cia', contactPerson: 'Fernanda Lima', email: 'fernanda@malhasecia.com.br', phone: '(21) 98888-2222' },
-  { id: 3, name: 'Importados de Luxo', contactPerson: 'Roberto Martins', email: 'roberto@luxoimport.com', phone: '(41) 97777-3333' },
-  { id: 4, name: 'Jeans Brasil', contactPerson: 'Mariana Costa', email: 'mariana.costa@jeansbr.com', phone: '(81) 96666-4444' },
-];
+const ITEMS_PER_PAGE = 10;
 
 const Suppliers = () => {
-  const [searchTerm, setSearchTerm] = useState('');
   var navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [suppliers, setSuppliers] = useState([]);
 
-  const filteredSuppliers = useMemo(() => {
-    return allSuppliers.filter(supplier =>
-      supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplier.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    setCurrentPage(1);
   }, [searchTerm]);
+
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+      setIsLoading(true);
+      try{
+        const params = new URLSearchParams()
+        if(searchTerm) params.append('name', searchTerm);
+        params.append('page', currentPage);
+        params.append('pageSize', ITEMS_PER_PAGE);
+
+        const response = await api.get(`/suppliers?${params.toString()}`);
+
+        setSuppliers(response.data.items || []);
+        setTotalPages(response.data.totalPages || 0);
+      }
+      catch(error){
+        console.error("Failed to fetch Suppliers: ", error);
+        toast.error("Falha ao buscar fornecedores.");
+        setSuppliers([]);
+        setTotalPages(0);
+      }finally{
+        setIsLoading(false);
+      }
+    }
+
+    const handler = setTimeout(() => {
+      fetchSuppliers();
+    }, 500);
+
+  return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, currentPage]);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+    }
+  };
 
   return (
     <PageContainer>
@@ -69,12 +110,12 @@ const Suppliers = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredSuppliers.map((supplier) => (
+            {!isLoading && suppliers.map((supplier) => (
               <Tr key={supplier.id}>
                 <Td style={{ fontWeight: 500 }}>{supplier.name}</Td>
                 <Td>{supplier.contactPerson}</Td>
                 <Td style={{ color: '#6b7280' }}>{supplier.email}</Td>
-                <Td>{supplier.phone}</Td>
+                <Td>{supplier.phoneNumber}</Td>
                 <Td>
                   <div style={{display: 'flex', justifyContent: 'flex-end', gap: '0.5rem'}}>
                     <ActionButton title="Editar Cliente">
@@ -92,11 +133,38 @@ const Suppliers = () => {
             ))}
           </tbody>
         </Table>
-        {filteredSuppliers.length === 0 && (
+        {isLoading && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
-            Nenhum fornecedor encontrado.
+            Carregando...
           </div>
         )}
+        {!isLoading && suppliers.length === 0 && (
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
+            Nenhum cliente encontrado.
+          </div>
+        )}
+
+        {!isLoading && totalPages > 0 && (
+                  <PaginationContainer>
+                    <PageInfo>
+                      Página {currentPage} de {totalPages}
+                    </PageInfo>
+                    <div style={{display: 'flex', gap: '0.5rem'}}>
+                      <PaginationButton
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        Anterior
+                      </PaginationButton>
+                      <PaginationButton
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        Próxima
+                      </PaginationButton>
+                    </div>
+                  </PaginationContainer>
+                )}
       </Card>
     </PageContainer>
   );

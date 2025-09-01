@@ -144,8 +144,8 @@ export const QuantityButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-
+  color: black;
+  
   &:hover {
     background-color: #f3f4f6;
   }

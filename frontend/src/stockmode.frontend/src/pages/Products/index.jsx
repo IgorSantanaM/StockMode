@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Package, PlusCircle, MoreVertical, Edit, Trash2, Info } from 'lucide-react';
+import { Package, PlusCircle, MoreVertical, Edit, Trash2, Info, SearchCheck } from 'lucide-react';
 import api from '../../services/api';
 import {toast} from "react-toastify";
 import {
@@ -19,8 +19,13 @@ import {
   ProductImage,
   StockStatus,
   ActionButton,
+  PaginationContainer,
+  PageInfo, 
+  PaginationButton
 } from './styles';
 import { useNavigate } from 'react-router-dom';
+
+const ITEMS_PER_PAGE = 10;
 
 const Products = () => {
   var navigate = useNavigate();
@@ -29,12 +34,24 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState([]); 
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, categoryFilter])
+
   useEffect(() => {
     const fetchProducts = async () =>{
       try{
-        const response = await api.get('/products');
+        const params = new URLSearchParams();
+        if (searchTerm) params.append('name', searchTerm);
+        params.append('page', currentPage);
+        params.append('pageSize', ITEMS_PER_PAGE)
+        const response = await api.get(`/products?${params.toString()}`);
         console.log(response.data);
-        setProducts(response.data);
+        setProducts(response.data.items);
+        setTotalPages(response.data.totalPages);
       }catch(error){
         console.error("Failed to fetch products: ", error)
       }
@@ -43,8 +60,15 @@ const Products = () => {
       }
     };
 
-    fetchProducts();
-  }, []);
+    const handler = setTimeout(() => {
+      fetchProducts();
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm, currentPage]);
+
 
   const deleteProduct = async (id) =>{
     try{
@@ -54,6 +78,12 @@ const Products = () => {
       toast.error("Erro ao excluir o produto.")
     }
   }
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+    }
+  };
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
@@ -113,7 +143,7 @@ const Products = () => {
         <Table>
           <thead>
             <tr>
-              <Th style={{width: '80px'}}></Th>
+              {/* <Th style={{width: '80px'}}></Th> */}
               <Th>Produto</Th>
               <Th>Preço de Venda</Th>
               <Th>Estoque Total</Th>
@@ -121,11 +151,11 @@ const Products = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
+            {!isLoading && filteredProducts.map((product) => (
               <Tr key={product.id}>
-                <Td>
+                {/* <Td>
                   <ProductImage src={product.image} alt={product.name} />
-                </Td>
+                </Td> */}
                 <Td style={{ fontWeight: 500 }}>{product.name}</Td>
                 <Td>{formatPriceRange(product.minSalePrice, product.maxSalePrice)}</Td>
                 <Td>
@@ -150,11 +180,38 @@ const Products = () => {
             ))}
           </tbody>
         </Table>
-        {filteredProducts.length === 0 && (
+
+        {isLoading && (
+          <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
+            Carregando...
+          </div>
+        )}
+        {!isLoading && products.length === 0 && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
             Nenhum produto encontrado para os filtros selecionados.
           </div>
         )}
+        {!isLoading && totalPages > 0 && (
+                  <PaginationContainer>
+                    <PageInfo>
+                      Página {currentPage} de {totalPages}
+                    </PageInfo>
+                    <div style={{display: 'flex', gap: '0.5rem'}}>
+                      <PaginationButton
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        Anterior
+                      </PaginationButton>
+                      <PaginationButton
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        Próxima
+                      </PaginationButton>
+                    </div>
+                  </PaginationContainer>
+                )}
       </Card>
     </PageContainer>
   );

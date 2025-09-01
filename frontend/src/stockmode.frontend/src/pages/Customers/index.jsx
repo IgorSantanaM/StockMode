@@ -15,9 +15,9 @@ import {
   Tr,
   CustomerInfo,
   ActionButton,
-  PaginationContainer, // Import pagination styles
-  PaginationButton,  // Import pagination styles
-  PageInfo           // Import pagination styles
+  PaginationContainer, 
+  PaginationButton,
+  PageInfo
 } from './styles';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -35,7 +35,6 @@ const Customers = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    // When a new search is performed, reset to the first page
     setCurrentPage(1);
   }, [searchTerm]);
 
@@ -55,14 +54,13 @@ const Customers = () => {
       } catch (error) {
         console.error("Failed to fetch customers: ", error);
         toast.error("Falha ao buscar clientes.");
-        setCustomers([]); // Clear customers on error
+        setCustomers([]); 
         setTotalPages(0);
       } finally {
         setIsLoading(false);
       }
     };
 
-    // Debounce the API call
     const handler = setTimeout(() => {
       fetchCustomers();
     }, 500);
@@ -121,8 +119,7 @@ const Customers = () => {
             </tr>
           </thead>
           <tbody>
-            {/* CORRECTED: Map over `customers` state */}
-            {!isLoading && customers.map((customer) => (
+            { !isLoading && customers.map((customer) => (
               <Tr key={customer.id}>
                 <Td>
                   <CustomerInfo>
@@ -154,7 +151,6 @@ const Customers = () => {
           </tbody>
         </Table>
 
-        {/* ADDED: Loading and Empty States */}
         {isLoading && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
             Carregando...
