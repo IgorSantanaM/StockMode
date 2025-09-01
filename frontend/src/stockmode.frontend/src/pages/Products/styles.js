@@ -141,3 +141,37 @@ export const ActionButton = styled.button`
     color: #1f2937;
   }
 `;
+
+export const PaginationContainer = styled.div`
+  padding-left: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  margin-top: auto;
+`;
+
+export const PaginationButton = styled.button`
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  border-radius: 0.5rem;
+  color: black;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #f9fafb;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+export const PageInfo = styled.span`
+  font-size: 0.875rem;
+  color: #6b7280;
+`;
+

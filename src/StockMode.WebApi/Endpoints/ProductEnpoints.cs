@@ -5,6 +5,7 @@ using StockMode.Application.Features.Products.Commands.DeleteProduct;
 using StockMode.Application.Features.Products.Commands.UpdateProduct;
 using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Products.Queries.GetAllProducts;
+using StockMode.Application.Features.Products.Queries.GetAllVariations;
 using StockMode.Application.Features.Products.Queries.GetProductById;
 using StockMode.Application.Features.Products.Queries.GetVariationById;
 using StockMode.WebApi.Endpoints.Internal;
@@ -63,8 +64,14 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Updates an existing product by its ID.")
                 .WithDescription("Updates the details of an existing product, including its variations, by providing the product ID and updated information.");
-        }
 
+            group.MapGet("/variations", HandleGetAllVariations)
+                .WithName("GetAllVariations")
+                .Produces<IEnumerable<VariationDetailDto>>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Retrieves a list of all product variations.")
+                .WithDescription("Gets a summary list of all product variations in the system, including their price and stock quantity.");
+        }
 
         #region Handlers
 
@@ -89,12 +96,12 @@ namespace StockMode.WebApi.Endpoints
         }
 
         private static async Task<IResult> HandleGetAllProducts(int? lowStockThreshold,
-            string? sku,
+            string? name,
             int page,
             int pageSize,
             IMediator mediator)
         {
-            var query = new GetAllProductsQuery(lowStockThreshold, sku, page, pageSize);
+            var query = new GetAllProductsQuery(lowStockThreshold, name, page, pageSize);
             var products = await mediator.Send(query);
             return Results.Ok(products);
         }
@@ -127,6 +134,14 @@ namespace StockMode.WebApi.Endpoints
             var updatedProduct = await mediator.Send(updateProductCommand);
             return Results.Ok(updatedProduct);
 
+        }
+
+        private static async Task<IResult> HandleGetAllVariations(string? name, string? sku, int page, int pageSize, IMediator mediator)
+        {
+            var query = new GetAllVariationsQuery(name, sku, page, pageSize);
+            var variations = await mediator.Send(query);
+
+            return Results.Ok(variations);
         }
         #endregion
     }

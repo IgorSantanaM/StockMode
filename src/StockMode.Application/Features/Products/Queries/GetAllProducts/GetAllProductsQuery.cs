@@ -4,4 +4,4 @@ using StockMode.Domain.Common;
 
 namespace StockMode.Application.Features.Products.Queries.GetAllProducts;
 
-public record GetAllProductsQuery(int? LowStockThreshold, string? Sku,int Page, int PageSize) : IRequest<PagedResult<ProductSummaryDto>>;
+public record GetAllProductsQuery(int? LowStockThreshold, string? Name, int Page, int PageSize) : IRequest<PagedResult<ProductSummaryDto>>;

@@ -162,7 +162,7 @@ const ProductCreation = () => {
           </div>
 
           <ButtonContainer>
-            <CancelButton type="button">
+            <CancelButton type="button" onClick={() => navigate('/Products')}>
               <X size={20} style={{ marginRight: '0.5rem' }} />
               Cancelar
             </CancelButton>

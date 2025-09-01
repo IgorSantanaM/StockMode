@@ -18,7 +18,6 @@ import {
   PreferenceRow,
 } from './styles';
 
-// --- DADOS MOCK (Numa aplicação real, viriam do contexto de autenticação ou da API) ---
 const userData = {
   name: 'Igor Medeiros',
   email: 'igor.medeiros@stockmode.com',

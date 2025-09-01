@@ -38,10 +38,10 @@ namespace StockMode.Application.Features.Products.Queries.GetAllProducts
                 LEFT JOIN ""Variations"" AS v ON p.""Id"" = v.""ProductId""
                 ");
 
-            if(request.Sku is not null)
+            if(request.Name is not null)
             {
-                whereClauses.Add("v.\"Sku\" LIKE @Sku");
-                parameters.Add("Sku", $"%{request.Sku}%");
+                whereClauses.Add("p.\"Name\" LIKE @Name");
+                parameters.Add("Name", $"%{request.Name}%");
             }
             if (request.LowStockThreshold.HasValue)
             {
