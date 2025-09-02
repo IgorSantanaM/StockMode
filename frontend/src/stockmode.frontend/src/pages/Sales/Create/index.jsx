@@ -9,11 +9,14 @@ import {
 import api from '../../../services/api';
 import { toast } from 'react-toastify';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 3;
 
 const NewSale = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [ customerIsLoading, setCustomerIsLoading] = useState(true);
+  const [ customerSearchTerm, setCustomerSearchTerm] = useState('');
+  const [ customers, setCustomers] = useState([]);
   const [variations, setVariations] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,6 +61,37 @@ const NewSale = () => {
     };
   }, [searchTerm, currentPage]);
 
+  useEffect(() =>{
+    const fetchCustomers = async () => {
+      setCustomerIsLoading(true);
+      try{
+        const params = new URLSearchParams();
+        if(customerSearchTerm) params.append('name', customerSearchTerm);
+        params.append('page', currentPage);
+        params.append('pageSize', ITEMS_PER_PAGE);
+
+        console.log("bateu!");
+        const response = await api.get(`/customers?${params.toString()}`);
+        setCustomers(response.data.items);
+        setTotalPages(response.data.totalPages);
+      }catch(error){
+        console.error("Failed to fetch customers: ", error);
+        toast.error("Falha ao buscar clientes.");
+        setVariations([]); 
+        setTotalPages(0);
+      }finally{
+        setCustomerIsLoading(false);
+      }
+    } 
+    const handler = setTimeout(() => {
+      fetchCustomers();
+    }, 500);
+
+  return () => {
+      clearTimeout(handler);
+    };
+  }, [customerSearchTerm, currentPage]);
+
 
   const updateQuantity = (variationId, newQuantity) => {
     if (newQuantity === 0) {
@@ -101,29 +135,50 @@ const NewSale = () => {
 
   return (
     <PageContainer>
-      <LeftPanel>
-        <SearchContainer>
-          <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
-          <Input 
-            type="text" 
-            placeholder="Buscar variação de produto por nome..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </SearchContainer>
-        <SearchResultsContainer>
-          { totalPages > 0 && !isLoading && variations.map((variation) => (
-            <ProductCard key={variation.id} onClick={() => addToSale(variation)}>
-              {/* <ProductImage src={variation.image} alt={variation.name} /> */}
-              <ProductInfo>
-                <ProductName>{variation.name}</ProductName>
-                <ProductSku>SKU: {variation.sku} | Estoque: {variation.stockQuantity}</ProductSku>
-              </ProductInfo>
-              <ProductPrice>{formatCurrency(variation.salePrice)}</ProductPrice>
-            </ProductCard>
-          ))}
-        </SearchResultsContainer>
-      </LeftPanel>
+        <LeftPanel>
+          <SearchContainer>
+            <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+            <Input 
+              type="text" 
+              placeholder="Buscar variação de produto por nome..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </SearchContainer>
+          <SearchResultsContainer>
+            { totalPages > 0 && !isLoading && variations.map((variation) => (
+              <ProductCard key={variation.id} onClick={() => addToSale(variation)}>
+                {/* <ProductImage src={variation.image} alt={variation.name} /> */}
+                <ProductInfo>
+                  <ProductName>{variation.name}</ProductName>
+                  <ProductSku>SKU: {variation.sku} | Estoque: {variation.stockQuantity}</ProductSku>
+                </ProductInfo>
+                <ProductPrice>{formatCurrency(variation.salePrice)}</ProductPrice>
+              </ProductCard>
+            ))}
+          </SearchResultsContainer>
+
+          <SearchContainer>
+            <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+            <Input 
+              type="text" 
+              placeholder="Buscar clientes cadastrados por nome..." 
+              value={searchTerm}
+              onChange={(e) => setCustomerSearchTerm(e.target.value)}
+            />
+          </SearchContainer>
+          <SearchResultsContainer>
+            { totalPages > 0 && !isLoading && customers.map((customer) => (
+              <ProductCard key={customer.id} onClick={() => addToSale(customer)}>
+                {/* <ProductImage src={variation.image} alt={variation.name} /> */}
+                <ProductInfo>
+                  <ProductName>{customer.name}</ProductName>
+                  <ProductSku>Email: {customer.email} | Telefone: {customer.phoneNumber} </ProductSku>
+                </ProductInfo>
+              </ProductCard>
+            ))}
+          </SearchResultsContainer>
+        </LeftPanel>
 
       <RightPanel>
         <SectionTitle>Resumo da Venda</SectionTitle>

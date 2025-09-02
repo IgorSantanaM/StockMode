@@ -26,7 +26,7 @@ export const RightPanel = styled.div`
 export const SearchContainer = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
-  width: 27.8rem;
+  width: 33.4rem;
   color: black;
 `;
 
@@ -145,7 +145,7 @@ export const QuantityButton = styled.button`
   align-items: center;
   justify-content: center;
   color: black;
-  
+
   &:hover {
     background-color: #f3f4f6;
   }
@@ -201,4 +201,16 @@ export const Select = styled.select`
   font-size: 0.875rem;
   color: black;
   background-color: #ffffff;
+`;
+
+export const CustomerSection = styled.div`
+  margin: 0 0 1.5rem 0;
+  color: black;
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;  font-size: 1rem;
+ }
 `;
