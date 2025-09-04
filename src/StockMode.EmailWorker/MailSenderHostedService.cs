@@ -42,40 +42,36 @@ namespace StockMode.EmailWorker
             }
         }
 
-        private async Task SendMailAsync(SaleCompletedEmail saleCompletedEmail, CancellationToken cancellationToken)
+        private async Task SendMailAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken cancellationToken)
         {
             using var scope = service.CreateScope();
             var mailer = scope.ServiceProvider.GetRequiredService<IMailer>();
             var bus = scope.ServiceProvider.GetRequiredService<IBus>();
             try
             {
-                await mailer.SendSaleCompletedAsync(saleCompletedEmail, cancellationToken);
+                await mailer.SendAsync(emailMessage, cancellationToken);
                 await bus.PubSub.PublishAsync(new DeliveryReport
                 {
                     MessageId = Guid.NewGuid(),
-                    Recipient = saleCompletedEmail.Email,
+                    Recipient = emailMessage.To,
                     Status = DeliveryStatus.Success,
                     Metadata = new Dictionary<string, object>
                     {
-                        { "SaleId", saleCompletedEmail.SaleId },
-                        { "Email", saleCompletedEmail.Email },
+                        { "Email", emailMessage.To },
                         { "Timestamp", DateTime.UtcNow }
                     }
                 }, cancellationToken);
-                logger.LogInformation("Email sent successfully for Sale ID: {SaleId}", saleCompletedEmail.SaleId);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Failed to send email for Sale ID: {SaleId}", saleCompletedEmail.SaleId);
                 await bus.PubSub.PublishAsync(new DeliveryReport
                 {
                     MessageId = Guid.NewGuid(),
-                    Recipient = saleCompletedEmail.Email,
+                    Recipient = emailMessage.To,
                     Status = DeliveryStatus.Failure,
                     Metadata = new Dictionary<string, object>
                     {
-                        { "SaleId", saleCompletedEmail.SaleId },
-                        { "Email", saleCompletedEmail.Email },
+                        { "Email", emailMessage.To },
                         { "Timestamp", DateTime.UtcNow }
                     }
                 }, cancellationToken);

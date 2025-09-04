@@ -6,9 +6,5 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Common.Messaging
 {
-    public record QueueMessageWrapper
-    {
-        public string MessageType { get; init; }
-        public string Payload { get; init; }
-    }
+    public record QueueMessageWrapper(string MessageType, string Payload);
 }
