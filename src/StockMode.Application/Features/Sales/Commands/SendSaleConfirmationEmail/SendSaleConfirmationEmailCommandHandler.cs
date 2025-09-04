@@ -63,7 +63,7 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
                         { "Timestamp", DateTime.UtcNow }
                     }
                 };
-                await reporter.ReportReportAsync(report);
+                await reporter.ReportAsync(report);
                 throw;
             }
         }

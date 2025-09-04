@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Common.Messaging;
+using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Domain.Sales.Events;
 using System.Data.Common;
