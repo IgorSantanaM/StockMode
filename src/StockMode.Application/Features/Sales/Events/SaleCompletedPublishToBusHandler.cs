@@ -7,7 +7,7 @@ using StockMode.Domain.Sales.Events;
 
 namespace StockMode.Application.Features.Sales.Events
 {
-    public class SaleCompletedPublishToBusHandler(IMessageQueue messageQueue, IMediator mediator) : INotificationHandler<SaleCompletedEvent>
+    public class SaleCompletedPublishToBusHandler(IMediator mediator) : INotificationHandler<SaleCompletedEvent>
     {
         public async Task Handle(SaleCompletedEvent notification, CancellationToken cancellationToken)
         {

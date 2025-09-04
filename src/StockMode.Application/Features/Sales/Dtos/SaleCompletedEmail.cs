@@ -7,7 +7,7 @@ namespace StockMode.Application.Features.Sales.Dtos
         string Email,
         decimal TotalPrice,
         decimal Discount,
-        decimal FinalPrice,
+        decimal FinalPrice, 
         PaymentMethod PaymentMethod,
         DateTime SaleDate,
         IReadOnlyCollection<SaleItemDetailsDto> Items);

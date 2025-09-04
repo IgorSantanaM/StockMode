@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MimeKit;
 using StockMode.Application.Common.Interfaces;
+using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Sales.Dtos;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ namespace StockMode.Infra.Services.Email
             message.Body = bb.ToMessageBody();
             return message;
         }
+
+
         public async Task SendSaleCompletedAsync(SaleCompletedEmail saleCompletedEmail, CancellationToken token)
         {
             var message = CreateMessage(saleCompletedEmail);
