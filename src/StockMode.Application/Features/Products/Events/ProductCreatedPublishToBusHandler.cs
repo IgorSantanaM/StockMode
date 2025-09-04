@@ -18,11 +18,9 @@ namespace StockMode.Application.Features.Products.Events
         {
             var command = new SendProductCreatedEmailCommand(notification.ProductId);
 
-            var messageWrapper = new QueueMessageWrapper
-            {
-                MessageType = command.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Command type cannot be null"),
-                Payload = System.Text.Json.JsonSerializer.Serialize(command)
-            };
+            var messageWrapper = new QueueMessageWrapper(
+                 command.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Command type cannot be null"),
+                 System.Text.Json.JsonSerializer.Serialize(command));
 
             await mediator.Send(command, cancellationToken);
         }

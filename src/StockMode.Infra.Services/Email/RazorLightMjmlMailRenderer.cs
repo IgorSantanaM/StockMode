@@ -3,16 +3,14 @@ using RazorLight;
 using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Features.Sales.Dtos;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace StockMode.Infra.Services.Email
 {
     public class RazorLightMjmlMailRenderer : IHtmlMailRenderer
     {
-        private string TEMPLATE_KEY = "SaleCompleted";
         private readonly RazorLightEngine _razor;
         private readonly IMjmlRenderer _mjml;
-        private readonly IMailTemplateProvider _templates;
-        private readonly MjmlOptions options = new();
 
         public RazorLightMjmlMailRenderer(IMjmlRenderer mjml, IMailTemplateProvider templates)
         {
@@ -22,7 +20,6 @@ namespace StockMode.Infra.Services.Email
                 .Build();
 
             _mjml = mjml;
-            _templates = templates;
         }
 
         #region cssRules
@@ -41,18 +38,27 @@ namespace StockMode.Infra.Services.Email
         mjmlOutput.Replace(":wght@", ":wght@@");
         #endregion
 
-        public string RenderSaleCompletedEmail(SaleCompletedEmail model)
+        public async Task<string> RenderAsync<TModel>(string templateName, TModel model)
         {
-            var templateContent = CompileMjml();
-            return _razor.CompileRenderStringAsync(TEMPLATE_KEY, templateContent, model)
-                .GetAwaiter()
-                .GetResult();
+            var htmlTemplate = await CompileMjmltemplateAsync(templateName);
+
+            var findHtml = await _razor.CompileRenderStringAsync(templateName, htmlTemplate, model);
+
+            return findHtml;
         }
 
-        private string CompileMjml()
+        private async Task<string> CompileMjmltemplateAsync(string templateName)
         {
-            var mjmlSource = _templates.SaleCompletedMjml;
-            var (mjmlOutput, errors) = _mjml.Render(mjmlSource, options);
+            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", $"{templateName}.csmjml");
+
+            if(!File.Exists(templatePath))
+            {
+                throw new FileNotFoundException($"Template file not found: {templatePath}");
+            }
+
+             var mjmlSource = await File.ReadAllTextAsync(templatePath);
+
+            var (htmlOutput, errors) = _mjml.Render(mjmlSource);
 
             if (errors.Any())
             {
@@ -60,10 +66,11 @@ namespace StockMode.Infra.Services.Email
                 throw new Exception($"Error while compiling MJML:\n{allErrors}");
             }
 
-            mjmlOutput = EscapeCssRulesInRazorTemplate(mjmlOutput);
-            mjmlOutput = EscapeCssFontWeightsInRazorTemplate(mjmlOutput);
+            htmlOutput = EscapeCssRulesInRazorTemplate(htmlOutput);
+            htmlOutput = EscapeCssFontWeightsInRazorTemplate(htmlOutput);
 
-            return mjmlOutput;
+            return htmlOutput;
         }
+
     }
 }

@@ -10,6 +10,6 @@ namespace StockMode.Application.Common.Interfaces
 {
     public interface IHtmlMailRenderer
     {
-        string RenderSaleCompletedEmail(SaleCompletedEmail saleCompletedEmail);
+        Task<string> RenderAsync<TModel>(string templateName, TModel saleCompletedEmail);
     }
 }

@@ -1,4 +1,5 @@
-﻿using StockMode.Application.Features.Products.Dtos;
+﻿using StockMode.Application.Common.Messaging;
+using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Domain.Sales.Events;
 using System;
@@ -11,6 +12,6 @@ namespace StockMode.Application.Common.Interfaces
 {
     public interface IMailer
     {
-        Task SendSaleCompletedAsync(SaleCompletedEmail saleCompletedEmail, CancellationToken token);
+        Task SendAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken token);
     }
 }

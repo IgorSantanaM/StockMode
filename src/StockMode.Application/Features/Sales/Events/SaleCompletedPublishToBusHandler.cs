@@ -13,11 +13,10 @@ namespace StockMode.Application.Features.Sales.Events
         {
             var command = new SendSaleConfirmationEmailCommand(notification.SaleId, "igorsantanamedeiros17@gmail.com");
 
-            var messageWrapper = new QueueMessageWrapper
-            {
-                MessageType = command.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Command type cannot be null"),
-                Payload = System.Text.Json.JsonSerializer.Serialize(command)
-            };
+            var messageWrapper = new QueueMessageWrapper(
+                command.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Command type cannot be null"),
+                 System.Text.Json.JsonSerializer.Serialize(command));
+
             await mediator.Send(command);
         }
     }

@@ -1,13 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MimeKit;
 using StockMode.Application.Common.Interfaces;
-using StockMode.Application.Features.Products.Dtos;
-using StockMode.Application.Features.Sales.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StockMode.Application.Common.Messaging;
 
 namespace StockMode.Infra.Services.Email
 {
@@ -15,36 +9,35 @@ namespace StockMode.Infra.Services.Email
         IMailSender mailSender,
         ILogger<Mailer> logger) : IMailer
     {
-
-        public MimeMessage CreateMessage(SaleCompletedEmail saleCompletedEmail)
+        public async Task SendAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken token)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("StockMode", "naoresponda@stockmode.com.br")); // TODO: PEGAR DO CONTEXT DA LOJA
-            message.To.Add(new MailboxAddress(saleCompletedEmail.Email, saleCompletedEmail.Email));
-            message.Subject = $"Venda concluida!";
-            var bb = new BodyBuilder
-            {
-                HtmlBody = htmlRenderer.RenderSaleCompletedEmail(saleCompletedEmail)
-            };
-            message.Body = bb.ToMessageBody();
-            return message;
-        }
-
-
-        public async Task SendSaleCompletedAsync(SaleCompletedEmail saleCompletedEmail, CancellationToken token)
-        {
-            var message = CreateMessage(saleCompletedEmail);
-
             try
             {
+                var htmlBody = await htmlRenderer.RenderAsync(emailMessage.TemplateName, emailMessage.Model);
+
+                var message = new MimeMessage();
+
+                message.From.Add(new MailboxAddress("StockMode", "naoresponda@stockmode.com.br"));
+
+                message.To.Add(new MailboxAddress(emailMessage.To, emailMessage.To));
+                message.Subject = emailMessage.Subject;
+
+                var bb = new BodyBuilder
+                {
+                    HtmlBody = htmlBody
+                };
+
+                message.Body = bb.ToMessageBody();
+
                 await mailSender.SendAsync(message, token);
+
+                logger.LogInformation("Email sent to {To} with subject {Subject}", emailMessage.To, emailMessage.Subject);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                logger.LogError(ex, "Error sendin email for {accountEmail}", saleCompletedEmail.Email);
+                logger.LogError(ex, "Error sending email to {To} with subject {Subject}", emailMessage.To, emailMessage.Subject);
                 throw;
             }
-               
         }
     }
 }
