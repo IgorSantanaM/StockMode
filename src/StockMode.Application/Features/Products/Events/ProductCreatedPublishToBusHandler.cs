@@ -16,7 +16,7 @@ namespace StockMode.Application.Features.Products.Events
     {
         public async Task Handle(ProductCreatedEvent notification, CancellationToken cancellationToken)
         {
-            var command = new SendProductCreatedEmailCommand(notification.ProductId);
+            var command = new SendProductCreatedEmailCommand(notification);
 
             var messageWrapper = new QueueMessageWrapper(
                  command.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("Command type cannot be null"),

@@ -44,22 +44,17 @@ namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEma
                 var customerRepository = scope.ServiceProvider.GetRequiredService<ICustomerRepository>();
                 var dbConnection = scope.ServiceProvider.GetRequiredService<IDbConnection>();
 
-                Product? product = await productRepository.GetProductByIdAsync(request.ProductId, cancellationToken);
-
-                if (product is null)
-                    throw new NotFoundException(nameof(Customer), request.ProductId);
-
-                    var getAllCustomersEmails = @"SELECT ""Email"" FROM ""Customers"" as c LEFT JOIN ""Sales"" as s ON c.""Id"" = s.""CustomerId"" where s.""FinalPrice"" <> 0";
+                var getAllCustomersEmails = @"SELECT ""Email"" FROM ""Customers"" as c LEFT JOIN ""Sales"" as s ON c.""Id"" = s.""CustomerId"" where s.""FinalPrice"" <> 0";
 
                 var customerEmails = (await dbConnection.QueryAsync<string>(getAllCustomersEmails)).Distinct().ToList();
 
                 if (!customerEmails.Any()) return; 
  
-                var productCreatedEmail  = new ProductCreatedEmail(product.Name, product.Description!, product.Variations.Select(v => new VariationDetailDto(v.Id, v.Name, v.Sku, v.CostPrice, v.SalePrice, v.StockQuantity)).ToList(), customerEmails);
+                var productCreatedEmail  = new ProductCreatedEmail(request.ProductCreatedEvent.Name!, request.ProductCreatedEvent.Description!, request.ProductCreatedEvent.Variations.Select(v => new VariationsForEmailSendingDto(v.Name, v.Sku, v.SalePrice)).ToList(), customerEmails);
 
                 var emailBody  = new EmailMessage<ProductCreatedEmail>(
                     string.Join(",", customerEmails),
-                    $"New Product Added: {product.Name}",
+                    $"New Product Added: {request.ProductCreatedEvent.Name}",
                     "ProductCreated",
                     productCreatedEmail);
 
@@ -75,7 +70,7 @@ namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEma
                     ErrorDetails = ex.Message,
                     Metadata = new Dictionary<string, object>
                     {
-                        { "ProductId", request.ProductId },
+                        { "ProductId", request.ProductCreatedEvent.ProductId },
                         { "Timestamp", DateTime.UtcNow }
                     }
                 };
