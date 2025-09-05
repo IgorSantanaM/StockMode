@@ -11,7 +11,7 @@ namespace StockMode.Infra.Services.Email
     {
         private readonly RazorLightEngine _razor;
         private readonly IMjmlRenderer _mjml;
-
+        private readonly IMailTemplateProvider _templates;
         public RazorLightMjmlMailRenderer(IMjmlRenderer mjml, IMailTemplateProvider templates)
         {
             _razor = new RazorLightEngineBuilder()
@@ -20,6 +20,7 @@ namespace StockMode.Infra.Services.Email
                 .Build();
 
             _mjml = mjml;
+            _templates = templates;
         }
 
         #region cssRules
@@ -40,23 +41,17 @@ namespace StockMode.Infra.Services.Email
 
         public async Task<string> RenderAsync<TModel>(string templateName, TModel model)
         {
-            var htmlTemplate = await CompileMjmltemplateAsync(templateName);
+            var htmlTemplate = CompileMjmltemplateAsync(templateName);
 
             var findHtml = await _razor.CompileRenderStringAsync(templateName, htmlTemplate, model);
 
             return findHtml;
         }
 
-        private async Task<string> CompileMjmltemplateAsync(string templateName)
+        private string CompileMjmltemplateAsync(string templateName)
         {
-            var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", $"{templateName}.csmjml");
 
-            if(!File.Exists(templatePath))
-            {
-                throw new FileNotFoundException($"Template file not found: {templatePath}");
-            }
-
-             var mjmlSource = await File.ReadAllTextAsync(templatePath);
+             var mjmlSource = _templates.GetEmailTemplate(templateName);
 
             var (htmlOutput, errors) = _mjml.Render(mjmlSource);
 

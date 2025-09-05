@@ -1,0 +1,94 @@
+<mjml>
+	<mj-head>
+		<mj-title>Temos Novidades na Nossa Loja!</mj-title>
+		<mj-font name="Roboto" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+		<mj-style>
+			.body {
+			background-color: #f3f5f7;
+			}
+			.main-content {
+			background-color: #ffffff;
+			border-radius: 8px;
+			}
+			.footer-text a {
+			color: #555555 !important;
+			text-decoration: none;
+			}
+		</mj-style>
+	</mj-head>
+	<mj-body css-class="body">
+		<mj-section padding="20px 0">
+			<mj-column>
+				<mj-image width="150px" src="https://via.placeholder.com/150x50/4f46e5/ffffff?text=StockMode" alt="Logo da StockMode" />
+			</mj-column>
+		</mj-section>
+
+		<mj-section css-class="main-content" padding="20px">
+			<mj-column>
+				<mj-text font-size="24px" font-weight="bold" color="#2a3b4f" font-family="Roboto, Arial, sans-serif" align="center">
+					🎉 Novidade na Loja! 🎉
+				</mj-text>
+				<mj-text font-size="16px" color="#555555" font-family="Roboto, Arial, sans-serif" align="center" padding-top="10px">
+					Temos o prazer de apresentar o nosso mais novo produto, pensado especialmente para você.
+				</mj-text>
+				<mj-divider border-color="#e5e7eb" border-width="1px" padding="20px 0" />
+
+				<mj-text font-size="20px" font-weight="bold" color="#1f2937" font-family="Roboto, Arial, sans-serif">
+					@Model.ProductName
+				</mj-text>
+				<mj-text font-size="16px" color="#555555" font-family="Roboto, Arial, sans-serif" padding-top="5px">
+					@Model.ProductDescription
+				</mj-text>
+
+				<mj-divider border-color="#e5e7eb" border-width="1px" padding="20px 0" />
+
+				<mj-text font-size="18px" font-weight="bold" color="#333333" font-family="Roboto, Arial, sans-serif" padding-bottom="10px">
+					Variações Disponíveis:
+				</mj-text>
+
+				<mj-table font-family="Roboto, Arial, sans-serif">
+					<tr style="border-bottom:1px solid #e5e7eb; text-align:left;">
+						<th style="padding:10px 0; font-weight: bold; color: #333;">Variação</th>
+						<th style="padding:10px 0; font-weight: bold; color: #333;">SKU</th>
+						<th style="padding:10px 0; font-weight: bold; color: #333; text-align: right;">Preço</th>
+					</tr>
+					@foreach (var variation in Model.Variations)
+					{
+					<tr>
+						<td style="padding:10px 0; color: #555;">@variation.Name</td>
+						<td style="padding:10px 0; color: #555;">@variation.Sku</td>
+						<td style="padding:10px 0; color: #555; text-align: right; font-weight: 500;">@variation.SalePrice.ToString("C", new CultureInfo("pt-BR"))</td>
+					</tr>
+					}
+				</mj-table>
+
+				<mj-button href="http://seusite.com/produtos/@Model.ProductId"
+						   background-color="#4f46e5"
+						   color="white"
+						   font-family="Roboto, Arial, sans-serif"
+						   font-size="16px"
+						   font-weight="bold"
+						   border-radius="8px"
+						   padding="25px 0">
+					Ver Produto na Loja
+				</mj-button>
+
+			</mj-column>
+		</mj-section>
+
+		<mj-section padding="20px 0">
+			<mj-column>
+				<mj-social font-size="15px" icon-size="24px" mode="horizontal">
+					<mj-social-element name="facebook" href="https://sua-pagina.com/facebook"></mj-social-element>
+					<mj-social-element name="instagram" href="https://sua-pagina.com/instagram"></mj-social-element>
+					<mj-social-element name="twitter" href="https://sua-pagina.com/twitter"></mj-social-element>
+				</mj-social>
+				<mj-text css-class="footer-text" color="#555555" font-size="12px" align="center" padding-top="10px">
+					Você recebeu este email como parte das novidades da <a href="http://seu-site.com">StockMode</a>.<br />
+					Rua Fictícia, 123 - Campo Grande, MS<br />
+					&copy; @DateTime.UtcNow.Year StockMode. Todos os direitos reservados.
+				</mj-text>
+			</mj-column>
+		</mj-section>
+	</mj-body>
+</mjml>

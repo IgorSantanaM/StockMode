@@ -22,14 +22,16 @@ namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEma
     public class SendProductCreatedEmailCommandHandler : IRequestHandler<SendProductCreatedEmailCommand>
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly IMailer _mailer;
         private readonly IBus _bus;
         private readonly IMessageDeliveryReporter _reporter;
 
-        public SendProductCreatedEmailCommandHandler(IServiceProvider serviceProvider, IBus bus, IMessageDeliveryReporter reporter, IDbConnection dbConnection)
+        public SendProductCreatedEmailCommandHandler(IServiceProvider serviceProvider, IBus bus, IMessageDeliveryReporter reporter, IDbConnection dbConnection, IMailer mailer)
         {
             _serviceProvider = serviceProvider;
             _bus = bus;
             _reporter = reporter;
+            _mailer = mailer;
         }
 
         public async Task Handle(SendProductCreatedEmailCommand request, CancellationToken cancellationToken)
@@ -47,15 +49,22 @@ namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEma
                 if (product is null)
                     throw new NotFoundException(nameof(Customer), request.ProductId);
 
-                    var getAllCsutomerEmailsQuery = @"SELECT ""Email"" FROM ""Customers"" as c LEFT JOIN ""Sales"" as s ON c.""Id"" = s.""CustomerId"" where s.""FinalPrice"" <> 0";
+                    var getAllCustomersEmails = @"SELECT ""Email"" FROM ""Customers"" as c LEFT JOIN ""Sales"" as s ON c.""Id"" = s.""CustomerId"" where s.""FinalPrice"" <> 0";
 
-                var customerEmails = (await dbConnection.QueryAsync<string>(getAllCsutomerEmailsQuery)).Distinct().ToList();
+                var customerEmails = (await dbConnection.QueryAsync<string>(getAllCustomersEmails)).Distinct().ToList();
 
                 if (!customerEmails.Any()) return; 
  
                 var productCreatedEmail  = new ProductCreatedEmail(product.Name, product.Description!, product.Variations.Select(v => new VariationDetailDto(v.Id, v.Name, v.Sku, v.CostPrice, v.SalePrice, v.StockQuantity)).ToList(), customerEmails);
 
-                await _bus.PubSub.PublishAsync(productCreatedEmail, cancellationToken);
+                var emailBody  = new EmailMessage<ProductCreatedEmail>(
+                    string.Join(",", customerEmails),
+                    $"New Product Added: {product.Name}",
+                    "ProductCreated",
+                    productCreatedEmail);
+
+                await _mailer.SendAsync(emailBody, cancellationToken);
+
             }catch(Exception ex)
             {
                 var report = new DeliveryReport

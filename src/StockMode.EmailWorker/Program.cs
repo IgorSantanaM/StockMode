@@ -10,7 +10,7 @@ using StockMode.Infra.Services.Email;
 await Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
-        services.AddHostedService<MailSenderHostedService>();
+        //services.AddHostedService<MailSenderHostedService>();
         services.AddMailServices(hostContext.Configuration);
         services.AddTransient<IMailSender, SmptMailSender>();
         services.AddTransient<IMailer, Mailer>();

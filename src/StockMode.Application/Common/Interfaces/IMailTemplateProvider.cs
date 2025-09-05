@@ -8,6 +8,6 @@ namespace StockMode.Application.Common.Interfaces
 {
     public interface IMailTemplateProvider
     {
-        string SaleCompletedMjml { get; }
+        string GetEmailTemplate(string templateName);
     }
 }

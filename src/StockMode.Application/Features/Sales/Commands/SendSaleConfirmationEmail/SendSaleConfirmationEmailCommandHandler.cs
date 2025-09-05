@@ -31,7 +31,7 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
                 var variationNames = variations.ToDictionary(v => v.Id, v => $"{v.Product.Name} - {v.Name}");
 
                 var mailData = new SaleCompletedEmail(
-                    sale.Id,
+                    sale!.Id,
                     request.Email,
                     sale.TotalPrice,
                     sale.Discount,
@@ -46,7 +46,14 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
                         i.PriceAtSale
                     )).ToList());
 
-                await bus.PubSub.PublishAsync(mailData, cancellationToken);
+                var emailBody = new EmailMessage<SaleCompletedEmail>(
+                    request.Email,
+                    $"New Sale Completed for email: {request.Email}",
+                    "SaleCompleted",
+                    mailData);
+
+                await sender.SendAsync(emailBody, cancellationToken);
+                //await bus.PubSub.PublishAsync(mailData, cancellationToken);
             }
             catch (Exception ex)
             {

@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Common\Templates\ProductCreated.csmjml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Templates\ProductCreated.csmjml" />
     <EmbeddedResource Include="Common\Templates\SaleCompleted.csmjml" />
   </ItemGroup>
 

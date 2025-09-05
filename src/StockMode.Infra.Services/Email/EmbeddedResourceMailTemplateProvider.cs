@@ -10,6 +10,9 @@ namespace StockMode.Infra.Services.Email
 {
     public class EmbeddedResourceMailTemplateProvider : IMailTemplateProvider
     {
-        public string SaleCompletedMjml => EmbeddedResource.ReadAllText("SaleCompleted.csmjml");
+        public string GetEmailTemplate(string templateName)
+        {
+            return EmbeddedResource.ReadAllText($"{templateName}.csmjml");
+        }
     }
 }
