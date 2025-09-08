@@ -43,6 +43,8 @@ namespace StockMode.Application.Features.Products.Commands.CreateProduct
                     variationDto.StockQuantity);
             }
 
+            product.AddToDomainEvent();
+
             await _productRepository.AddAsync(product);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

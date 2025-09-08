@@ -1,6 +1,7 @@
 ﻿using MediatR;
+using StockMode.Domain.Products.Events;
 
 namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEmail
 {
-    public record SendProductCreatedEmailCommand(int ProductId) : IRequest;
+    public record SendProductCreatedEmailCommand(ProductCreatedEvent ProductCreatedEvent) : IRequest;
 }

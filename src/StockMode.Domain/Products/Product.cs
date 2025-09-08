@@ -10,6 +10,7 @@ namespace StockMode.Domain.Products
         public string? Description { get; protected set; }
         public bool IsActive { get; protected set; }
         public ICollection<Variation> Variations { get; private set; } = new List<Variation>();
+
         private Product()
         { }
 
@@ -21,6 +22,13 @@ namespace StockMode.Domain.Products
             Name = name;
             Description = description;
             IsActive = true;
+        }
+
+
+        public void AddToDomainEvent()
+        {
+            var productCreatedEvent = new ProductCreatedEvent(Id, Name, Description!, Variations.ToList());
+            AddDomainEvent(productCreatedEvent);
         }
 
         public void UpdateDetails(string newName, string? newDescription)

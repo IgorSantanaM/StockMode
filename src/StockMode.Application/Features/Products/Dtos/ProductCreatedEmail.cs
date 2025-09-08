@@ -2,6 +2,6 @@
 {
     public record ProductCreatedEmail(string ProductName,
                                     string ProductDescription,
-                                    IReadOnlyCollection<VariationDetailDto> Variations,
+                                    IReadOnlyCollection<VariationsForEmailSendingDto> Variations,
                                     IReadOnlyCollection<string> CustomersEmails);
 }

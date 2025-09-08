@@ -2,7 +2,7 @@
 
 namespace StockMode.Domain.Products.Events;
 
-public record VariationAddedDto(int VariationId, string Name);
+public record VariationAddedDto(string Name, string Sku, decimal SalePrice);
 public record ProductCreatedEvent(int ProductId,
             string? Name,
             string? Description,
@@ -10,6 +10,6 @@ public record ProductCreatedEvent(int ProductId,
             : Event
 {
     public ProductCreatedEvent(int productId, string name, string description, IReadOnlyCollection<Variation> variations)
-        : this(productId, name, description, variations.Select(item => new VariationAddedDto(item.Id, item.Name)).ToList())
+        : this(productId, name, description, variations.Select(item => new VariationAddedDto(item.Name, item.Sku, item.SalePrice)).ToList())
     { }
 }
