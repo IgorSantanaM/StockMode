@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from 'react-oidc-context';
 import { Search, Calendar, ChevronDown, LogOut } from 'lucide-react';
 import {
   HeaderContainer,
@@ -16,6 +17,7 @@ import {
 } from './styles';
 
 const Header = () => {
+  const auth = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // Estado para guardar o termo de busca
   const today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -29,10 +31,22 @@ const Header = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await auth.signoutRedirect();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  // Get user info from auth context
+  const userName = auth.user?.profile?.given_name || auth.user?.profile?.name || 'Usuário';
+  const userEmail = auth.user?.profile?.email || '';
+
   return (
     <HeaderContainer>
       <WelcomeMessage>
-        <h1>Olá, Igor!</h1>
+        <h1>Olá, {userName}!</h1>
         <p>
           <Calendar size={16} style={{ marginRight: '0.5rem' }} /> {today}
         </p>
@@ -51,7 +65,7 @@ const Header = () => {
         <UserMenu>
           <UserButton onClick={() => setUserMenuOpen(!userMenuOpen)}>
             <UserAvatar src="https://i.pravatar.cc/40" alt="Avatar do Usuário" />
-            <UserName>Igor Medeiros</UserName>
+            <UserName>{userName}</UserName>
             <ChevronDown size={20} style={{ color: '#6b7280' }} />
           </UserButton>
           {userMenuOpen && (
@@ -59,7 +73,7 @@ const Header = () => {
               <DropdownLink href="#" onClick={() => navigate("/profile")}>Meu Perfil</DropdownLink>
               <DropdownLink href="#" onClick={() => navigate("/help")}>Ajuda</DropdownLink>
               <div style={{ borderTop: '1px solid #e5e7eb', margin: '0.5rem 0' }}></div>
-              <DropdownLink href="#" className="logout">
+              <DropdownLink href="#" className="logout" onClick={handleLogout}>
                 <LogOut size={16} /> Sair
               </DropdownLink>
             </UserDropdown>

@@ -21,6 +21,19 @@ services:
     networks:
       - app_network
     
+  stockmode.idp:
+    image: ${DOCKER_REGISTRY-}stockmodeidp
+    build:
+      context: .
+      dockerfile: StockMode.IDP/Dockerfile
+    ports:
+      - "5001:80"
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - app_network
+
   stockmode.frontend:
     image: ${DOCKER_REGISTRY-}stockmodefrontend
     build:
@@ -30,6 +43,8 @@ services:
       - "80:80"
     depends_on:
       stockmode.webapi:
+        condition: service_started
+      stockmode.idp:
         condition: service_started
         
   stockmode.mailworker:

@@ -15,6 +15,7 @@ internal static class HostingExtensions
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
+            .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryClients(Config.Clients)
             .AddTestUsers(TestUsers.Users);
 
@@ -25,7 +26,10 @@ internal static class HostingExtensions
                               {
                                   policy.SetIsOriginAllowed(origin =>
                                   {
-                                      return origin == "https://localhost:5173" || origin == null;
+                                      return origin == "https://localhost:5173" || 
+                                             origin == "http://localhost" ||
+                                             origin == "http://localhost:80" ||
+                                             origin == null;
                                   })
                                         .AllowAnyHeader()
                                         .AllowAnyMethod()

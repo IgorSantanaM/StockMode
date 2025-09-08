@@ -1,6 +1,8 @@
 using EasyNetQ;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StockMode.Infra.CrossCutting.IoC;
 using StockMode.Infra.Data.Contexts;
 using StockMode.WebApi.Diagnostics.Extensions;
@@ -25,6 +27,25 @@ services.AddCors(opt =>
                      policy.AllowAnyHeader();
                  });
 });
+
+// Configure JWT Authentication
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "http://stockmode.idp";
+        options.RequireHttpsMetadata = false; // For development
+        options.Audience = "stockmodeapi";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+services.AddAuthorization();
 
 services.AddControllers();
 services.AddMailServices(builder.Configuration);
@@ -57,7 +78,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = service.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migraï¿½ï¿½es do banco de dados.");
     }
 }
 
@@ -82,6 +103,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints<Program>();
