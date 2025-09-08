@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockMode.Application.Features.Products.Commands.CreateProduct;
 using StockMode.Application.Features.Products.Commands.DeleteProduct;
@@ -16,7 +17,7 @@ namespace StockMode.WebApi.Endpoints
     {
         public static void DefineEndpoint(WebApplication app)
         {
-            var group = app.MapGroup("/api/products").WithTags("Products");
+            var group = app.MapGroup("/api/products").WithTags("Products").RequireAuthorization();
 
             group.MapPost("/", HandleCreateProduct)
               .WithName("CreateProduct")
