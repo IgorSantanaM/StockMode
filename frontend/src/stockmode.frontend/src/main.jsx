@@ -5,14 +5,19 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 
-const oidcConfig ={
-  authority: "https://localhost:5001", 
-  client_id: "stockmodeclient",
-  redirect_uri: "https://localhost:5173/signin-oidc",
-  scope: "openid profile email",
-  post_logout_redirect_uri: "https://localhost:5173/",
+const isDevelopment = window.location.hostname === 'localhost';
+const idpAuthority = isDevelopment ? "https://localhost:5001" : "https://stockmode.idp";
+const frontendUrl = isDevelopment ? "http://localhost" : "http://localhost";
 
-  automaticSilentRenew: false,
+const oidcConfig ={
+  authority: idpAuthority,
+  client_id: "stockmodeclient",
+  redirect_uri: `${frontendUrl}/signin-oidc`,
+  scope: "openid profile email stockmodeapi",
+  post_logout_redirect_uri: `${frontendUrl}/`,
+
+
+  automaticSilentRenew: true,
   
   monitorSession: false,
   

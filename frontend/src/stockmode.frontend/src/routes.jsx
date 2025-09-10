@@ -20,6 +20,7 @@ import Profile from './pages/Profile';
 import SettingsPage from './pages/Settings';
 import Suppliers from './pages/Suppliers';
 import SupplierCreation from './pages/Suppliers/Create';
+import AuthTest from './pages/AuthTest';
 
 export default function RoutesConfig(){
     return(
@@ -43,6 +44,7 @@ export default function RoutesConfig(){
             <Route path="/settings" exact element={<SettingsPage />} />
             <Route path="/suppliers" exact element={<Suppliers />} />
             <Route path="/suppliers/register" exact element={<SupplierCreation />} />
+            <Route path="/authtest" exact element={<AuthTest />} />
             <Route path="*" exact element={<NotFound />} />
          </Routes>
     )
