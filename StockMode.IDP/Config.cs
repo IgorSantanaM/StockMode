@@ -15,7 +15,19 @@ public static class Config
 
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
-            { };
+            {
+                new ApiScope(name: "stockmodeapi", displayName: "StockMode API")
+            };
+
+
+    public static IEnumerable<ApiResource> ApiResources =>
+       new ApiResource[]
+       {
+            new ApiResource("stockmodeapi", "StockMode API")
+            {
+                Scopes = { "stockmodeapi" }
+            }
+       };
 
     public static IEnumerable<Client> Clients =>
         new Client[] 
@@ -28,20 +40,25 @@ public static class Config
 
                     RedirectUris =
                     {
-                        "https://localhost/signin-oidc",
+                        "https://localhost:5173/signin-oidc",
+                        "http://localhost/signin-oidc",
                     },
                     PostLogoutRedirectUris =
                     {
-                        "https://localhost/signout-callback-oidc",
+                        "https://localhost:5173/",
+                        "http://localhost/",
                     },
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
+                        IdentityServerConstants.StandardScopes.Email,
+                        "stockmodeapi"
                     },
                     RequireConsent = true,
+                    AllowOfflineAccess = true,
+                    RequireClientSecret = false,
                 }
             };
 }
