@@ -48,3 +48,102 @@
     }
   }
 }
+
+login-page {
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.login-page .lead {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.login-page .lead h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.login-page .lead p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+.login-page .card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.login-page .card-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.login-page .card-header h2 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.login-page .btn-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    padding: 0.875rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.login-page .btn-primary:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #312e81 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.login-page .btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #4f46e5;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    padding: 0.875rem 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.login-page .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: #3730a3;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.login-page .form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    padding: 0.875rem 1rem;
+    transition: all 0.2s ease;
+}
+
+.login-page .form-control:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.login-page .alert-warning {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fbbf24;
+}
+
+.login-page .row {
+    justify-content: center;
+}
+
+.login-page .col-sm-6 {
+    max-width: 400px;
+}
