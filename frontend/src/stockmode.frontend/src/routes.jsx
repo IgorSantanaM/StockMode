@@ -21,32 +21,33 @@ import SettingsPage from './pages/Settings';
 import Suppliers from './pages/Suppliers';
 import SupplierCreation from './pages/Suppliers/Create';
 import AuthTest from './pages/AuthTest';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function RoutesConfig(){
     return(
         <Routes>
-            <Route path="/" exact element={<Home />} />
-            <Route path="/Home" exact element={<Home />} />
-            <Route path="/products" exact element={<Products />} />
-            <Route path="/products/create" exact element={<ProductCreation />} />
+            <Route path="/" exact element={<ProtectedRoute element={<Home />} />} />
+            <Route path="/Home" exact element={<ProtectedRoute element={<Home />} />} />
+            <Route path="/products" exact element={<ProtectedRoute element={<Products />} />} />
+            <Route path="/products/create" exact element={<ProtectedRoute element={<ProductCreation />} />} />
             <Route path="/signin-oidc" exact element={<Login />} />
-            <Route path="/sales" exact element={<Sales />} />
-            <Route path="/sales/create" exact element={<NewSale />} />
-            <Route path="/financial" exact element={<Financial />}/>
-            <Route path="/customers" exact element={<Customers />}/>
-            <Route path="/customers/create" exact element={<CustomerCreation />}/>
-            <Route path="/stock" exact element={<Stock />}/>
-            <Route path="/receivestock" exact element={<ReceiveStock />}/>
-            <Route path="/revenue/register" exact element={<RegisterRevenue />} />
-            <Route path="/expense/register" exact element={<RegisterExpense />} />
-            <Route path="/help" exact element={<Help />} />
-            <Route path="/profile" exact element={<Profile />} />
-            <Route path="/settings" exact element={<SettingsPage />} />
-            <Route path="/suppliers" exact element={<Suppliers />} />
-            <Route path="/suppliers/register" exact element={<SupplierCreation />} />
+            <Route path="/sales" exact element={<ProtectedRoute element={<Sales />} />} />
+            <Route path="/sales/create" exact element={<ProtectedRoute element={<NewSale />} />} />
+            <Route path="/financial" exact element={<ProtectedRoute element={<Financial />} />}/>
+            <Route path="/customers" exact element={<ProtectedRoute element={<Customers />} />}/>
+            <Route path="/customers/create" exact element={<ProtectedRoute element={<CustomerCreation />} />}/>
+            <Route path="/stock" exact element={<ProtectedRoute element={<Stock />} />}/>
+            <Route path="/receivestock" exact element={<ProtectedRoute element={<ReceiveStock />} />}/>
+            <Route path="/revenue/register" exact element={<ProtectedRoute element={<RegisterRevenue />} />} />
+            <Route path="/expense/register" exact element={<ProtectedRoute element={<RegisterExpense />} />} />
+            <Route path="/help" exact element={<ProtectedRoute element={<Help />} />} />
+            <Route path="/profile" exact element={<ProtectedRoute element={<Profile />} />} />
+            <Route path="/settings" exact element={<ProtectedRoute element={<SettingsPage />} />} />
+            <Route path="/suppliers" exact element={<ProtectedRoute element={<Suppliers />} />} />
+            <Route path="/suppliers/register" exact element={<ProtectedRoute element={<SupplierCreation />} />} />
             <Route path="/login" exact element={<Login />} />'
-            <Route path="/authtest" exact element={<AuthTest />} />
-            <Route path="*" exact element={<NotFound />} />
+            <Route path="/authtest" exact element={<ProtectedRoute element={<AuthTest />} />} />
+            <Route path="*" exact element={<ProtectedRoute element={<NotFound />} />} />
          </Routes>
     )
 }
