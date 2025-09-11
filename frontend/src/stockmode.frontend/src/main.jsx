@@ -22,6 +22,7 @@ const oidcConfig ={
   monitorSession: false,
   
   response_mode: 'query', 
+  loadUserInfo: true,
 };
 
 const onSigninCallback = (user) => {
@@ -29,7 +30,9 @@ const onSigninCallback = (user) => {
   window.location.replace("/");
 };
 createRoot(document.getElementById('root')).render(
-    <AuthProvider {...oidcConfig} onSigninCallback={onSigninCallback}>
-        <App />
-    </AuthProvider>
+    <BrowserRouter>
+        <AuthProvider {...oidcConfig} onSigninCallback={onSigninCallback}>
+            <App />
+        </AuthProvider>
+    </BrowserRouter>
 )

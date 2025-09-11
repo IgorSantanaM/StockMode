@@ -44,6 +44,7 @@ export default function RoutesConfig(){
             <Route path="/settings" exact element={<SettingsPage />} />
             <Route path="/suppliers" exact element={<Suppliers />} />
             <Route path="/suppliers/register" exact element={<SupplierCreation />} />
+            <Route path="/login" exact element={<Login />} />'
             <Route path="/authtest" exact element={<AuthTest />} />
             <Route path="*" exact element={<NotFound />} />
          </Routes>

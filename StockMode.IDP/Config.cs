@@ -56,7 +56,7 @@ public static class Config
                         IdentityServerConstants.StandardScopes.Email,
                         "stockmodeapi"
                     },
-                    RequireConsent = true,
+                    RequireConsent = false,
                     AllowOfflineAccess = true,
                     RequireClientSecret = false,
                 }
