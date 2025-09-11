@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from 'react-oidc-context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   LoginContainer,
   LoginCard,
@@ -22,50 +22,38 @@ import {
 export default function Login() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log("Auth object:", auth); 
-
+  // If we arrive here with a ?code= param let the provider handle it automatically in AuthProvider onSigninCallback
   useEffect(() => {
-    const processCallback = async () => {
-      try {
-        if (auth.isLoading) return;
-
-        if (auth.user) {
-          console.log("User already authenticated:", auth.user);
-          navigate('/');
-          return;
-        }
-
-        // If there's a code in the URL, process the callback
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('code')) {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('code')) {
+      // Let react-oidc-context handle callback at provider level if configured; otherwise call callback
+      (async () => {
+        try {
           setIsProcessing(true);
           await auth.signinRedirectCallback();
-          navigate('/');
-        } else {
-          // Start the authentication process
-          await auth.signinRedirect();
+          setIsProcessing(false);
+          const returnPath = auth.user?.state?.returnPath || location.state?.from || '/';
+          navigate(returnPath, { replace: true });
+        } catch (e) {
+          setError(e.message || 'Authentication failed');
+          setIsProcessing(false);
         }
-      } catch (error) {
-        console.error("Authentication error:", error);
-        setError(error.message || "Authentication failed. Please try again.");
-        setIsProcessing(false);
-      }
-    };
-
-    processCallback();
-  }, [auth, navigate]);
+      })();
+    }
+  }, [auth, navigate, location.state]);
 
   const handleLogin = async () => {
     try {
       setIsProcessing(true);
       setError(null);
-      await auth.signinRedirect();
-    } catch (error) {
-      console.error("Login initiation error:", error);
-      setError(error.message || "Failed to start login process. Please try again.");
+      const from = location.state?.from || '/';
+      await auth.signinRedirect({ state: { returnPath: from } });
+    } catch (e) {
+      setError(e.message || 'Failed to start login process');
       setIsProcessing(false);
     }
   };
@@ -93,6 +81,10 @@ export default function Login() {
     );
   }
 
+    if (auth.isAuthenticated) {
+      // Already logged in; maybe user navigated to /login manually
+      return null;
+    }
     return (
     <LoginContainer>
       <LoginCard>

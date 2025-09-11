@@ -13,6 +13,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - RABBITMQ_HOST=mailrabbit
       - OTLP_Endpoint=http://otel-collector:4317
+      - Auth__Authority=https://localhost:5001
+      - Auth__MetadataAddress=https://host.docker.internal:5001/.well-known/openid-configuration
+      - Auth__ValidIssuers__0=https://localhost:5001
+      - Auth__ValidIssuers__1=http://localhost:5001
+      - Auth__ValidIssuers__2=https://localhost:5001
     depends_on:
          rabbitmq:
             condition: service_started

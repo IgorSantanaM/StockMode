@@ -9,10 +9,7 @@ using StockMode.WebApi.Diagnostics.Extensions;
 using StockMode.WebApi.Endpoints.Internal;
 using StockMode.WebApi.Middlewares;
 
-
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 var services = builder.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -31,16 +28,57 @@ services.AddCors(opt =>
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "http://stockmode.idp";
-        options.RequireHttpsMetadata = false; // For development
+        // Para desenvolvimento, usar o host interno do Docker para acessar o IDP no host
+        var authority = builder.Configuration["Auth:Authority"] ?? "https://localhost:5001";
+        options.Authority = authority;
+        
+        // Use host.docker.internal para acessar serviços do host a partir do container
+        var metadataAddress = builder.Configuration["Auth:MetadataAddress"] ?? "https://host.docker.internal:5001/.well-known/openid-configuration";
+        options.MetadataAddress = metadataAddress;
+        
         options.Audience = "stockmodeapi";
+        options.RequireHttpsMetadata = true;
+
+        // Aceitar múltiplos issuers para flexibilidade entre ambientes
+        var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
+            ?? new[] { "https://localhost:5001", "http://localhost:5001", "http://stockmode.idp" };
+
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
+            ValidIssuers = validIssuers,
             ValidateAudience = true,
+            ValidAudience = "stockmodeapi",
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ClockSkew = TimeSpan.Zero
+        };
+
+        // Para desenvolvimento: aceitar certificados SSL não confiáveis
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = ctx =>
+            {
+                Console.WriteLine($"JWT auth failed: {ctx.Exception.Message}");
+                if (ctx.Exception.InnerException != null)
+                    Console.WriteLine($"Inner exception: {ctx.Exception.InnerException.Message}");
+                return Task.CompletedTask;
+            },
+            OnChallenge = ctx =>
+            {
+                Console.WriteLine($"JWT challenge: {ctx.Error} - {ctx.ErrorDescription}");
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = ctx =>
+            {
+                Console.WriteLine("JWT token validated successfully");
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -95,8 +133,6 @@ if (app.Environment.IsDevelopment())
         options.DefaultModelExpandDepth(-1);
     });
 }
-
-
 
 //app.UseHttpsRedirection();
 
