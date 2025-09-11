@@ -29,6 +29,7 @@ export default function RoutesConfig(){
             <Route path="/Home" exact element={<Home />} />
             <Route path="/products" exact element={<Products />} />
             <Route path="/products/create" exact element={<ProductCreation />} />
+            <Route path="/login" exact element={<Login />} />
             <Route path="/signin-oidc" exact element={<Login />} />
             <Route path="/sales" exact element={<Sales />} />
             <Route path="/sales/create" exact element={<NewSale />} />

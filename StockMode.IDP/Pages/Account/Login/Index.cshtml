@@ -3,8 +3,8 @@
 
 <div class="login-page">
     <div class="lead">
-        <h1>Login</h1>
-        <p>Choose how to login</p>
+        <h1>StockMode</h1>
+        <p>Inventory Management System</p>
     </div>
 
     <partial name="_ValidationSummary" />
@@ -16,7 +16,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Local Account</h2>
+                        <h2>Quick Access</h2>
                     </div>
 
                     <div class="card-body">
@@ -24,12 +24,12 @@
                             <input type="hidden" name="ReturnUrl" value="@Model.Input.ReturnUrl" />
 
                             <div class="form-group">
-                                <label asp-for="Input.Username"></label>
-                                <input class="form-control" placeholder="Username" asp-for="Input.Username" autofocus>
+                                <label asp-for="Input.Username">Username (demo)</label>
+                                <input class="form-control" placeholder="Enter 'demo' for quick access" asp-for="Input.Username" autofocus>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Input.Password"></label>
-                                <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+                                <label asp-for="Input.Password">Password (demo)</label>
+                                <input type="password" class="form-control" placeholder="Enter 'demo' for quick access" asp-for="Input.Password" autocomplete="off">
                             </div>
                             
                             @if (Model.View.AllowRememberLogin)
@@ -44,7 +44,7 @@
                                 </div>
                             }
                             
-                            <button class="btn btn-primary" name="Input.Button" value="login">Login</button>
+                            <button class="btn btn-primary" name="Input.Button" value="login">Access StockMode</button>
                             <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
                         </form>
                     </div>
@@ -57,7 +57,7 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>External Account</h2>
+                        <h2>External Login</h2>
                     </div>
                     <div class="card-body">
                         <ul class="list-inline">
