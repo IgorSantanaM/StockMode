@@ -1,6 +1,8 @@
 ﻿using EasyNetQ;
+using EasyNetQ.Logging;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Common.Messaging;
 using StockMode.Application.Exceptionns;

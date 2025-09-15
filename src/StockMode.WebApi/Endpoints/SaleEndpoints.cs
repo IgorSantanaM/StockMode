@@ -96,7 +96,7 @@ namespace StockMode.WebApi.Endpoints
             [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(command);
-            return Results.CreatedAtRoute("GetSaleById", new { Id = id });
+            return Results.Ok(id);
         }
         private static async Task<IResult> HandleAddItemToSale([FromBody] AddItemToSaleCommandDto command,
             [FromServices] IMediator mediator)

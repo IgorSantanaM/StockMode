@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const isDevelopment = window.location.hostname === 'localhost';
-const apiBaseUrl = isDevelopment ? 'http://localhost:8080/api/' : 'http://stockmode.webapi/api/';
+const apiBaseUrl = isDevelopment ? 'http://localhost:8080/api' : 'http://stockmode.webapi/api';
 
 const api = axios.create({
   baseURL: apiBaseUrl

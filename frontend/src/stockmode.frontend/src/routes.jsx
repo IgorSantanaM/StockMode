@@ -4,12 +4,12 @@ import { Routes, Route} from 'react-router-dom';
 import Home from './pages/home';
 import Login from './pages/Login';
 import Sales from './pages/Sales';
+import SaleManager from './pages/Sales/SaleManager';
 import Products from './pages/Products';
 import Financial from './pages/Financial';
 import Customers from './pages/Customers';
 import Stock from './pages/Stock';
 import ReceiveStock from './pages/ReceiveStock';
-import NewSale from './pages/Sales/Create';
 import ProductCreation from './pages/Products/Create';
 import CustomerCreation from './pages/Customers/Create';
 import RegisterRevenue from './pages/RegisterRevenue';
@@ -32,7 +32,8 @@ export default function RoutesConfig(){
             <Route path="/products/create" exact element={<ProtectedRoute element={<ProductCreation />} />} />
             <Route path="/signin-oidc" exact element={<Login />} />
             <Route path="/sales" exact element={<ProtectedRoute element={<Sales />} />} />
-            <Route path="/sales/create" exact element={<ProtectedRoute element={<NewSale />} />} />
+            <Route path="/sales/new" exact element={<ProtectedRoute element={<SaleManager />} />} />
+            <Route path="/sales/manage/:id" exact element={<ProtectedRoute element={<SaleManager />} />} />
             <Route path="/financial" exact element={<ProtectedRoute element={<Financial />} />}/>
             <Route path="/customers" exact element={<ProtectedRoute element={<Customers />} />}/>
             <Route path="/customers/create" exact element={<ProtectedRoute element={<CustomerCreation />} />}/>
@@ -45,7 +46,7 @@ export default function RoutesConfig(){
             <Route path="/settings" exact element={<ProtectedRoute element={<SettingsPage />} />} />
             <Route path="/suppliers" exact element={<ProtectedRoute element={<Suppliers />} />} />
             <Route path="/suppliers/register" exact element={<ProtectedRoute element={<SupplierCreation />} />} />
-            <Route path="/login" exact element={<Login />} />'
+            <Route path="/login" exact element={<Login />} />
             <Route path="/authtest" exact element={<ProtectedRoute element={<AuthTest />} />} />
             <Route path="*" exact element={<ProtectedRoute element={<NotFound />} />} />
          </Routes>

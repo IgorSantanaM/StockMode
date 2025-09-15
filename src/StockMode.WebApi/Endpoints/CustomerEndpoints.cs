@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using StockMode.Application.Features.Customers.Commands.CreateCustomer;
 using StockMode.Application.Features.Customers.Commands.DeleteCustomer;
 using StockMode.Application.Features.Customers.Commands.UpdateCustomer;

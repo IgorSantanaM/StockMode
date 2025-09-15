@@ -16,7 +16,7 @@ namespace StockMode.WebApi.Endpoints
     {
         public static void DefineEndpoint(WebApplication app)
         {
-            var group = app.MapGroup("/api/products").WithTags("Products").RequireAuthorization();
+         var group = app.MapGroup("/api/products").WithTags("Products").RequireAuthorization();
 
             group.MapPost("/", HandleCreateProduct)
               .WithName("CreateProduct")

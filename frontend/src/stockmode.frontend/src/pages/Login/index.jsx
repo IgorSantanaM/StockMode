@@ -26,11 +26,9 @@ export default function Login() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
-  // If we arrive here with a ?code= param let the provider handle it automatically in AuthProvider onSigninCallback
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('code')) {
-      // Let react-oidc-context handle callback at provider level if configured; otherwise call callback
       (async () => {
         try {
           setIsProcessing(true);
