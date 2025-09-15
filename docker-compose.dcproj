@@ -12,5 +12,7 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="frontend\src\stockmode.frontend\src\pages\Sales\SaleManager\index.jsx" />
+    <None Include="frontend\src\stockmode.frontend\src\pages\Sales\SaleManager\styles.js" />
   </ItemGroup>
 </Project>

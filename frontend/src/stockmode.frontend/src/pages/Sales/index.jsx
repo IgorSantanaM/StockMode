@@ -1,118 +1,268 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, PlusCircle } from 'lucide-react';
+import { 
+  ShoppingCart, 
+  Plus, 
+  Eye, 
+  Calendar, 
+  Filter,
+  Search,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
+import api from '../../services/api';
 import {
   PageContainer,
-  PageHeader,
-  TitleContainer,
+  Container,
+  Header,
   Title,
-  PrimaryButton,
-  Card,
-  FilterContainer,
-  Select,
+  HeaderActions,
+  FiltersSection,
+  FilterGroup,
   Input,
-  Table,
-  Th,
-  Td,
-  Tr,
+  Select,
+  Button,
+  SalesGrid,
+  SaleCard,
+  SaleInfo,
+  SaleActions,
   StatusBadge,
-  BadgeDot,
+  Pagination,
+  PaginationButton,
+  EmptyState
 } from './styles';
 
-const allSales = [
-  { id: 'VENDA-00125', customer: 'Ana Clara', date: '2025-08-04', amount: 125.50, status: 'Concluída' },
-  { id: 'VENDA-00124', customer: 'Marcos Silva', date: '2025-08-04', amount: 89.90, status: 'Concluída' },
-  { id: 'VENDA-00123', customer: 'Cliente Balcão', date: '2025-08-03', amount: 45.00, status: 'Concluída' },
-  { id: 'VENDA-00122', customer: 'Juliana Costa', date: '2025-08-03', amount: 210.00, status: 'Pendente' },
-  { id: 'VENDA-00121', customer: 'Ricardo Alves', date: '2025-08-02', amount: 75.00, status: 'Cancelada' },
-  { id: 'VENDA-00120', customer: 'Beatriz Lima', date: '2025-08-01', amount: 350.20, status: 'Concluída' },
-];
+const SALE_STATUS = {
+  0: { label: 'Pendente', color: '#d97706' },
+  1: { label: 'Concluída', color: '#059669' },
+  2: { label: 'Cancelada', color: '#dc2626' }
+};
 
-const SalesPage = () => {
-  const [statusFilter, setStatusFilter] = useState('Todos');
-  const [dateFilter, setDateFilter] = useState('');
+const Sales = () => {
   const navigate = useNavigate();
+  
+  const [sales, setSales] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Filtros
+  const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
+    status: '',
+    page: 1,
+    pageSize: 12
+  });
+  
+  const [totalPages, setTotalPages] = useState(1);
 
-  const filteredSales = useMemo(() => {
-    return allSales.filter(sale => {
-      const statusMatch = statusFilter === 'Todos' || sale.status === statusFilter;
-      const dateMatch = dateFilter === '' || sale.date === dateFilter;
-      return statusMatch && dateMatch;
-    });
-  }, [statusFilter, dateFilter]);
+  useEffect(() => {
+    loadSales();
+  }, [filters]);
+
+  const loadSales = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      
+      if (filters.startDate) params.append('startDate', filters.startDate);
+      if (filters.endDate) params.append('endDate', filters.endDate);
+      if (filters.status !== '') params.append('status', filters.status);
+      params.append('page', filters.page.toString());
+      params.append('pageSize', filters.pageSize.toString());
+      
+      const response = await api.get(`sales?${params.toString()}`);
+      
+      setSales(response.data?.items || response.data || []);
+      
+      // Calcular total de páginas baseado na resposta
+      const totalItems = response.data?.totalItems || response.data?.length || 0;
+      setTotalPages(Math.ceil(totalItems / filters.pageSize));
+      
+    } catch (err) {
+      setError('Erro ao carregar vendas');
+      setSales([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value,
+      page: 1 // Reset para primeira página quando filtros mudarem
+    }));
+  };
+
+  const handlePageChange = (newPage) => {
+    setFilters(prev => ({
+      ...prev,
+      page: newPage
+    }));
+  };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('pt-BR', {timeZone: 'UTC'}).format(date);
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
   const formatCurrency = (value) => {
-    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (value === undefined || value === null) return 'R$ 0,00';
+    return `R$ ${value.toFixed(2).replace('.', ',')}`;
   };
 
   return (
     <PageContainer>
-      <PageHeader>
-        <TitleContainer>
-          <ShoppingCart size={32} color="#4f46e5" />
-          <Title>Histórico de Vendas</Title>
-        </TitleContainer>
-        <PrimaryButton onClick={() => navigate("/sales/create")}>
-          <PlusCircle size={20} />
-          Nova Venda
-        </PrimaryButton>
-      </PageHeader>
+      <Container>
+        <Header>
+          <div>
+            <ShoppingCart size={32} color="#3b82f6" />
+            <Title>Vendas</Title>
+          </div>
+          <HeaderActions>
+            <Button onClick={() => navigate('/sales/new')}>
+              <Plus size={20} />
+              Nova Venda
+            </Button>
+          </HeaderActions>
+        </Header>
 
-      <Card>
-        <FilterContainer>
-          <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            <option value="Todos">Todos os Status</option>
-            <option value="Concluída">Concluída</option>
-            <option value="Pendente">Pendente</option>
-            <option value="Cancelada">Cancelada</option>
-          </Select>
-          <Input 
-            type="date" 
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-          />
-        </FilterContainer>
+        <FiltersSection>
+          <FilterGroup>
+            <label>Data Inicial</label>
+            <Input
+              type="date"
+              value={filters.startDate}
+              onChange={(e) => handleFilterChange('startDate', e.target.value)}
+            />
+          </FilterGroup>
 
-        <Table>
-          <thead>
-            <tr>
-              <Th>ID da Venda</Th>
-              <Th>Cliente</Th>
-              <Th>Data</Th>
-              <Th>Status</Th>
-              <Th>Total</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredSales.map((sale) => (
-              <Tr key={sale.id}>
-                <Td style={{ fontWeight: 500, color: '#4f46e5' }}>{sale.id}</Td>
-                <Td>{sale.customer}</Td>
-                <Td>{formatDate(sale.date)}</Td>
-                <Td>
-                  <StatusBadge status={sale.status}>
-                    <BadgeDot />
-                    {sale.status}
-                  </StatusBadge>
-                </Td>
-                <Td style={{ fontWeight: 'bold' }}>{formatCurrency(sale.amount)}</Td>
-              </Tr>
-            ))}
-          </tbody>
-        </Table>
-        {filteredSales.length === 0 && (
-          <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
-            Nenhuma venda encontrada para os filtros selecionados.
+          <FilterGroup>
+            <label>Data Final</label>
+            <Input
+              type="date"
+              value={filters.endDate}
+              onChange={(e) => handleFilterChange('endDate', e.target.value)}
+            />
+          </FilterGroup>
+
+          <FilterGroup>
+            <label>Status</label>
+            <Select
+              value={filters.status}
+              onChange={(e) => handleFilterChange('status', e.target.value)}
+            >
+              <option value="">Todos os Status</option>
+              <option value="0">Pendente</option>
+              <option value="1">Concluída</option>
+              <option value="2">Cancelada</option>
+            </Select>
+          </FilterGroup>
+
+          <Button onClick={loadSales}>
+            <Filter size={16} />
+            Filtrar
+          </Button>
+        </FiltersSection>
+
+        {error && (
+          <div style={{ 
+            padding: '16px', 
+            backgroundColor: '#fecaca', 
+            color: '#dc2626', 
+            borderRadius: '8px',
+            marginBottom: '20px'
+          }}>
+            {error}
           </div>
         )}
-      </Card>
+
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            Carregando vendas...
+          </div>
+        ) : sales.length === 0 ? (
+          <EmptyState>
+            <ShoppingCart size={64} color="#9ca3af" />
+            <h3>Nenhuma venda encontrada</h3>
+            <p>Crie sua primeira venda clicando no botão "Nova Venda"</p>
+            <Button onClick={() => navigate('/sales/new')}>
+              <Plus size={20} />
+              Nova Venda
+            </Button>
+          </EmptyState>
+        ) : (
+          <>
+            <SalesGrid>
+              {sales.map(sale => (
+                <SaleCard key={sale.id}>
+                  <SaleInfo>
+                    <div className="sale-header">
+                      <h3>Venda #{sale.id}</h3>
+                      <StatusBadge status={sale.status}>
+                        {SALE_STATUS[sale.status]?.label || 'Desconhecido'}
+                      </StatusBadge>
+                    </div>
+                    
+                    <div className="sale-details">
+                      <p><strong>Data:</strong> {formatDate(sale.saleDate)}</p>
+                      <p><strong>Método:</strong> {getPaymentMethodName(sale.paymentMethod)}</p>
+                      <p><strong>Total:</strong> {formatCurrency(sale.finalPrice)}</p>
+                      {sale.customerId && <p><strong>Cliente:</strong> #{sale.customerId}</p>}
+                      <p><strong>Itens:</strong> {sale.itemsCount || sale.items?.length || 0}</p>
+                    </div>
+                  </SaleInfo>
+                  
+                  <SaleActions>
+                    <Button onClick={() => navigate(`/sales/manage/${sale.id}`)}>
+                      <Eye size={16} />
+                      Ver Detalhes
+                    </Button>
+                  </SaleActions>
+                </SaleCard>
+              ))}
+            </SalesGrid>
+
+            {totalPages > 1 && (
+              <Pagination>
+                <PaginationButton
+                  onClick={() => handlePageChange(filters.page - 1)}
+                  disabled={filters.page === 1}
+                >
+                  <ChevronLeft size={16} />
+                  Anterior
+                </PaginationButton>
+                
+                <span>
+                  Página {filters.page} de {totalPages}
+                </span>
+                
+                <PaginationButton
+                  onClick={() => handlePageChange(filters.page + 1)}
+                  disabled={filters.page === totalPages}
+                >
+                  Próximo
+                  <ChevronRight size={16} />
+                </PaginationButton>
+              </Pagination>
+            )}
+          </>
+        )}
+      </Container>
     </PageContainer>
   );
 };
 
-export default SalesPage;
+const getPaymentMethodName = (method) => {
+  const methods = {
+    0: 'PIX',
+    1: 'Cartão de Débito', 
+    2: 'Cartão de Crédito',
+    3: 'Dinheiro',
+    4: 'Crédito da Loja'
+  };
+  return methods[method] || 'N/A';
+};
+
+export default Sales;
