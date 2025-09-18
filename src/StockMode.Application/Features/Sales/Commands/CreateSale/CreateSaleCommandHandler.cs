@@ -2,6 +2,7 @@
 using MediatR;
 using StockMode.Domain.Core.Data;
 using StockMode.Domain.Sales;
+using System.Net.Http.Headers;
 
 namespace StockMode.Application.Features.Sales.Commands.CreateSale
 {
@@ -20,16 +21,24 @@ namespace StockMode.Application.Features.Sales.Commands.CreateSale
 
         public async Task<int> Handle(CreateSaleCommand request, CancellationToken cancellationToken)
         {
-            await _validator.ValidateAndThrowAsync(request, cancellationToken);
+            try
+            {
 
-            var sale = new Sale(request.PaymentMethod);
+                await _validator.ValidateAndThrowAsync(request, cancellationToken);
 
-            await _saleRepository.AddAsync(sale);
+                var sale = new Sale(request.PaymentMethod);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await _saleRepository.AddAsync(sale);
 
-            return sale.Id;
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                return sale.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-        
+
     }
 }

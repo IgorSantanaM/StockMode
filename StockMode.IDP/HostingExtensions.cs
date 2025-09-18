@@ -26,7 +26,7 @@ internal static class HostingExtensions
                               {
                                   policy.SetIsOriginAllowed(origin =>
                                   {
-                                      return origin == "https://localhost:5173" ||
+                                      return origin == "http://localhost:5173" ||
                                              origin == "http://localhost" ||
                                              origin == "http://localhost:80" ||
                                              origin == null;
