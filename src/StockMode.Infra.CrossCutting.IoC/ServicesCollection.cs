@@ -20,11 +20,6 @@ using StockMode.Infra.Data.UoW;
 using StockMode.Infra.Services.Email;
 using System.Data;
 using System.Text.Json;
-using OpenTelemetry;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-using System.Reflection;
-using Npgsql;
 
 namespace StockMode.Infra.CrossCutting.IoC
 {
@@ -57,7 +52,7 @@ namespace StockMode.Infra.CrossCutting.IoC
         {
             var jsonOptions = new JsonSerializerOptions();
 
-            IBus? bus = RabbitHutch.CreateBus("host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit", options => 
+            IBus? bus = RabbitHutch.CreateBus("host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit", options =>
             options.EnableNewtonsoftJson());
 
             services.AddSingleton(bus);
