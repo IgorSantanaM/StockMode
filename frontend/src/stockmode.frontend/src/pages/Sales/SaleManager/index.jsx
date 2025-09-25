@@ -44,8 +44,8 @@ import {
 
 const PAYMENT_METHODS = [
   { value: 1, label: 'PIX' },
-  { value: 2, label: 'Cartão de Débito' },
-  { value: 3, label: 'Cartão de Crédito' },
+  { value: 2, label: 'Cartão de Crédito' },
+  { value: 3, label: 'Cartão de Débito' },
   { value: 4, label: 'Dinheiro' },
   { value: 5, label: 'Crédito da Loja' }
 ];
@@ -189,7 +189,7 @@ const SaleManager = () => {
       await loadSale(); 
       setSelectedVariation('');
       setQuantity(1);
-      setShowAddItem(false);
+      setShowAddItem(true);
       setSuccess('Item adicionado com sucesso!');
     } catch (err) {
       console.error('Error adding item:', err);
@@ -423,7 +423,7 @@ const SaleManager = () => {
     );
   }
 
-  const canModify = sale?.status === 0; 
+  const canModify = sale?.status === 1; 
 
   return (
     <PageContainer>

@@ -33,9 +33,9 @@ import {
 } from './styles';
 
 const SALE_STATUS = {
-  0: { label: 'Pendente', color: '#d97706' },
-  1: { label: 'Concluída', color: '#059669' },
-  2: { label: 'Cancelada', color: '#dc2626' }
+  1: { label: 'Pendente', color: '#d97706' },
+  2: { label: 'Concluída', color: '#059669' },
+  3: { label: 'Cancelada', color: '#dc2626' }
 };
 
 const Sales = () => {
@@ -154,9 +154,9 @@ const Sales = () => {
               onChange={(e) => handleFilterChange('status', e.target.value)}
             >
               <option value="">Todos os Status</option>
-              <option value="0">Pendente</option>
-              <option value="1">Concluída</option>
-              <option value="2">Cancelada</option>
+              <option value="1">Pendente</option>
+              <option value="2">Concluída</option>
+              <option value="3">Cancelada</option>
             </Select>
           </FilterGroup>
 
@@ -256,11 +256,11 @@ const Sales = () => {
 
 const getPaymentMethodName = (method) => {
   const methods = {
-    0: 'PIX',
-    1: 'Cartão de Débito', 
+    1: 'PIX',
     2: 'Cartão de Crédito',
-    3: 'Dinheiro',
-    4: 'Crédito da Loja'
+    3: 'Cartão de Débito', 
+    4: 'Dinheiro',
+    5: 'Crédito da Loja'
   };
   return methods[method] || 'N/A';
 };

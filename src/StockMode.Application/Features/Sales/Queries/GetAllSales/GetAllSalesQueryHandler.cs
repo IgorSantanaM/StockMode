@@ -19,12 +19,14 @@ namespace StockMode.Application.Features.Sales.Queries.GetAllSales
 
         public async Task<PagedResult<SaleSummaryDto>> Handle(GetAllSalesQuery request, CancellationToken cancellationToken)
         {
+            try
+            {
+               var parameters = new DynamicParameters();
+                var whereClauses = new List<string>();
 
-            var parameters = new DynamicParameters();
-            var whereClauses = new List<string>();
+                var countSql = new StringBuilder("SELECT COUNT(*) FROM \"Sales\" AS s");
 
-            var countSql = new StringBuilder("SELECT COUNT(*) FROM \"Sales\"");
-            var selectSql = new StringBuilder(@"
+                var selectSql = new StringBuilder(@"
                 SELECT
                     s.""Id"",
                     s.""SaleDate"",
@@ -35,50 +37,55 @@ namespace StockMode.Application.Features.Sales.Queries.GetAllSales
                 FROM ""Sales"" AS s
                 LEFT JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""");
 
-            if(request.StartDate.HasValue)
-            {
-                whereClauses.Add("s.\"SaleDate\" >= @StartDate");
-                parameters.Add("StartDate", request.StartDate.Value);
-            }
+                if (request.StartDate.HasValue)
+                {
+                    whereClauses.Add("s.\"SaleDate\" >= @StartDate");
+                    parameters.Add("StartDate", request.StartDate.Value);
+                }
 
-            if (request.EndDate.HasValue)
-            {
-                whereClauses.Add("s.\"SaleDate\" <= @EndDate");
-                parameters.Add("EndDate", request.EndDate.Value);
-            }
+                if (request.EndDate.HasValue)
+                {
+                    whereClauses.Add("s.\"SaleDate\" <= @EndDate");
+                    parameters.Add("EndDate", request.EndDate.Value);
+                }
 
-            if(request.Status.HasValue)
-            {
-                whereClauses.Add("s.\"Status\" = @Status");
-                parameters.Add("Status", request.Status.Value.ToString());
-            }
+                if (request.Status.HasValue)
+                {
+                    whereClauses.Add("s.\"Status\" = @Status ");
+                    parameters.Add("Status", request.Status.Value.ToString());
+                }
 
-            if (whereClauses.Any())
-            {
-                var whereSql = " WHERE " + string.Join(" AND ", whereClauses);
-                countSql.Append(whereSql);
-                selectSql.Append(whereSql);
-            }
+                if (whereClauses.Any())
+                {
+                    var whereSql = " WHERE " + string.Join(" AND ", whereClauses);
+                    countSql.Append(whereSql);
+                    selectSql.Append(whereSql);
+                }
 
-            selectSql.Append(@"GROUP BY s.""Id"", s.""SaleDate"", s.""Status"", s.""PaymentMethod"", s.""FinalPrice""
+                selectSql.Append(@"GROUP BY s.""Id"", s.""SaleDate"", s.""Status"", s.""PaymentMethod"", s.""FinalPrice""
                 ORDER BY s.""SaleDate"" DESC
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;");
 
-            var offset = (request.Page - 1) * request.PageSize;
-            parameters.Add("Offset", offset);
-            parameters.Add("PageSize", request.PageSize);
+                var offset = (request.Page - 1) * request.PageSize;
+                parameters.Add("Offset", offset);
+                parameters.Add("PageSize", request.PageSize);
 
-            using (var multi = await _dbConnection.QueryMultipleAsync(countSql.ToString() + ";" + selectSql.ToString(), parameters))
-            {
-                var totalCount = await multi.ReadSingleAsync<int>();
-                var items = (await multi.ReadAsync<SaleSummaryDto>()).ToList();
-
-                return new PagedResult<SaleSummaryDto>
+                using (var multi = await _dbConnection.QueryMultipleAsync(countSql.ToString() + ";" + selectSql.ToString(), parameters))
                 {
-                    Items = items,
-                    TotalCount = totalCount,
-                    TotalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize)
-                };
+                    var totalCount = await multi.ReadSingleAsync<int>();
+                    var items = (await multi.ReadAsync<SaleSummaryDto>()).ToList();
+
+                    return new PagedResult<SaleSummaryDto>
+                    {
+                        Items = items,
+                        TotalCount = totalCount,
+                        TotalPages = (int)Math.Ceiling(totalCount / (double)request.PageSize)
+                    };
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }
