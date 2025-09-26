@@ -66,7 +66,7 @@ const SaleManager = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   
-  const [paymentMethod, setPaymentMethod] = useState(0); 
+  const [paymentMethod, setPaymentMethod] = useState(1); // Default to PIX
   const [discount, setDiscount] = useState(0);
   const [selectedCustomer, setSelectedCustomer] = useState('');
   const [customers, setCustomers] = useState([]);
@@ -90,8 +90,18 @@ const SaleManager = () => {
         api.get('products/variations?page=1&pageSize=500')
       ]);
       
-      setCustomers(customersRes.data || []);
-      setVariations(variationsRes.data || []);
+      console.log('Customers response:', customersRes.data);
+      console.log('Variations response:', variationsRes.data);
+      
+      // Handle paginated API response format: { items: [], totalPages: 0, totalCount: 0 }
+      const customersData = customersRes.data?.items || [];
+      const variationsData = variationsRes.data?.items || [];
+      
+      console.log('Customers loaded:', customersData.length);
+      console.log('Variations loaded:', variationsData.length);
+      
+      setCustomers(customersData);
+      setVariations(variationsData);
     } catch (err) {
       setError('Erro ao carregar dados iniciais');
       console.error('Error loading initial data:', err);
@@ -121,6 +131,13 @@ const SaleManager = () => {
     setError(null);
     
     try {
+      // Validate payment method
+      if (!paymentMethod || paymentMethod < 1 || paymentMethod > 5) {
+        setError('Selecione um método de pagamento válido');
+        setLoading(false);
+        return;
+      }
+
       const payload = {
         paymentMethod: parseInt(paymentMethod)
       };
@@ -168,12 +185,23 @@ const SaleManager = () => {
   };
 
   const addItem = async () => {
+    console.log('addItem called');
+    console.log('selectedVariation:', selectedVariation);
+    console.log('quantity:', quantity);
+    console.log('sale?.id:', sale?.id);
+    
     if (!selectedVariation || quantity <= 0) {
       setError('Selecione um produto e quantidade válida');
       return;
     }
 
+    if (!sale?.id) {
+      setError('Venda não encontrada');
+      return;
+    }
+
     setError(null);
+    setLoading(true);
     
     try {
       const payload = {
@@ -189,7 +217,7 @@ const SaleManager = () => {
       await loadSale(); 
       setSelectedVariation('');
       setQuantity(1);
-      setShowAddItem(true);
+      setShowAddItem(false); // Hide the add item form after successful addition
       setSuccess('Item adicionado com sucesso!');
     } catch (err) {
       console.error('Error adding item:', err);
@@ -199,6 +227,8 @@ const SaleManager = () => {
       } else {
         setError('Erro ao adicionar item');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -207,8 +237,14 @@ const SaleManager = () => {
       setError('Digite um valor de desconto válido');
       return;
     }
+
+    if (parseFloat(discount) > (sale?.totalPrice || 0)) {
+      setError('O desconto não pode ser maior que o valor total da venda');
+      return;
+    }
     
     setError(null);
+    setLoading(true);
     
     try {
       const payload = {
@@ -230,11 +266,19 @@ const SaleManager = () => {
       } else {
         setError('Erro ao aplicar desconto');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const changePaymentMethod = async () => {
+    if (!paymentMethod || paymentMethod < 1 || paymentMethod > 5) {
+      setError('Selecione um método de pagamento válido');
+      return;
+    }
+
     setError(null);
+    setLoading(true);
     
     try {
       const payload = {
@@ -256,6 +300,8 @@ const SaleManager = () => {
       } else {
         setError('Erro ao alterar método de pagamento');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -265,7 +311,7 @@ const SaleManager = () => {
       return;
     }
 
-    if (!sale.items || sale.items.length === 0) {
+    if (!Array.isArray(sale.saleItems) || sale.saleItems.length === 0) {
       setError('Adicione pelo menos um item antes de finalizar a venda');
       return;
     }
@@ -371,7 +417,9 @@ const SaleManager = () => {
                   value={paymentMethod} 
                   onChange={(e) => setPaymentMethod(parseInt(e.target.value))}
                   disabled={loading}
+                  required
                 >
+                  <option value="">Selecione um método...</option>
                   {PAYMENT_METHODS.map(method => (
                     <option key={method.value} value={method.value}>
                       {method.label}
@@ -388,7 +436,7 @@ const SaleManager = () => {
                   <X size={20} />
                   Cancelar
                 </SecondaryButton>
-                <Button onClick={createSale} disabled={loading}>
+                <Button onClick={createSale} disabled={loading || !paymentMethod}>
                   <Plus size={20} />
                   {loading ? 'Criando...' : 'Criar Venda'}
                 </Button>
@@ -423,7 +471,18 @@ const SaleManager = () => {
     );
   }
 
-  const canModify = sale?.status === 1; 
+  // More robust status checking - handle both number and string
+  const saleStatus = sale?.status;
+  const canModify = saleStatus === 1 || 
+                    saleStatus === '1' || 
+                    parseInt(saleStatus) === 1 ||
+                    saleStatus === 'PaymentPending' ||
+                    saleStatus === 'Pendente';
+  
+  console.log('Sale data:', sale);
+  console.log('Sale status (raw):', saleStatus);
+  console.log('Sale status type:', typeof saleStatus);
+  console.log('Can modify:', canModify);
 
   return (
     <PageContainer>
@@ -456,8 +515,10 @@ const SaleManager = () => {
           <SectionTitle>
             <ShoppingCart size={24} />
             Itens da Venda
-            {canModify && (
-              <Button onClick={() => setShowAddItem(true)}>
+            {canModify && sale.saleItems.length > 0 && (
+              <Button onClick={() => {
+                setShowAddItem(true);
+              }}>
                 <Plus size={16} />
                 Adicionar Item
               </Button>
@@ -467,14 +528,20 @@ const SaleManager = () => {
           {showAddItem && (
             <Card>
               <Form>
+                <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: '#f0f0f0' }}>
+                  Debug: showAddItem = {showAddItem.toString()}, canModify = {canModify.toString()}
+                </div>
                 <FormGroup>
                   <Label>Produto</Label>
                   <Select 
                     value={selectedVariation} 
-                    onChange={(e) => setSelectedVariation(e.target.value)}
+                    onChange={(e) => {
+                      console.log('Variation selected:', e.target.value);
+                      setSelectedVariation(e.target.value);
+                    }}
                   >
                     <option value="">Selecione um produto...</option>
-                    {variations.map(variation => (
+                    {Array.isArray(variations) && variations.map(variation => (
                       <option key={variation.id} value={variation.id}>
                         {variation.productName} - {variation.name} (R$ {variation.salePrice?.toFixed(2)})
                       </option>
@@ -488,7 +555,10 @@ const SaleManager = () => {
                     type="number" 
                     min="1" 
                     value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => {
+                      console.log('Quantity changed:', e.target.value);
+                      setQuantity(e.target.value);
+                    }}
                   />
                 </FormGroup>
 
@@ -496,9 +566,15 @@ const SaleManager = () => {
                   <SecondaryButton onClick={() => setShowAddItem(false)}>
                     Cancelar
                   </SecondaryButton>
-                  <Button onClick={addItem}>
+                  <Button 
+                    onClick={() => {
+                      console.log('Add button clicked');
+                      addItem();
+                    }} 
+                    disabled={loading || !selectedVariation || quantity <= 0}
+                  >
                     <Plus size={16} />
-                    Adicionar
+                    {loading ? 'Adicionando...' : 'Adicionar'}
                   </Button>
                 </ActionButtons>
               </Form>
@@ -506,8 +582,8 @@ const SaleManager = () => {
           )}
 
           <ItemsList>
-            {sale?.items?.length > 0 ? (
-              sale.items.map(item => (
+            {Array.isArray(sale?.saleItems) && sale.saleItems.length > 0 ? (
+              sale.saleItems.map(item => (
                 <ItemCard key={item.id}>
                   <ItemInfo>
                     <h4>{item.productName || 'Produto'}</h4>
@@ -557,9 +633,9 @@ const SaleManager = () => {
                         </option>
                       ))}
                     </Select>
-                    <Button onClick={changePaymentMethod}>
+                    <Button onClick={changePaymentMethod} disabled={loading || !paymentMethod}>
                       <Save size={16} />
-                      Alterar
+                      {loading ? 'Alterando...' : 'Alterar'}
                     </Button>
                   </div>
                 </FormGroup>
@@ -576,9 +652,9 @@ const SaleManager = () => {
                       onChange={(e) => setDiscount(e.target.value)}
                       style={{ flex: 1 }}
                     />
-                    <Button onClick={applyDiscount}>
+                    <Button onClick={applyDiscount} disabled={loading || !discount || discount <= 0}>
                       <DollarSign size={16} />
-                      Aplicar
+                      {loading ? 'Aplicando...' : 'Aplicar'}
                     </Button>
                   </div>
                 </FormGroup>
@@ -590,7 +666,7 @@ const SaleManager = () => {
                     onChange={(e) => setSelectedCustomer(e.target.value)}
                   >
                     <option value="">Selecione um cliente...</option>
-                    {customers.map(customer => (
+                    {Array.isArray(customers) && customers.map(customer => (
                       <option key={customer.id} value={customer.id}>
                         {customer.name} - {customer.email}
                       </option>
@@ -625,7 +701,7 @@ const SaleManager = () => {
               </DangerButton>
               <Button 
                 onClick={completeSale} 
-                disabled={!selectedCustomer || !sale?.items?.length}
+                disabled={!selectedCustomer || !Array.isArray(sale?.saleItems) || sale.saleItems.length === 0}
               >
                 <Check size={20} />
                 Finalizar Venda
