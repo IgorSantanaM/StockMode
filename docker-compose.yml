@@ -132,10 +132,10 @@ services:
     environment:
       JAEGER_ENDPOINT: "jaeger:4317"
     ports:
-      - "8889:8889"   # Prometheus metrics exporter (scrape endpoint)
-      - "13133:13133" # health_check extension
-      - "55679:55679" # ZPages extension
-      - "4317:4317"   # OTLP Receiver
+      - "8889:8889"   
+      - "13133:13133" 
+      - "55679:55679" 
+      - "4317:4317"   
     depends_on:
       jaeger:
         condition: service_started
