@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stockmode-frontend
+  name: stockmode-frontend
+  namespace: stockmode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockmode-frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: stockmode-frontend
+    spec:
+      containers:
+      - image: stockmode-frontend:v1
+        name: stockmode-frontend
+        ports:
+          - containerPort: 80
+        #envFrom:
+          #- configMapRef:
+             #name: stockmodeconfig
+        resources:
+          requests:
+            memory: "68Mi"
+            cpu: "125m"
+          limits:
+            memory: "68Mi"
+            cpu: "125m"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  stockmode-frontend-service
+  namespace: stockmode
+spec:
+  selector:
+    app: stockmode-frontend
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30080
+  type: NodePort

@@ -1,0 +1,6 @@
+apiVersion: v1
+data:
+  api_url: "stockmode-backend-service.stockmode.svc.cluster.local:30081"
+kind: ConfigMap
+metadata:
+  name: stockmodeconfig

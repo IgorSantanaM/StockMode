@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stockmode-backend
+  name: stockmode-backend
+  namespace: stockmode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockmode-backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: stockmode-backend
+    spec:
+      containers:
+      - image: stockmode-api:v1
+        name: stockmode-api
+        ports:
+          - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+              port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          value: "Host=postgres-service;Database=stockmodedb;Username=stockmode;Password=StockMode123"
+        - name: ASPNETCORE_ENVIRONMENT 
+          value: "Development"
+        - name: RABBITMQ_HOST
+          value: "rabbitmq"
+        - name: OTLP_Endpoint
+          value: "http://otel-collector:4317"
+        #- name: Auth__Authority
+         # value: "https://localhost:5001" TODO: Use Service discovery for getting the value
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+      restartPolicy: Always
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: stockmode-api-service
+  namespace: stockmode
+spec:
+  selector:
+    app: stockmode-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30081
+  type: NodePort
