@@ -1,0 +1,23 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: stockmode-api-autoscaler
+  namespace: stockmode
+  labels:
+    app: stockmode-backend
+spec:
+  minReplicas: 1
+  maxReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: stockmode-backend
+  targetCPUUtilizationPercentage: 50
+
+  #metrics:
+  #- type: Resource
+   # resource:
+    #  name: cpu
+    # target:
+     #   type: Utilization
+      #  averageUtilization: 40

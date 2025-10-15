@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+  namespace: stockmode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: stockmode
+        - name: POSTGRES_PASSWORD
+          value: StockMode123
+        - name: POSTGRES_DB
+          value: stockmodedb
+        readinessProbe:
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          tcpSocket:
+            port: 5432
+        livenessProbe:
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          exec:
+            command:
+              - CMD-SHELL
+              - pg_isready -U stockmode -d stockmodedb
+        resources: 
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+      restartPolicy: OnFailure
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  postgres-service
+  namespace: stockmode
+spec:
+  selector:
+    app:  postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
