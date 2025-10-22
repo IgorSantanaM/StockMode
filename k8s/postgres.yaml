@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
   labels:
     app: postgres
+  name: postgres
   namespace: stockmode
 spec:
   replicas: 1
@@ -11,6 +11,9 @@ spec:
     matchLabels:
       app: postgres
   template:
+    metadata:
+      labels:
+        app: postgres
     spec:
       containers:
       - name: postgres
@@ -25,12 +28,12 @@ spec:
         - name: POSTGRES_DB
           value: stockmodedb
         readinessProbe:
-          initialDelaySeconds: 60
+          initialDelaySeconds: 10
           periodSeconds: 10
           tcpSocket:
             port: 5432
         livenessProbe:
-          initialDelaySeconds: 120
+          initialDelaySeconds: 10
           periodSeconds: 10
           exec:
             command:
@@ -43,18 +46,18 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-      restartPolicy: OnFailure
-
 ---
 
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name:  postgres-service
+  labels:
+    app: postgres
+  name: postgres-service
   namespace: stockmode
 spec:
-  selector:
-    app:  postgres
   ports:
     - port: 5432
       targetPort: 5432
+  selector:
+    app: postgres

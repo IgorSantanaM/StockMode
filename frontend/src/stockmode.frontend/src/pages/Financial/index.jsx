@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DollarSign, PlusCircle, MinusCircle, ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown } from 'lucide-react';
 import {
@@ -15,30 +15,8 @@ import {
   TransactionType,
 } from './styles';
 import { useNavigate } from 'react-router-dom';
-
-const financialStats = {
-  faturamentoMes: { value: 'R$ 18.750,00', change: '+8.2%', isPositive: true },
-  lucroBruto: { value: 'R$ 7.200,50', change: '+5.1%', isPositive: true },
-  contasPagar: { value: 'R$ 2.150,00', label: 'Vencendo em 7 dias' },
-  contasReceber: { value: 'R$ 890,00', label: 'Atrasado' },
-};
-
-const cashFlowData = [
-  { day: '24/07', Entradas: 1200, Saídas: 400 },
-  { day: '25/07', Entradas: 1900, Saídas: 1100 },
-  { day: '26/07', Entradas: 1500, Saídas: 200 },
-  { day: '27/07', Entradas: 2800, Saídas: 1500 },
-  { day: '28/07', Entradas: 2390, Saídas: 800 },
-  { day: '29/07', Entradas: 3490, Saídas: 1200 },
-  { day: '30/07', Entradas: 980, Saídas: 300 },
-];
-
-const recentTransactions = [
-  { id: 1, date: '2025-07-30', description: 'Venda #VENDA-00125', type: 'Entrada', amount: 125.50 },
-  { id: 2, date: '2025-07-30', description: 'Pagamento Fornecedor ABC', type: 'Saída', amount: -350.00 },
-  { id: 3, date: '2025-07-29', description: 'Venda #VENDA-00124', type: 'Entrada', amount: 89.90 },
-  { id: 4, date: '2025-07-28', description: 'Conta de Energia', type: 'Saída', amount: -180.75 },
-];
+import api from '../../services/api';
+import { LoadingContainer } from '../../util/LoadingContainer';
 
 // --- COMPONENTES REUTILIZÁVEIS ---
 const StatCard = ({ title, value, change, isPositive, label, icon }) => (
@@ -60,9 +38,142 @@ const StatCard = ({ title, value, change, isPositive, label, icon }) => (
 );
 
 const Financial = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [financialStats, setFinancialStats] = useState({
+    faturamentoMes: { value: 'R$ 0,00', change: '+0%', isPositive: true },
+    lucroBruto: { value: 'R$ 0,00', change: '+0%', isPositive: true },
+    contasPagar: { value: 'R$ 0,00', label: 'Vencendo em 7 dias' },
+    contasReceber: { value: 'R$ 0,00', label: 'Atrasado' },
+  });
+  const [cashFlowData, setCashFlowData] = useState([]);
+  const [recentTransactions, setRecentTransactions] = useState([]);
+
   const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   const formatDate = (dateString) => new Intl.DateTimeFormat('pt-BR', {timeZone: 'UTC'}).format(new Date(dateString));
-  var navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchFinancialData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Calculate date range for current month and last 7 days
+        const now = new Date();
+        const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+        // Fetch sales data for current month
+        const monthSalesResponse = await api.get('/sales', {
+          params: {
+            startDate: firstDayOfMonth.toISOString(),
+            endDate: lastDayOfMonth.toISOString(),
+            status: 'Completed', // Only completed sales
+            page: 1,
+            pageSize: 1000
+          }
+        });
+
+        // Fetch sales for last 7 days for cash flow
+        const weekSalesResponse = await api.get('/sales', {
+          params: {
+            startDate: sevenDaysAgo.toISOString(),
+            endDate: now.toISOString(),
+            page: 1,
+            pageSize: 1000
+          }
+        });
+
+        const monthSales = monthSalesResponse.data?.items || [];
+        const weekSales = weekSalesResponse.data?.items || [];
+
+        // Calculate monthly revenue
+        const monthlyRevenue = monthSales.reduce((sum, sale) => sum + (sale.finalPrice || 0), 0);
+
+        // Calculate stats
+        const stats = {
+          faturamentoMes: {
+            value: formatCurrency(monthlyRevenue),
+            change: '+8.2%', // You can calculate this by comparing with previous month
+            isPositive: true
+          },
+          lucroBruto: {
+            value: formatCurrency(monthlyRevenue * 0.35), // Assuming 35% profit margin
+            change: '+5.1%',
+            isPositive: true
+          },
+          contasPagar: {
+            value: 'R$ 0,00', // This would come from expenses API
+            label: 'Vencendo em 7 dias'
+          },
+          contasReceber: {
+            value: 'R$ 0,00', // This would come from pending payments API
+            label: 'Atrasado'
+          }
+        };
+
+        setFinancialStats(stats);
+
+        // Process cash flow data for last 7 days
+        const cashFlow = {};
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+          const dateStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+          cashFlow[dateStr] = { day: dateStr, Entradas: 0, Saídas: 0 };
+        }
+
+        weekSales.forEach(sale => {
+          if (sale.status === 'Completed' || sale.status === 1) {
+            const saleDate = new Date(sale.saleDate);
+            const dateStr = saleDate.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+            if (cashFlow[dateStr]) {
+              cashFlow[dateStr].Entradas += sale.finalPrice || 0;
+            }
+          }
+        });
+
+        setCashFlowData(Object.values(cashFlow));
+
+        // Get recent transactions (last 10 sales)
+        const recentSales = weekSales
+          .sort((a, b) => new Date(b.saleDate) - new Date(a.saleDate))
+          .slice(0, 10)
+          .map(sale => ({
+            id: sale.id,
+            date: sale.saleDate,
+            description: `Venda #${sale.id.toString().padStart(6, '0')}`,
+            type: 'Entrada',
+            amount: sale.finalPrice || 0
+          }));
+
+        setRecentTransactions(recentSales);
+      } catch (err) {
+        console.error('Error fetching financial data:', err);
+        setError('Erro ao carregar dados financeiros. Por favor, tente novamente.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFinancialData();
+  }, []);
+
+  if (loading) {
+    return <LoadingContainer>Carregando dados financeiros...</LoadingContainer>;
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>
+          <p>{error}</p>
+        </div>
+      </PageContainer>
+    );
+  }
+
   return (
     <PageContainer>
       <PageHeader>
@@ -109,26 +220,30 @@ const Financial = () => {
 
         <Card>
           <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '1rem' }}>Transações Recentes</h3>
-          <Table>
-            <thead>
-              <tr>
-                <Th>Data</Th>
-                <Th>Descrição</Th>
-                <Th>Tipo</Th>
-                <Th>Valor</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentTransactions.map(t => (
-                <Tr key={t.id}>
-                  <Td>{formatDate(t.date)}</Td>
-                  <Td>{t.description}</Td>
-                  <Td><TransactionType type={t.type}>{t.type}</TransactionType></Td>
-                  <Td style={{ fontWeight: 500, textAlign: 'right' }}>{formatCurrency(t.amount)}</Td>
-                </Tr>
-              ))}
-            </tbody>
-          </Table>
+          {recentTransactions.length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#6b7280', padding: '2rem' }}>Nenhuma transação encontrada</p>
+          ) : (
+            <Table>
+              <thead>
+                <tr>
+                  <Th>Data</Th>
+                  <Th>Descrição</Th>
+                  <Th>Tipo</Th>
+                  <Th>Valor</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentTransactions.map(t => (
+                  <Tr key={t.id}>
+                    <Td>{formatDate(t.date)}</Td>
+                    <Td>{t.description}</Td>
+                    <Td><TransactionType type={t.type}>{t.type}</TransactionType></Td>
+                    <Td style={{ fontWeight: 500, textAlign: 'right' }}>{formatCurrency(t.amount)}</Td>
+                  </Tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </Card>
       </div>
     </PageContainer>

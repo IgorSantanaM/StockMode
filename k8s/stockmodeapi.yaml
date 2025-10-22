@@ -10,7 +10,11 @@ spec:
   selector:
     matchLabels:
       app: stockmode-backend
-  strategy: {}
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -28,11 +32,13 @@ spec:
           periodSeconds: 10
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 10
         env:
+        - name: ASPNETCORE_URLS
+          value: "http://0.0.0.0:8080"
         - name: ConnectionStrings__DefaultConnection
           value: "Host=postgres-service;Database=stockmodedb;Username=stockmode;Password=StockMode123"
         - name: ASPNETCORE_ENVIRONMENT 
@@ -41,8 +47,6 @@ spec:
           value: "rabbitmq"
         - name: OTLP_Endpoint
           value: "http://otel-collector:4317"
-        #- name: Auth__Authority
-         # value: "https://localhost:5001" TODO: Use Service discovery for getting the value
         resources:
           requests:
             memory: "128Mi"
