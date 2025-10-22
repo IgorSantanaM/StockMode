@@ -1,11 +1,14 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  stockmode-idp
   namespace: stockmode
   labels:
-    name:  stockmode-idp
+    app:  stockmode-idp
 spec:
+  selector:
+    matchLabels:
+      app: stockmode-idp
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -14,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        name:  stockmode-idp
+        app:  stockmode-idp
     spec:
       containers:
       - image:  stockmode-idp:v1
@@ -30,12 +33,13 @@ spec:
         - containerPort:  8080
           name:  stockmode-idp
       restartPolicy: Always
-      imagePullPolicy: Always
 ---
 kind: Service
 apiVersion: v1
 metadata:
   name:  stockmode-idp-service
+  labels:
+    app:  stockmode-idp
   namespace: stockmode
 spec:
   selector:
