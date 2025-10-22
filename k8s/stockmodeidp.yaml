@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name:  stockmode-idp
+  namespace: stockmode
+  labels:
+    name:  stockmode-idp
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name:  stockmode-idp
+    spec:
+      containers:
+      - image:  stockmode-idp:v1
+        name:  stockmode-idp
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+          limits:
+            cpu: "100m"
+            memory: "150M"
+        ports:
+        - containerPort:  8080
+          name:  stockmode-idp
+      restartPolicy: Always
+      imagePullPolicy: Always
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  stockmode-idp-service
+  namespace: stockmode
+spec:
+  selector:
+    app:  stockmode-idp
+  type:  NodePort
+  ports:
+  - name:  stockmode-idp
+    port:  80
+    targetPort:  8080
+    nodePort:  30082
