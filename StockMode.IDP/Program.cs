@@ -9,6 +9,8 @@ Log.Information("Starting up");
 
 try
 {
+    var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
     var builder = WebApplication.CreateBuilder(args);
     
     builder.Host.UseSerilog((ctx, lc) => lc
@@ -16,9 +18,21 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
+    builder.Services.AddCors(opt =>
+    {
+        opt.AddPolicy(name: MyAllowSpecificOrigins, policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyMethod();
+            policy.AllowAnyHeader();
+        });
+    });
+
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
+
+    app.UseCors(MyAllowSpecificOrigins);
 
     app.Run();
 }

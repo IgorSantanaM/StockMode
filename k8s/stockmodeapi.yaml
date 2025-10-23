@@ -45,6 +45,12 @@ spec:
           value: "Development"
         - name: RABBITMQ_HOST
           value: "rabbitmq"
+        - name: Auth__Authority
+          value: "http://localhost:5001"
+        - name: Auth__ValidIssuers__0
+          value: "http://localhost:5001"
+        - name: Auth__ValidIssuers__1
+          value: "http://localhost:5001"
         - name: OTLP_Endpoint
           value: "http://otel-collector:4317"
         resources:
