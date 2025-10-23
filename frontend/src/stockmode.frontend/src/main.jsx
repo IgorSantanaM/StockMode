@@ -6,7 +6,7 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 
 const isDevelopment = window.location.hostname === 'localhost';
-const idpAuthority = isDevelopment ? "https://localhost:5001" : "https://stockmode.idp";
+const idpAuthority = isDevelopment ? "http://localhost:5001" : "https://stockmode.idp";
 const frontendUrl = isDevelopment ? "http://localhost" : "http://localhost";
 
 const oidcConfig ={
