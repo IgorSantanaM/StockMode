@@ -20,7 +20,7 @@ spec:
         app:  stockmode-idp
     spec:
       containers:
-      - image:  stockmode-idp:v1
+      - image:  stockmode-rg.azurecr.io/stockmode-idp:v1
         name:  stockmode-idp
         env:
           - name:  ASPNETCORE_URLS

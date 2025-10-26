@@ -17,7 +17,7 @@ spec:
         app: stockmode-frontend
     spec:
       containers:
-      - image: stockmode-frontend:v1
+      - image: stockmode-rg.azurecr.io/stockmode-frontend:v1
         name: stockmode-frontend
         ports:
           - containerPort: 80
