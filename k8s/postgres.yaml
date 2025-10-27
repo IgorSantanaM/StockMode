@@ -37,11 +37,20 @@ spec:
         - containerPort: 5432
         env:
         - name: POSTGRES_USER
-          value: stockmode
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
         - name: POSTGRES_PASSWORD
-          value: StockMode123
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
         - name: POSTGRES_DB
-          value: stockmodedb
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-db
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         volumeMounts:

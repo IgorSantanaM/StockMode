@@ -47,9 +47,8 @@ metadata:
 spec:
   selector:
     app:  stockmode-idp
-  type:  NodePort
   ports:
   - name:  stockmode-idp
     port:  5001
     targetPort:  5001
-    nodePort:  30082
+  type:  ClusterIP

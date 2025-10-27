@@ -40,17 +40,32 @@ spec:
         - name: ASPNETCORE_URLS
           value: "http://0.0.0.0:8080"
         - name: ConnectionStrings__DefaultConnection
-          value: "Host=postgres-service;Database=stockmodedb;Username=stockmode;Password=StockMode123"
+          value: "Host=postgres-service;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-db
         - name: ASPNETCORE_ENVIRONMENT 
           value: "Development"
         - name: RABBITMQ_HOST
           value: "rabbitmq"
         - name: Auth__Authority
-          value: "http://localhost:5001"
+          value: "http://stockmode-idp-service:5001"
         - name: Auth__ValidIssuers__0
-          value: "http://localhost:5001"
+          value: "http://stockmode-idp-service:5001"
         - name: Auth__ValidIssuers__1
-          value: "http://localhost:5001"
+          value: "http://stockmode-idp-service:5001"
         - name: OTLP_Endpoint
           value: "http://otel-collector:4317"
         resources:
@@ -75,5 +90,4 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
-    nodePort: 30081
-  type: NodePort
+  type: ClusterIP
