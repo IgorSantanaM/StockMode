@@ -10,9 +10,13 @@ resource "azurerm_monitor_action_group" "stockmode_action_group" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "stockmode_diagnostics" {
-  name                       = var.diagnostics_name
+  name                       = "${var.diagnostics_name}-${formatdate("YYYYMMDDhhmmss", timestamp())}"
   target_resource_id         = var.target_resource_id
   log_analytics_workspace_id = var.log_analytics_workspace_id
+
+  lifecycle {
+    ignore_changes = [name]
+  }
 
   enabled_log {
     category = "kube-apiserver"
@@ -50,7 +54,7 @@ resource "azurerm_monitor_metric_alert" "stockmode_metric_alert" {
 
   criteria {
     metric_namespace = "Microsoft.ContainerService/managedClusters"
-    metric_name      = "NodeCpuUtilization"
+    metric_name      = "node_cpu_usage_percentage"
     aggregation      = "Average"
     operator         = "GreaterThan"
     threshold        = 80
@@ -59,5 +63,4 @@ resource "azurerm_monitor_metric_alert" "stockmode_metric_alert" {
   action {
     action_group_id = azurerm_monitor_action_group.stockmode_action_group.id
   }
-  depends_on = [azurerm_monitor_diagnostic_setting.stockmode_diagnostics]
 }
