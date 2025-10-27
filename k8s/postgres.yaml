@@ -9,7 +9,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: managed-premium
+  storageClassName: default
 
 ---
 
@@ -37,20 +37,11 @@ spec:
         - containerPort: 5432
         env:
         - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-user
+          value: "stockmodeuser"
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-password
+          value: "StockMode123"
         - name: POSTGRES_DB
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: postgres-db
+          value: "stockmodedb"
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
         volumeMounts:

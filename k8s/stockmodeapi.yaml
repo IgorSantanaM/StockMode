@@ -21,7 +21,7 @@ spec:
         app: stockmode-backend
     spec:
       containers:
-      - image: stockmode-rg.azurecr.io/stockmode-api:v1
+      - image: stockmodeacr.azurecr.io/stockmode-api:v1
         name: stockmode-api
         ports:
           - containerPort: 8080
@@ -39,8 +39,6 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: "http://0.0.0.0:8080"
-        - name: ConnectionStrings__DefaultConnection
-          value: "Host=postgres-service;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
@@ -56,16 +54,22 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: postgres-db
+        - name: ConnectionStrings__DefaultConnection
+          value: "Host=postgres-service;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
         - name: ASPNETCORE_ENVIRONMENT 
           value: "Development"
         - name: RABBITMQ_HOST
           value: "rabbitmq"
         - name: Auth__Authority
-          value: "http://stockmode-idp-service:5001"
+          value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001"
+        - name: Auth__MetadataAddress
+          value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001/.well-known/openid-configuration"
         - name: Auth__ValidIssuers__0
-          value: "http://stockmode-idp-service:5001"
+          value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001"
         - name: Auth__ValidIssuers__1
-          value: "http://stockmode-idp-service:5001"
+          value: "http://stockmode-app.westus2.cloudapp.azure.com/idp"
+        - name: Auth__ValidIssuers__2
+          value: "https://stockmode-app.westus2.cloudapp.azure.com/idp"
         - name: OTLP_Endpoint
           value: "http://otel-collector:4317"
         resources:

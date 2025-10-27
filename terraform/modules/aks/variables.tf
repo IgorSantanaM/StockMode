@@ -13,7 +13,7 @@ variable "aks_node_count" {
 variable "aks_vm_size" {
     type        = string
     description = "The size of the VM for the AKS nodes"
-    default     = "Standard_B1s"
+    default     = "Standard_A4_v2"
 }
 
 variable "location" {
