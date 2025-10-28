@@ -12,7 +12,11 @@ using StockMode.Domain.Sales;
 
 namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmail
 {
-    public class SendSaleConfirmationEmailCommandHandler(IServiceProvider service, IBus bus, IMessageDeliveryReporter reporter) : IRequestHandler<SendSaleConfirmationEmailCommand>
+    public class SendSaleConfirmationEmailCommandHandler(
+        IServiceProvider service, 
+        IBus bus, 
+        IMessageDeliveryReporter reporter,
+        ILogger<SendSaleConfirmationEmailCommandHandler> logger) : IRequestHandler<SendSaleConfirmationEmailCommand>
     {
         public async Task Handle(SendSaleConfirmationEmailCommand request, CancellationToken cancellationToken)
         {
@@ -54,8 +58,10 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
                     "SaleCompleted",
                     mailData);
 
-                await sender.SendAsync(emailBody, cancellationToken);
-                //await bus.PubSub.PublishAsync(mailData, cancellationToken);
+                var messageQueue = scope.ServiceProvider.GetRequiredService<IMessageQueue>();
+                await messageQueue.PublishEmailAsync(emailBody, cancellationToken);
+                
+                logger.LogInformation("Sale confirmation email queued for {Email}", request.Email);
             }
             catch (Exception ex)
             {

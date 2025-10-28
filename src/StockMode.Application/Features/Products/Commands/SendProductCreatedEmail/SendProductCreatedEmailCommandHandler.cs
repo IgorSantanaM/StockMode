@@ -58,7 +58,8 @@ namespace StockMode.Application.Features.Products.Commands.SendProductCreatedEma
                     "ProductCreated",
                     productCreatedEmail);
 
-                await _mailer.SendAsync(emailBody, cancellationToken);
+                var messageQueue = scope.ServiceProvider.GetRequiredService<IMessageQueue>();
+                await messageQueue.PublishEmailAsync(emailBody, cancellationToken);
 
             }catch(Exception ex)
             {

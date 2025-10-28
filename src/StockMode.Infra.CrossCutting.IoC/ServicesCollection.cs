@@ -52,7 +52,11 @@ namespace StockMode.Infra.CrossCutting.IoC
         {
             var jsonOptions = new JsonSerializerOptions();
 
-            IBus? bus = RabbitHutch.CreateBus("host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit", options =>
+            // Get RabbitMQ connection string from configuration
+            var rabbitMqConnectionString = configuration.GetConnectionString("RabbitMQ") 
+                ?? "host=localhost;username=guest;password=guest;virtualHost=mailrabbit";
+
+            IBus? bus = RabbitHutch.CreateBus(rabbitMqConnectionString, options =>
             options.EnableNewtonsoftJson());
 
             services.AddSingleton(bus);

@@ -5,3 +5,22 @@ kind: ConfigMap
 metadata:
   name: stockmodeconfig
   namespace: stockmode
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: smtp-config
+  namespace: stockmode
+data:
+  smtp-host: "sandbox.smtp.mailtrap.io"
+  smtp-port: "2525"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: smtp-secret
+  namespace: stockmode
+type: Opaque
+stringData:
+  smtp-username: "bbd82d52ca7046"
+  smtp-password: "839aef5629b9b0"

@@ -58,8 +58,11 @@ spec:
           value: "Host=postgres-service;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
         - name: ASPNETCORE_ENVIRONMENT 
           value: "Development"
-        - name: RABBITMQ_HOST
-          value: "rabbitmq"
+        - name: ConnectionStrings__RabbitMQ
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-connection-string
         - name: Auth__Authority
           value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001"
         - name: Auth__MetadataAddress
