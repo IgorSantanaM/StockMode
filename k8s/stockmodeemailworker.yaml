@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stockmode-emailworker
+  name: stockmode-emailworker
+  namespace: stockmode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockmode-emailworker
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: stockmode-emailworker
+    spec:
+      containers:
+      - image: stockmodergacr.azurecr.io/stockmode-emailworker:v1
+        name: stockmode-emailworker
+        env:
+        - name: ASPNETCORE_ENVIRONMENT 
+          value: "Development"
+        - name: ConnectionStrings__RabbitMQ
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: rabbitmq-connection-string
+        - name: SmtpSettings__Host
+          valueFrom:
+            configMapKeyRef:
+              name: smtp-config
+              key: smtp-host
+        - name: SmtpSettings__Port
+          valueFrom:
+            configMapKeyRef:
+              name: smtp-config
+              key: smtp-port
+        - name: SmtpSettings__Username
+          valueFrom:
+            secretKeyRef:
+              name: smtp-secret
+              key: smtp-username
+        - name: SmtpSettings__Password
+          valueFrom:
+            secretKeyRef:
+              name: smtp-secret
+              key: smtp-password
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+      restartPolicy: Always

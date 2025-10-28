@@ -7,5 +7,9 @@ namespace StockMode.Application.Common.Interfaces
     {
         Task AddMessageToQueue(string queueName, QueueMessageWrapper queueMessageWrapper);
         Task<QueueMessageWrapper?> FetchFromQueueAsync(string queueName, CancellationToken token);
+        
+        Task PublishEmailAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken cancellationToken = default);
+        
+        Task PublishEmailAsync(GenericEmailMessage emailMessage, CancellationToken cancellationToken = default);
     }
 }

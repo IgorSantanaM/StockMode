@@ -13,5 +13,10 @@ namespace StockMode.Application.Common.Interfaces
     public interface IMailer
     {
         Task SendAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken token);
+        
+        /// <summary>
+        /// Sends email using a JSON model - allows flexible template rendering
+        /// </summary>
+        Task SendGenericAsync(string to, string subject, string templateName, string modelJson, CancellationToken token);
     }
 }
