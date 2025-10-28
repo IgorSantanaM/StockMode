@@ -32,16 +32,16 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         var authority = builder.Configuration["Auth:Authority"] ?? "https://localhost:5001";
         options.Authority = authority;
         
-        // Use host.docker.internal para acessar serviços do host a partir do container
+        // Use host.docker.internal para acessar serviï¿½os do host a partir do container
         var metadataAddress = builder.Configuration["Auth:MetadataAddress"] ?? "https://host.docker.internal:5001/.well-known/openid-configuration";
         options.MetadataAddress = metadataAddress;
         
         options.Audience = "stockmodeapi";
         options.RequireHttpsMetadata = true;
 
-        // Aceitar múltiplos issuers para flexibilidade entre ambientes
+        // Aceitar mï¿½ltiplos issuers para flexibilidade entre ambientes
         var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
-            ?? new[] { "https://localhost:5001", "http://localhost:5001", "http://stockmode.idp" };
+            ?? new[] { "https://localhost:5001", "https://localhost:5001", "http://stockmode.idp" };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -54,7 +54,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
 
-        // Para desenvolvimento: aceitar certificados SSL não confiáveis
+        // Para desenvolvimento: aceitar certificados SSL nï¿½o confiï¿½veis
         options.BackchannelHttpHandler = new HttpClientHandler
         {
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -115,7 +115,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = service.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migraï¿½ï¿½es do banco de dados.");
     }
 }
 

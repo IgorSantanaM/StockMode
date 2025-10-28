@@ -41,12 +41,16 @@ public static class Config
                     RedirectUris =
                     {
                         "http://localhost:5173/signin-oidc",
+                        "https://localhost:5173/signin-oidc",
                         "http://localhost/signin-oidc",
+                        "https://localhost/signin-oidc",
                     },
                     PostLogoutRedirectUris =
                     {
                         "http://localhost:5173/",
+                        "https://localhost:5173/",
                         "http://localhost/",
+                        "https://localhost/",
                     },
 
                     AllowedScopes =

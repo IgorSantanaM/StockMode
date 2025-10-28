@@ -18,8 +18,8 @@ export const setAuthToken = (token) => {
 const getStoredOidcUser = () => {
   const clientId = 'stockmodeclient';
   const authorities = isDevelopment
-    ? ['http://localhost:5001', 'http://localhost:5001']
-    : ['http://stockmode.idp', 'https://stockmode.idp'];
+    ? ['https://localhost:5001', 'https://localhost:5001']
+    : ['https://stockmode.idp', 'https://stockmode.idp'];
 
   for (const authority of authorities) {
     const key = `oidc.user:${authority}:${clientId}`;
