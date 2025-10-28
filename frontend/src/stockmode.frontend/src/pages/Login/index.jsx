@@ -26,31 +26,23 @@ export default function Login() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
+  // Redirect if already authenticated
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('code')) {
-      (async () => {
-        try {
-          setIsProcessing(true);
-          await auth.signinRedirectCallback();
-          setIsProcessing(false);
-          const returnPath = auth.user?.state?.returnPath || location.state?.from || '/';
-          navigate(returnPath, { replace: true });
-        } catch (e) {
-          setError(e.message || 'Authentication failed');
-          setIsProcessing(false);
-        }
-      })();
+    if (auth.isAuthenticated) {
+      const returnPath = location.state?.from || '/home';
+      navigate(returnPath, { replace: true });
     }
-  }, [auth, navigate, location.state]);
+  }, [auth.isAuthenticated, navigate, location.state]);
 
   const handleLogin = async () => {
     try {
       setIsProcessing(true);
       setError(null);
-      const from = location.state?.from || '/';
+      const from = location.state?.from || '/home';
+      console.log('Login: Initiating signin redirect, return path:', from);
       await auth.signinRedirect({ state: { returnPath: from } });
     } catch (e) {
+      console.error('Login: Error starting signin:', e);
       setError(e.message || 'Failed to start login process');
       setIsProcessing(false);
     }
@@ -66,24 +58,25 @@ export default function Login() {
           </Logo>
 
           <WelcomeSection>
-            <WelcomeTitle>Processing Login...</WelcomeTitle>
-            <WelcomeText>Please wait while we authenticate you</WelcomeText>
+            <WelcomeTitle>Starting Login...</WelcomeTitle>
+            <WelcomeText>Please wait</WelcomeText>
           </WelcomeSection>
 
           <LoginButton disabled>
             <LoadingSpinner />
-            Authenticating...
+            Redirecting...
           </LoginButton>
         </LoginCard>
       </LoginContainer>
     );
   }
 
-    if (auth.isAuthenticated) {
-      // Already logged in; maybe user navigated to /login manually
-      return null;
-    }
-    return (
+  if (auth.isAuthenticated) {
+    // Already logged in; redirect to home
+    return null;
+  }
+
+  return (
     <LoginContainer>
       <LoginCard>
         <Logo>

@@ -15,8 +15,26 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  if (auth.error) {
-    return <div>Erro na autenticação: {auth.error.message}</div>;
+  // Don't show error on callback page
+  if (auth.error && location.pathname !== '/signin-oidc') {
+    return (
+      <div style={{ padding: '40px', textAlign: 'center', color: 'red' }}>
+        <h2>Authentication Error</h2>
+        <p>{auth.error.message}</p>
+      </div>
+    );
+  }
+
+  // Show loading during authentication check (except on callback page which handles its own loading)
+  if (auth.isLoading && location.pathname !== '/signin-oidc') {
+    return (
+      <LoadingContainer>
+        <div style={{ textAlign: 'center', padding: '40px' }}>
+          <h2>Loading...</h2>
+          <p>Checking authentication...</p>
+        </div>
+      </LoadingContainer>
+    );
   }
 
   return (
