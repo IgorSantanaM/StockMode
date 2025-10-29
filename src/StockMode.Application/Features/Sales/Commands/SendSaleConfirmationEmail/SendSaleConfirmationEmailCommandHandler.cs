@@ -1,5 +1,4 @@
 ﻿using EasyNetQ;
-using EasyNetQ.Logging;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -16,7 +15,7 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
         IServiceProvider service, 
         IBus bus, 
         IMessageDeliveryReporter reporter,
-        ILogger<SendSaleConfirmationEmailCommandHandler> logger) : IRequestHandler<SendSaleConfirmationEmailCommand>
+        Microsoft.Extensions.Logging.ILogger<SendSaleConfirmationEmailCommandHandler> logger) : IRequestHandler<SendSaleConfirmationEmailCommand>
     {
         public async Task Handle(SendSaleConfirmationEmailCommand request, CancellationToken cancellationToken)
         {

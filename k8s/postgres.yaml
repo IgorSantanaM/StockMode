@@ -1,17 +1,17 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: postgres-pvc
-  namespace: stockmode
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: default
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: postgres-pvc
+#   namespace: stockmode
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   storageClassName: default
 
----
+# ---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -37,16 +37,25 @@ spec:
         - containerPort: 5432
         env:
         - name: POSTGRES_USER
-          value: "stockmodeuser"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-user
         - name: POSTGRES_PASSWORD
-          value: "StockMode123"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-password
         - name: POSTGRES_DB
-          value: "stockmodedb"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-db
         - name: PGDATA
           value: /var/lib/postgresql/data/pgdata
-        volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
+        # volumeMounts:
+        # - name: postgres-storage
+        #   mountPath: /var/lib/postgresql/data
         readinessProbe:
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -59,7 +68,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - pg_isready -U stockmode -d stockmodedb
+              - pg_isready -U $(POSTGRES_USER) -d $(POSTGRES_DB)
         resources: 
           requests:
             memory: "256Mi"
@@ -67,10 +76,10 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-      volumes:
-      - name: postgres-storage
-        persistentVolumeClaim:
-          claimName: postgres-pvc
+      # volumes:
+      # - name: postgres-storage
+      #   persistentVolumeClaim:
+      #     claimName: postgres-pvc
 ---
 
 apiVersion: v1
