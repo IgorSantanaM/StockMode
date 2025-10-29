@@ -4,32 +4,32 @@ metadata:
   name: stockmode-ingress
   namespace: stockmode
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
   - host: stockmode-app.westus2.cloudapp.azure.com
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: stockmode-frontend-service
-            port:
-              number: 80
-      - path: /api
-        pathType: Prefix
+      - path: /api(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: stockmode-api-service
             port:
               number: 80
-      - path: /idp
-        pathType: Prefix
+      - path: /idp(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
           service:
             name: stockmode-idp-service
             port:
               number: 5001
+      - path: /()(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: stockmode-frontend-service
+            port:
+              number: 80

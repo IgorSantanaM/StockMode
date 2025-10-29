@@ -1,7 +1,35 @@
 import axios from 'axios';
 
-const isDevelopment = window.location.hostname === 'localhost';
-const apiBaseUrl = 'http://${process.env.API_URL}/api';
+// Determine environment
+const hostname = window.location.hostname;
+const protocol = window.location.protocol;
+const port = window.location.port;
+
+const isDevelopment = hostname === 'localhost' || hostname === '127.0.0.1';
+const isPortForward = isDevelopment && port && port !== '80' && port !== '443' && port !== '5173';
+const isKubernetes = !isDevelopment;
+
+let apiBaseUrl;
+let idpAuthority;
+
+const envApiUrl = import.meta.env.VITE_API_URL;
+const envIdpUrl = import.meta.env.VITE_IDP_URL;
+
+if (envApiUrl) {
+  apiBaseUrl = envApiUrl;
+  idpAuthority = envIdpUrl || `${protocol}//${hostname}/idp`;
+} else if (isPortForward) {
+  apiBaseUrl = 'http://localhost:8081/api';
+  idpAuthority = 'http://localhost:5001';
+} else if (isDevelopment) {
+  apiBaseUrl = 'http://localhost:5000/api'; 
+  idpAuthority = 'https://localhost:5001';
+} else if (isKubernetes) {
+  apiBaseUrl = `${protocol}//${hostname}/api`;
+  idpAuthority = `${protocol}//${hostname}/idp`;
+}
+
+console.log('API Configuration:', { isDevelopment, isPortForward, isKubernetes, apiBaseUrl, idpAuthority });
 
 const api = axios.create({
   baseURL: apiBaseUrl
@@ -17,17 +45,29 @@ export const setAuthToken = (token) => {
 
 const getStoredOidcUser = () => {
   const clientId = 'stockmodeclient';
-  const authorities = isDevelopment
-    ? ['https://localhost:5001', 'https://localhost:5001']
-    : ['https://stockmode.idp', 'https://stockmode.idp'];
+  
+  // Try multiple possible authority patterns
+  const authorities = [
+    idpAuthority,
+    'https://localhost:5001',
+    'http://localhost:5001',
+    `${protocol}//${hostname}/idp`,
+    'https://stockmode.idp',
+  ];
 
   for (const authority of authorities) {
     const key = `oidc.user:${authority}:${clientId}`;
     const raw = sessionStorage.getItem(key) || localStorage.getItem(key);
     if (raw) {
-      try { return JSON.parse(raw); } catch { /* ignore */ }
+      try { 
+        const user = JSON.parse(raw);
+        console.log('Found OIDC user in storage with authority:', authority);
+        return user;
+      } catch { /* ignore */ }
     }
   }
+  
+  console.warn('No OIDC user found in storage');
   return null;
 };
 

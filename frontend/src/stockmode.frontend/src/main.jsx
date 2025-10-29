@@ -5,9 +5,43 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 
-const isDevelopment = window.location.hostname === 'localhost';
-const idpAuthority = isDevelopment ? "https://localhost:5001" : "https://stockmode.idp";
-const frontendUrl = isDevelopment ? "http://localhost" : "https://localhost";
+const hostname = window.location.hostname;
+const protocol = window.location.protocol;
+const port = window.location.port;
+
+const apiUrl = import.meta.env.VITE_API_URL;
+const idpUrl = import.meta.env.VITE_IDP_URL;
+
+const isDevelopment = hostname === 'localhost' || hostname === '127.0.0.1';
+const isPortForward = isDevelopment && port && port !== '80' && port !== '443' && port !== '5173';
+const isKubernetes = !isDevelopment;
+
+let idpAuthority;
+let frontendUrl;
+
+if (idpUrl) {
+  idpAuthority = idpUrl;
+  frontendUrl = apiUrl ? apiUrl.replace('/api', '') : `${protocol}//${hostname}${port ? ':' + port : ''}`;
+} else if (isPortForward) {
+  idpAuthority = "http://localhost:5001";
+  frontendUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
+} else if (isDevelopment) {
+  idpAuthority = "https://localhost:5001";
+  frontendUrl = `http://localhost${port && port !== '80' ? ':' + port : ''}`;
+} else if (isKubernetes) {
+  idpAuthority = `${protocol}//${hostname}/idp`;
+  frontendUrl = `${protocol}//${hostname}`;
+}
+
+console.log('OIDC Configuration:', { 
+  isDevelopment, 
+  isPortForward, 
+  isKubernetes, 
+  idpAuthority, 
+  frontendUrl,
+  port,
+  envVars: { apiUrl, idpUrl }
+});
 
 const oidcConfig = {
   authority: idpAuthority,
@@ -21,9 +55,7 @@ const oidcConfig = {
   response_mode: 'query',
   loadUserInfo: true,
   
-  // Critical: This tells the library to automatically process the callback
   onSigninCallback: (_user) => {
-    // Remove the query string from the URL after successful signin
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 };

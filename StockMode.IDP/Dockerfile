@@ -26,4 +26,10 @@ RUN dotnet publish "./StockMode.IDP.csproj" -c $BUILD_CONFIGURATION -o /app/publ
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Create keys directory with proper permissions
+USER root
+RUN mkdir -p /app/keys && chown -R $APP_UID:$APP_UID /app/keys && chmod 755 /app/keys
+USER $APP_UID
+
 ENTRYPOINT ["dotnet", "StockMode.IDP.dll"]

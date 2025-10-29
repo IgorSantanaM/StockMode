@@ -44,6 +44,14 @@ public static class Config
                         "https://localhost:5173/signin-oidc",
                         "http://localhost/signin-oidc",
                         "https://localhost/signin-oidc",
+                        "http://localhost:80/signin-oidc",
+                        "http://localhost:3000/signin-oidc",
+                        "http://localhost:8080/signin-oidc",
+                        "http://127.0.0.1:5173/signin-oidc",
+                        "http://127.0.0.1:3000/signin-oidc",
+                        "http://127.0.0.1:8080/signin-oidc",
+                        "http://stockmode-app.westus2.cloudapp.azure.com/signin-oidc",
+                        "https://stockmode-app.westus2.cloudapp.azure.com/signin-oidc",
                     },
                     PostLogoutRedirectUris =
                     {
@@ -51,6 +59,14 @@ public static class Config
                         "https://localhost:5173/",
                         "http://localhost/",
                         "https://localhost/",
+                        "http://localhost:80/",
+                        "http://localhost:3000/",
+                        "http://localhost:8080/",
+                        "http://127.0.0.1:5173/",
+                        "http://127.0.0.1:3000/",
+                        "http://127.0.0.1:8080/",
+                        "http://stockmode-app.westus2.cloudapp.azure.com/",
+                        "https://stockmode-app.westus2.cloudapp.azure.com/",
                     },
 
                     AllowedScopes =

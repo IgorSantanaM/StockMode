@@ -12,6 +12,8 @@ internal static class HostingExtensions
         builder.Services.AddIdentityServer(options =>
             {
                 options.EmitStaticAudienceClaim = true;
+                // Allow HTTP for Kubernetes/production deployment behind ingress
+                options.Authentication.CookieSameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
@@ -26,10 +28,13 @@ internal static class HostingExtensions
                               {
                                   policy.SetIsOriginAllowed(origin =>
                                   {
-                                      return origin == "http://localhost:5173" ||
-                                             origin == "http://localhost" ||
-                                             origin == "http://localhost:80" ||
-                                             origin == null;
+                                      // Allow localhost and Azure domain
+                                      if (origin == null) return true;
+                                      if (origin.StartsWith("http://localhost")) return true;
+                                      if (origin.StartsWith("https://localhost")) return true;
+                                      if (origin.Contains("cloudapp.azure.com")) return true;
+                                      if (origin.Contains("stockmode")) return true;
+                                      return false;
                                   })
                                         .AllowAnyHeader()
                                         .AllowAnyMethod()
@@ -44,6 +49,12 @@ internal static class HostingExtensions
     { 
         app.UseSerilogRequestLogging();
 
+        // Configure forwarded headers for reverse proxy
+        app.UseForwardedHeaders(new Microsoft.AspNetCore.Builder.ForwardedHeadersOptions
+        {
+            ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | 
+                             Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+        });
     
         if (app.Environment.IsDevelopment())
         {

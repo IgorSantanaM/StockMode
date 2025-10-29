@@ -35,6 +35,16 @@ spec:
         ports:
         - containerPort:  5001
           name:  stockmode-idp
+        volumeMounts:
+        - name: idp-keys
+          mountPath: /app/keys
+      volumes:
+      - name: idp-keys
+        # For development/testing: use emptyDir (ephemeral)
+        emptyDir: {}
+        # For production: use persistent volume
+        # persistentVolumeClaim:
+        #   claimName: stockmode-idp-keys-pvc
       restartPolicy: Always
 ---
 kind: Service
