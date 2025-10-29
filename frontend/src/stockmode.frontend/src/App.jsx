@@ -15,6 +15,17 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log('Auth state:', {
+      isLoading: auth.isLoading,
+      isAuthenticated: auth.isAuthenticated,
+      activeNavigator: auth.activeNavigator,
+      user: auth.user ? 'present' : 'null',
+      error: auth.error?.message
+    });
+  }, [auth.isLoading, auth.isAuthenticated, auth.activeNavigator, auth.user, auth.error]);
+
   // Don't show error on callback page
   if (auth.error && location.pathname !== '/signin-oidc') {
     return (

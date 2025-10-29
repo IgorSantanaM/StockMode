@@ -7,6 +7,7 @@ export function ProtectedRoute({ element }) {
   const auth = useAuth();
   const location = useLocation();
 
+  // Wait for auth to initialize
   if (auth.isLoading) {
     return (
       <LoadingContainer>
@@ -18,7 +19,8 @@ export function ProtectedRoute({ element }) {
     );
   }
 
-  if (!auth.isAuthenticated) {
+  // If not authenticated and not currently signing in, redirect to login
+  if (!auth.isAuthenticated && !auth.activeNavigator) {
     console.log('ProtectedRoute: User not authenticated, redirecting to login');
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
   }
