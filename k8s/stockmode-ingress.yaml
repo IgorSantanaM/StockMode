@@ -5,29 +5,35 @@ metadata:
   namespace: stockmode
   annotations:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # when production, enable SSL redirect
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - stockmode-app.westus2.cloudapp.azure.com
+    secretName: stockmode-tls-cert
   rules:
   - host: stockmode-app.westus2.cloudapp.azure.com
     http:
       paths:
-      - path: /api(/|$)(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: stockmode-api-service
-            port:
-              number: 80
-      - path: /idp(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /idp
+        pathType: Prefix
         backend:
           service:
             name: stockmode-idp-service
             port:
               number: 5001
-      - path: /()(.*)
-        pathType: ImplementationSpecific
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: stockmode-api-service
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: stockmode-frontend-service

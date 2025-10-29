@@ -49,6 +49,13 @@ internal static class HostingExtensions
     { 
         app.UseSerilogRequestLogging();
 
+        // Configure path base for Kubernetes ingress
+        var pathBase = app.Configuration["PathBase"] ?? Environment.GetEnvironmentVariable("PATH_BASE");
+        if (!string.IsNullOrEmpty(pathBase))
+        {
+            app.UsePathBase(pathBase);
+        }
+
         // Configure forwarded headers for reverse proxy
         app.UseForwardedHeaders(new Microsoft.AspNetCore.Builder.ForwardedHeadersOptions
         {

@@ -19,12 +19,20 @@ spec:
       labels:
         app:  stockmode-idp
     spec:
+      securityContext:
+        fsGroup: 1654 
       containers:
       - image:  stockmodeacr.azurecr.io/stockmode-idp:v1
         name:  stockmode-idp
         env:
           - name:  ASPNETCORE_URLS
             value:  "http://0.0.0.0:5001"
+          - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
+            value: "true"
+          - name: PATH_BASE
+            value: "/idp"
+          - name: IdentityServer__IssuerUri
+            value: "https://stockmode-app.westus2.cloudapp.azure.com/idp"
         resources:
           requests:
             cpu: "20m"
@@ -41,10 +49,10 @@ spec:
       volumes:
       - name: idp-keys
         # For development/testing: use emptyDir (ephemeral)
-        emptyDir: {}
+        # emptyDir: {}
         # For production: use persistent volume
-        # persistentVolumeClaim:
-        #   claimName: stockmode-idp-keys-pvc
+        persistentVolumeClaim:
+          claimName: stockmode-idp-keys-pvc
       restartPolicy: Always
 ---
 kind: Service
