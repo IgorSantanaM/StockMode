@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Common.Messaging
 {
+    /// <summary>
+    /// Legacy wrapper for channel-based queue messages
+    /// </summary>
+    public record QueueMessageWrapper(string MessageType, string Payload);
+
+    /// <summary>
+    /// Generic wrapper for any email message to be sent via RabbitMQ
+    /// This allows flexible email sending for any template type
+    /// </summary>
     public class GenericEmailMessage
     {
         public string To { get; set; } = string.Empty;

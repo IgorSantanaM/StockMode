@@ -37,9 +37,11 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.MetadataAddress = metadataAddress;
         
         options.Audience = "stockmodeapi";
-        options.RequireHttpsMetadata = true;
+        
+        // Read RequireHttpsMetadata from configuration, default to true for security
+        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", true);
 
-        // Aceitar m�ltiplos issuers para flexibilidade entre ambientes
+        // Aceitar múltiplos issuers para flexibilidade entre ambientes
         var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
             ?? new[] { "https://localhost:5001", "https://localhost:5001", "http://stockmode.idp" };
 

@@ -22,6 +22,7 @@ spec:
     spec:
       containers:
       - image: stockmodeacr.azurecr.io/stockmode-api:v1
+        imagePullPolicy: IfNotPresent
         name: stockmode-api
         ports:
           - containerPort: 8080
@@ -67,6 +68,8 @@ spec:
           value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001"
         - name: Auth__MetadataAddress
           value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001/.well-known/openid-configuration"
+        - name: Auth__RequireHttpsMetadata
+          value: "false"
         - name: Auth__ValidIssuers__0
           value: "http://stockmode-idp-service.stockmode.svc.cluster.local:5001"
         - name: Auth__ValidIssuers__1
