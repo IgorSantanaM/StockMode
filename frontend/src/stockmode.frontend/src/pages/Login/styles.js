@@ -5,18 +5,23 @@ export const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  background: ${props => props.theme.name === 'dark' 
+    ? 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'
+    : 'linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)'};
   padding: 1rem;
+  transition: background 0.3s ease;
 `;
 
 export const LoginCard = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  box-shadow: 0 20px 25px -5px ${props => props.theme.colors.shadowMedium};
   padding: 3rem;
   width: 100%;
   max-width: 400px;
   text-align: center;
+  border: 1px solid ${props => props.theme.colors.border};
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 `;
 
 export const Logo = styled.div`
@@ -26,13 +31,13 @@ export const Logo = styled.div`
 export const LogoText = styled.h1`
   font-size: 2.5rem;
   font-weight: bold;
-  color: #4f46e5;
+  color: ${props => props.theme.colors.primary};
   margin: 0;
   margin-bottom: 0.5rem;
 `;
 
 export const LogoSubtext = styled.p`
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   font-size: 1rem;
   margin: 0;
 `;
@@ -44,12 +49,12 @@ export const WelcomeSection = styled.div`
 export const WelcomeTitle = styled.h2`
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0 0 0.5rem 0;
 `;
 
 export const WelcomeText = styled.p`
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   font-size: 0.875rem;
   margin: 0;
 `;
@@ -57,7 +62,7 @@ export const WelcomeText = styled.p`
 export const LoginButton = styled.button`
   width: 100%;
   padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryHover} 100%);
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -66,16 +71,19 @@ export const LoginButton = styled.button`
   cursor: pointer;
   transition: all 0.2s ease;
   margin-bottom: 1rem;
+  
   &:hover {
-    background: linear-gradient(135deg, #4338ca 0%, #312e81 100%);
+    background: linear-gradient(135deg, ${props => props.theme.colors.primaryHover} 0%, ${props => props.theme.colors.primary} 100%);
     transform: translateY(-1px);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px ${props => props.theme.colors.shadowMedium};
   }
+  
   &:active {
     transform: translateY(0);
   }
+  
   &:disabled {
-    background: #9ca3af;
+    background: ${props => props.theme.colors.textTertiary};
     cursor: not-allowed;
     transform: none;
     box-shadow: none;

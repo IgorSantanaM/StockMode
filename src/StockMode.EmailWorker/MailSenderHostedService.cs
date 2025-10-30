@@ -1,4 +1,5 @@
 ﻿using EasyNetQ;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -44,7 +45,6 @@ namespace StockMode.EmailWorker
                 }
             }
 
-            // Keep service alive
             while (!stoppingToken.IsCancellationRequested)
             {
                 await Task.Delay(1000, stoppingToken);
@@ -67,15 +67,14 @@ namespace StockMode.EmailWorker
                     genericMessage.To, 
                     genericMessage.TemplateName);
 
-                // Send email using the generic renderer that works with any model type
                 await mailer.SendGenericAsync(
                     genericMessage.To,
                     genericMessage.Subject,
                     genericMessage.TemplateName,
                     genericMessage.ModelJson,
+                    genericMessage.ModelType,
                     cancellationToken);
 
-                // Report success
                 await bus.PubSub.PublishAsync(new DeliveryReport
                 {
                     MessageId = Guid.NewGuid(),
@@ -102,7 +101,6 @@ namespace StockMode.EmailWorker
                     genericMessage.To, 
                     genericMessage.TemplateName);
 
-                // Report failure
                 await bus.PubSub.PublishAsync(new DeliveryReport
                 {
                     MessageId = Guid.NewGuid(),
@@ -115,46 +113,6 @@ namespace StockMode.EmailWorker
                         { "Template", genericMessage.TemplateName },
                         { "Timestamp", DateTime.UtcNow },
                         { "Error", ex.Message }
-                    }
-                }, cancellationToken);
-            }
-        }
-
-        /// <summary>
-        /// Legacy method - kept for backwards compatibility with strongly typed messages
-        /// </summary>
-        private async Task SendMailAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken cancellationToken)
-        {
-            using var scope = service.CreateScope();
-            var mailer = scope.ServiceProvider.GetRequiredService<IMailer>();
-            var bus = scope.ServiceProvider.GetRequiredService<IBus>();
-            
-            try
-            {
-                await mailer.SendAsync(emailMessage, cancellationToken);
-                await bus.PubSub.PublishAsync(new DeliveryReport
-                {
-                    MessageId = Guid.NewGuid(),
-                    Recipient = emailMessage.To,
-                    Status = DeliveryStatus.Success,
-                    Metadata = new Dictionary<string, object>
-                    {
-                        { "Email", emailMessage.To },
-                        { "Timestamp", DateTime.UtcNow }
-                    }
-                }, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                await bus.PubSub.PublishAsync(new DeliveryReport
-                {
-                    MessageId = Guid.NewGuid(),
-                    Recipient = emailMessage.To,
-                    Status = DeliveryStatus.Failure,
-                    Metadata = new Dictionary<string, object>
-                    {
-                        { "Email", emailMessage.To },
-                        { "Timestamp", DateTime.UtcNow }
                     }
                 }, cancellationToken);
             }

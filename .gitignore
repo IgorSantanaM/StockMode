@@ -526,3 +526,5 @@ terraform.rc
 terraform.log
 tf-debug.log
 
+# DuendeIDP 
+/keys

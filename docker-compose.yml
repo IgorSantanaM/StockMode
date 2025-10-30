@@ -45,8 +45,9 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stockmodedb;Username=stockmodeuser;Password=StockMode123
+      - ConnectionStrings__RabbitMQ=
       - ASPNETCORE_ENVIRONMENT=Development
-      - RABBITMQ_HOST=mailrabbit
+      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=/
       - OTLP_Endpoint=http://otel-collector:4317
       - Auth__Authority=http://stockmode.idp:5001
       - Auth__MetadataAddress=http://stockmode.idp:5001/.well-known/openid-configuration
@@ -57,7 +58,7 @@ services:
          stockmode.idp:
             condition: service_started
          rabbitmq:
-            condition: service_started
+            condition: service_healthy
          postgres:
             condition: service_healthy
     networks:
@@ -73,6 +74,8 @@ services:
     depends_on:
       stockmode.webapi:
         condition: service_started
+    networks:
+      - app_network
         
   stockmode.mailworker:
     image: ${DOCKER_REGISTRY-}stockmodemailsender
@@ -81,10 +84,17 @@ services:
       dockerfile: src/StockMode.EmailWorker/Dockerfile
     environment:
       - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VHOST=/
+      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=/
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app_network
+    restart: unless-stopped
 
   postgres:
     image: postgres:15
@@ -118,22 +128,29 @@ services:
   
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: mailrabbit
-    hostname: mailrabbit
+    container_name: rabbitmq
+    hostname: rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_VHOST=mailrabbit
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=/
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - app_network
+    restart: unless-stopped
 
   jaeger:
     image: jaegertracing/all-in-one:1.43
     container_name: jaeger
     ports:
       - "16686:16686"
-
     networks:
       - app_network
 
@@ -159,7 +176,7 @@ services:
       - "3000:3000"
     networks:
       - app_network
-  
+ 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.103.0
     volumes:

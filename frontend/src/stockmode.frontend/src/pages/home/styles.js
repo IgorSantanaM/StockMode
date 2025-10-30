@@ -26,13 +26,15 @@ export const MainLayoutGrid = styled.div`
 `;
 
 export const Card = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  box-shadow: 0 1px 3px 0 ${props => props.theme.colors.shadow};
   display: flex;
   flex-direction: column;
-  height: 100%; 
+  height: 100%;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const ChartCard = styled(Card)`
@@ -78,26 +80,25 @@ export const PrimaryButton = styled.button`
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0.75rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadowMedium};
   transition: all 0.2s ease-in-out;
-
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;
 
 export const SecondaryButton = styled(PrimaryButton)`
-  background-color: #e5e7eb;
-  color: #1f2937;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
   box-shadow: none;
 
   &:hover {
-    background-color: #d1d5db;
+    background-color: ${props => props.theme.colors.border};
   }
 `;
 
@@ -106,8 +107,9 @@ export const StatusBadge = styled.span`
   font-weight: 600;
   padding: 0.25rem 0.6rem;
   border-radius: 9999px;
-  background-color: ${props => props.status === 'Concluída' ? '#d1fae5' : '#fef3c7'};
-  color: ${props => props.status === 'Concluída' ? '#065f46' : '#92400e'};
+  background-color: ${props => props.status === 'Concluída' ? props.theme.colors.successLight : props.theme.colors.warningLight};
+  color: ${props => props.status === 'Concluída' ? props.theme.colors.success : props.theme.colors.warning};
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
 export const StatCardContainer = styled(Card)`
@@ -119,7 +121,7 @@ export const StatCardHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     font-weight: 500;
     font-size: 0.875rem;
 `;
@@ -127,7 +129,7 @@ export const StatCardHeader = styled.div`
 export const StatCardValue = styled.p`
     font-size: 1.875rem;
     font-weight: bold;
-    color: #111827;
+    color: ${props => props.theme.colors.text};
     margin: 0;
 `;
 
@@ -135,7 +137,7 @@ export const StatCardFooter = styled.div`
     display: flex;
     align-items: center;
     font-size: 0.875rem;
-    color: ${props => props.isPositive ? '#10b981' : '#ef4444'};
+    color: ${props => props.isPositive ? props.theme.colors.success : props.theme.colors.danger};
 `;
 
 export const ChangeIndicator = styled.span`

@@ -4,8 +4,9 @@ export const AppContainer = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
-  background-color: #f3f4f6;
-  overflow: hidden; 
+  background-color: ${props => props.theme.colors.background};
+  overflow: hidden;
+  transition: background-color 0.3s ease;
 `;
 
 export const MainContent = styled.main`

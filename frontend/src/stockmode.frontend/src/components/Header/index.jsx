@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Calendar, ChevronDown, LogOut } from 'lucide-react';
 import { useAuth } from 'react-oidc-context';
+import ThemeToggle from '../ThemeToggle';
 import {
   HeaderContainer,
   WelcomeMessage,
@@ -62,6 +63,7 @@ const Header = () => {
             onKeyDown={handleSearch}
           />
         </SearchInputContainer>
+        <ThemeToggle />
         <UserMenu>
           <UserButton onClick={() => setUserMenuOpen(!userMenuOpen)}>
             <UserAvatar src="https://i.pravatar.cc/40" alt="Avatar do Usuário" />

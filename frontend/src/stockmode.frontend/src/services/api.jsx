@@ -46,7 +46,6 @@ export const setAuthToken = (token) => {
 const getStoredOidcUser = () => {
   const clientId = 'stockmodeclient';
   
-  // Try multiple possible authority patterns
   const authorities = [
     idpAuthority,
     'https://localhost:5001',

@@ -2,6 +2,8 @@
 using RazorLight;
 using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Features.Sales.Dtos;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
