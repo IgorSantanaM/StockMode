@@ -45,7 +45,6 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stockmodedb;Username=stockmodeuser;Password=StockMode123
-      - ConnectionStrings__RabbitMQ=
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=/
       - OTLP_Endpoint=http://otel-collector:4317
