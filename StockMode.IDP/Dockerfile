@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 5001
+EXPOSE 5443
 
 
 # This stage is used to build the service project
@@ -27,9 +28,11 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Create keys directory with proper permissions
+# Create keys directory and https directory for certificates with proper permissions
 USER root
-RUN mkdir -p /app/keys && chown -R $APP_UID:$APP_UID /app/keys && chmod 755 /app/keys
+RUN mkdir -p /app/keys /https && \
+    chown -R $APP_UID:$APP_UID /app/keys /https && \
+    chmod 755 /app/keys /https
 USER $APP_UID
 
 ENTRYPOINT ["dotnet", "StockMode.IDP.dll"]
