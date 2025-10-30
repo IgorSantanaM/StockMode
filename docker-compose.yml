@@ -1,5 +1,40 @@
 name: StockMode Application
 services:
+  stockmode.idp:
+    image: ${DOCKER_REGISTRY-}stockmodeidp
+    build:
+      context: .
+      dockerfile: StockMode.IDP/Dockerfile
+    ports:
+      - "5001:5001"
+      - "5443:5443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5001
+      # For HTTP-only (Development)
+      - IdentityServer__IssuerUri=http://localhost:5001
+      - IdentityServer__PublicOrigin=http://localhost:5001
+      # Allowed Origins
+      - AllowedOrigins__0=http://localhost:5173
+      - AllowedOrigins__1=https://localhost:5173
+      - AllowedOrigins__2=http://localhost
+      - AllowedOrigins__3=https://localhost
+      - AllowedOrigins__4=http://localhost:80
+      # Client Redirect URIs
+      - ClientRedirectUris__0=http://localhost:5173/signin-oidc
+      - ClientRedirectUris__1=https://localhost:5173/signin-oidc
+      - ClientRedirectUris__2=http://localhost/signin-oidc
+      - ClientRedirectUris__3=https://localhost/signin-oidc
+      # Client Post Logout URIs
+      - ClientPostLogoutRedirectUris__0=http://localhost:5173/
+      - ClientPostLogoutRedirectUris__1=https://localhost:5173/
+      - ClientPostLogoutRedirectUris__2=http://localhost/
+      - ClientPostLogoutRedirectUris__3=https://localhost/
+    volumes:
+      - ./StockMode.IDP/keys:/app/keys
+    networks:
+      - app_network
+      
   stockmode.webapi:
     image: ${DOCKER_REGISTRY-}stockmodewebapi
     build:
@@ -13,11 +48,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - RABBITMQ_HOST=mailrabbit
       - OTLP_Endpoint=http://otel-collector:4317
-      - Auth__Authority=https://localhost:5001
-      - Auth__MetadataAddress=https://host.docker.internal:5001/.well-known/openid-configuration
-      - Auth__ValidIssuers__0=https://localhost:5001
-      - Auth__ValidIssuers__1=http://localhost:5001
+      - Auth__Authority=http://stockmode.idp:5001
+      - Auth__MetadataAddress=http://stockmode.idp:5001/.well-known/openid-configuration
+      - Auth__RequireHttpsMetadata=false
+      - Auth__ValidIssuers__0=http://localhost:5001
+      - Auth__ValidIssuers__1=http://stockmode.idp:5001
     depends_on:
+         stockmode.idp:
+            condition: service_started
          rabbitmq:
             condition: service_started
          postgres:
@@ -133,7 +171,7 @@ services:
     ports:
       - "8889:8889"   
       - "13133:13133" 
-      - "55679:55679" 
+      - "4318:4318"   
       - "4317:4317"   
     depends_on:
       jaeger:
