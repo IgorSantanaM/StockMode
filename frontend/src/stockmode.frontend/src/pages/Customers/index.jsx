@@ -131,7 +131,7 @@ const Customers = () => {
                 </Td>
                 <Td>{customer.phoneNumber}</Td>
                 {/* Assuming lastPurchaseDate and totalSpent exist, otherwise handle nulls */}
-                <Td>{customer.lastPurchaseDate ? formatDate(customer.lastPurchaseDate) : 'N/A'}</Td>
+                <Td>{customer.lastPurchaseDate ? formatDate(customer.lastPurchase) : 'N/A'}</Td>
                 <Td style={{ fontWeight: 500 }}>{formatCurrency(customer.totalSpent)}</Td>
                 <Td>
                   <div style={{display: 'flex', justifyContent: 'flex-end', gap: '0.5rem'}}>

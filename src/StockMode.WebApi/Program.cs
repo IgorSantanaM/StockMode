@@ -28,22 +28,18 @@ services.AddCors(opt =>
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        // Para desenvolvimento, usar o host interno do Docker para acessar o IDP no host
-        var authority = builder.Configuration["Auth:Authority"] ?? "https://localhost:5001";
+        var authority = builder.Configuration["Auth:Authority"] ?? "http://localhost:5001";
         options.Authority = authority;
-        
-        // Use host.docker.internal para acessar servi�os do host a partir do container
+
         var metadataAddress = builder.Configuration["Auth:MetadataAddress"] ?? "https://host.docker.internal:5001/.well-known/openid-configuration";
         options.MetadataAddress = metadataAddress;
         
         options.Audience = "stockmodeapi";
         
-        // Read RequireHttpsMetadata from configuration, default to true for security
         options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", true);
 
-        // Aceitar múltiplos issuers para flexibilidade entre ambientes
         var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
-            ?? new[] { "https://localhost:5001", "https://localhost:5001", "http://stockmode.idp" };
+            ?? new[] { "https://localhost:5001", "http://localhost:5001", "http://stockmode.idp" };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {

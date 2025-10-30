@@ -7,27 +7,27 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${props => props.theme.colors.overlay};
   z-index: 100;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
   transition: opacity 0.3s ease-in-out;
 
   @media (min-width: 769px) {
-    display: none; // O backdrop só existe em ecrãs móveis
+    display: none;
   }
 `;
 
 export const SidebarContainer = styled.aside`
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  box-shadow: 0 2px 4px ${props => props.theme.colors.shadow};
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   width: 256px;
   height: 100vh;
-  border-right: 1px solid #e5e7eb;
-  transition: transform 0.3s ease-in-out;
+  border-right: 1px solid ${props => props.theme.colors.border};
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease, border-color 0.3s ease;
   z-index: 101;
 
   @media (max-width: 768px) {
@@ -38,21 +38,22 @@ export const SidebarContainer = styled.aside`
   }
 `;
 
-// ... (resto dos seus estilos da Sidebar: SidebarHeader, LogoText, Nav, etc.)
 export const SidebarHeader = styled(Link)`
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
   gap: 0.5rem;
   text-decoration: none;
+  transition: border-color 0.3s ease;
 `;
 
 export const LogoText = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
+  transition: color 0.3s ease;
 `;
 
 export const Nav = styled.nav`

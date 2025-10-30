@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from 'react-oidc-context';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
 import { GlobalStyle } from './styles/global';
 import Sidebar from './components/Sidebar'; 
@@ -10,8 +12,9 @@ import AppRoutes from './routes';
 import { MainContent, AppContainer, PageWrapper } from './Appstyles';
 import { LoadingContainer } from './util/LoadingContainer';
 
-function App() {
+function AppContent() {
   const auth = useAuth();
+  const { theme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -49,7 +52,7 @@ function App() {
   }
 
   return (
-    <>
+    <StyledThemeProvider theme={theme}>
       <GlobalStyle />
       {auth.isAuthenticated ? (
         <AppContainer>
@@ -67,7 +70,15 @@ function App() {
       ) : (
         <AppRoutes />
       )}
-    </>
+    </StyledThemeProvider>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 

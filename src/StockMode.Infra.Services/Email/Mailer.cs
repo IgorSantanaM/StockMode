@@ -10,6 +10,7 @@ namespace StockMode.Infra.Services.Email
         IMailSender mailSender,
         ILogger<Mailer> logger) : IMailer
     {
+        [Obsolete]
         public async Task SendAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken token)
         {
             try
@@ -41,12 +42,11 @@ namespace StockMode.Infra.Services.Email
             }
         }
 
-        public async Task SendGenericAsync(string to, string subject, string templateName, string modelJson, CancellationToken token)
+        public async Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, CancellationToken token)
         {
             try
             {
-                // Deserialize the JSON model to a dynamic object for template rendering
-                var model = JsonSerializer.Deserialize<dynamic>(modelJson);
+                var model = JsonSerializer.Deserialize(modelJson, modelType);
 
                 var htmlBody = await htmlRenderer.RenderAsync(templateName, model);
 

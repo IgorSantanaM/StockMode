@@ -1,28 +1,29 @@
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
   position: sticky;
   top: 0;
   z-index: 10;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const WelcomeMessage = styled.div`
   h1 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #1f2937;
+    color: ${props => props.theme.colors.text};
     margin: 0;
   }
   p {
     font-size: 0.875rem;
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     display: flex;
     align-items: center;
     margin-top: 0.25rem;
@@ -46,13 +47,19 @@ export const SearchInput = styled.input`
   padding-bottom: 0.5rem;
   width: 256px;
   border-radius: 0.5rem;
-  border: 1px solid #d1d5db;
-  background-color: #f9fafb;
-  color: black;
+  border: 1px solid ${props => props.theme.colors.border};
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.2s ease;
+  
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
   }
 `;
 
@@ -67,6 +74,7 @@ export const UserButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  color: ${props => props.theme.colors.text};
 `;
 
 export const UserAvatar = styled.img`
@@ -77,7 +85,7 @@ export const UserAvatar = styled.img`
 
 export const UserName = styled.span`
   font-weight: 600;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
 `;
 
 export const UserDropdown = styled.div`
@@ -85,12 +93,12 @@ export const UserDropdown = styled.div`
   right: 0;
   margin-top: 0.5rem;
   width: 12rem;
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  box-shadow: 0 10px 15px -3px ${props => props.theme.colors.shadow};
   padding: 0.5rem 0;
   z-index: 20;
-  border: 1px solid #e5e7eb;
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const DropdownLink = styled.a`
@@ -98,17 +106,19 @@ export const DropdownLink = styled.a`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
   text-decoration: none;
-  font-size: 0.875rem;
-
+  transition: background-color 0.2s ease;
+  
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${props => props.theme.colors.backgroundTertiary};
   }
+  
   &.logout {
-    color: #dc2626;
+    color: ${props => props.theme.colors.danger};
+    
     &:hover {
-      background-color: #fee2e2;
+      background-color: ${props => props.theme.colors.dangerLight};
     }
   }
 `;

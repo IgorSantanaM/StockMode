@@ -9,18 +9,17 @@ export const NavItemLink = styled(NavLink)`
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
-  color: #4b5563; // Cor padrão para o link inativo
+  color: ${props => props.theme.colors.textSecondary};
 
-  // Estilo para o estado de hover quando o link NÃO está ativo.
   &:hover:not(.active) {
-    background-color: #f3f4f6;
+    background-color: ${props => props.theme.colors.backgroundTertiary};
+    color: ${props => props.theme.colors.text};
   }
 
-  // Estilo aplicado automaticamente pelo NavLink quando a rota está ativa.
   &.active {
     color: #ffffff;
-    background-color: #4f46e5;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    background-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadowMedium};
   }
 
   > svg {

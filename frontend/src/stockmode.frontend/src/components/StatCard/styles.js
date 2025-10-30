@@ -1,10 +1,12 @@
 import styled from "styled-components";
 
 export const Card = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  box-shadow: 0 1px 2px 0 ${props => props.theme.colors.shadow};
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const ChartCard = styled(Card)`

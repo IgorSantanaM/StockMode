@@ -22,7 +22,7 @@ namespace StockMode.Application.Common.Messaging
         public string Subject { get; set; } = string.Empty;
         public string TemplateName { get; set; } = string.Empty;
         public string ModelJson { get; set; } = string.Empty;
-        public string ModelType { get; set; } = string.Empty;
+        public Type ModelType { get; set; }
         
         public GenericEmailMessage() { }
 
@@ -32,7 +32,7 @@ namespace StockMode.Application.Common.Messaging
             Subject = subject;
             TemplateName = templateName;
             ModelJson = JsonSerializer.Serialize(model);
-            ModelType = model.GetType().AssemblyQualifiedName ?? string.Empty;
+            ModelType = model.GetType();
         }
 
         public T? GetModel<T>()

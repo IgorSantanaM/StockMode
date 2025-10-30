@@ -38,7 +38,6 @@ namespace StockMode.Infra.Services.Email
         {
             try
             {
-                // Convert to generic message for flexible handling
                 var genericMessage = new GenericEmailMessage(
                     emailMessage.To,
                     emailMessage.Subject,
