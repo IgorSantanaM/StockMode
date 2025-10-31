@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using StockMode.Application.Features.Suppliers.Commands.AddTag;
 using StockMode.Application.Features.Suppliers.Commands.CreateSupplier;
 using StockMode.Application.Features.Suppliers.Commands.DeleteSupplier;
+using StockMode.Application.Features.Suppliers.Commands.RemoveTag;
 using StockMode.Application.Features.Suppliers.Commands.UpdateSupplier;
 using StockMode.Application.Features.Suppliers.Queries.GetAllSuppliers;
 using StockMode.Application.Features.Suppliers.Queries.GetSupplierById;
@@ -52,6 +54,19 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Retrieves all suppliers.")
                 .WithDescription("Gets a list of all suppliers in the system.");
+
+            group.MapPatch("/remove-tag", HandleRemoveTagFromSupplier)
+                .WithName("RemoveTagFromSupplier")
+                .Produces(StatusCodes.Status204NoContent)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Remove a tag from a Supplier.")
+                .WithDescription("Removes the specified tag from the given Supplier. Returns no content on success.");
+
+            group.MapPatch("/add-tag", HandleAddTagFromSupplier)
+                .WithName("AddTagFromSupplier")
+                .Produces(StatusCodes.Status204NoContent)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Add a tag for a supplier.");
         }
 
         private static async Task<IResult> HandleCreateSupplier(
@@ -94,6 +109,18 @@ namespace StockMode.WebApi.Endpoints
             var query = new GetAllSuppliersQuery(name, page, pageSize);
             var suppliers = await mediator.Send(query);
             return Results.Ok(suppliers);
+        }
+
+        private static async Task<IResult> HandleRemoveTagFromSupplier([FromBody] RemoveTagSupplierCommand tagCommand, [FromServices] IMediator mediator)
+        {
+            await mediator.Send(tagCommand);
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> HandleAddTagFromSupplier([FromBody] AddTagSupplierCommand tagCommand, [FromServices] IMediator mediator)
+        {
+            await mediator.Send(tagCommand);
+            return Results.NoContent();
         }
     }
 }

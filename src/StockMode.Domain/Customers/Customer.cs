@@ -16,10 +16,13 @@ namespace StockMode.Domain.Customers
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
+        private readonly List<TagId> _tagIds = new();
+        public IReadOnlyCollection<TagId> TagIds => _tagIds.AsReadOnly();
+        public string? Notes { get; set; }
 
         private Customer() { }
 
-        public Customer(string name, string email, string phoneNumber, Address address)
+        public Customer(string name, string email, string phoneNumber, Address address, string? notes)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new DomainException("Customer name cannot be empty.");
@@ -34,9 +37,10 @@ namespace StockMode.Domain.Customers
             Email = email;
             PhoneNumber = phoneNumber;
             Address = address;
+            Notes = notes;
         }
 
-        public void UpdateDetails(string newName, string newEmail, string newPhoneNumber, Address newAddress)
+        public void UpdateDetails(string newName, string newEmail, string newPhoneNumber, Address newAddress, string? notes)
         {
             if (string.IsNullOrWhiteSpace(newName))
                 throw new DomainException("Customer name cannot be empty.");
@@ -44,6 +48,34 @@ namespace StockMode.Domain.Customers
             Email = newEmail ?? throw new DomainException("Email cannot be null");
             PhoneNumber = newPhoneNumber ?? throw new DomainException("Phone number cannot be null");
             Address = newAddress ?? throw new DomainException("Address cannot be null");
+            Notes = notes;
+            
+        }
+
+        public void AddTag(TagId tagId)
+        {
+            if (!_tagIds.Contains(tagId))
+                _tagIds.Add(tagId);
+        }
+
+        public void RemoveTag(TagId tagId)
+        {
+            if (_tagIds.Contains(tagId))
+                _tagIds.Remove(tagId);
+        }
+
+        public void ClearTags()
+        {
+            _tagIds.Clear();
+        }
+
+        public void UpdateTags(IEnumerable<TagId> newTagIds)
+        {
+            _tagIds.Clear();
+            foreach (var tagId in newTagIds.Distinct())
+            {
+                _tagIds.Add(tagId);
+            }
         }
     }
 }

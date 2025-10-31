@@ -30,6 +30,14 @@ namespace StockMode.Application.Features.Suppliers.Commands.CreateSupplier
             var address = new Address(request.AddressDto.Number, request.AddressDto.Street, request.AddressDto.City, request.AddressDto.State, request.AddressDto.ZipCode);
 
             var supplier = new Supplier(request.Name, request.CorporateName, request.CNPJ, request.ContactPerson, request.Email, request.PhoneNumber, address, request.Notes);
+            if(request.TagIds is not null)
+            {
+                foreach (var tagIdDto in request.TagIds)
+                {
+                    var tagId = new TagId(tagIdDto.Id);
+                    supplier.AddTag(tagId);
+                }
+            }
 
             await _supplierRepository.AddAsync(supplier);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

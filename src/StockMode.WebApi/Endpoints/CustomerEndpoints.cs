@@ -6,9 +6,12 @@ using StockMode.Application.Features.Customers.Commands.DeleteCustomer;
 using StockMode.Application.Features.Customers.Commands.UpdateCustomer;
 using StockMode.Application.Features.Customers.Queries.GetAllCustomers;
 using StockMode.Application.Features.Customers.Queries.GetCustomerById;
+using StockMode.Application.Features.Suppliers.Commands.AddTag;
+using StockMode.Application.Features.Suppliers.Commands.RemoveTag;
 using StockMode.WebApi.Diagnostics;
 using StockMode.WebApi.Endpoints.Internal;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace StockMode.WebApi.Endpoints
 {
@@ -54,8 +57,21 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Retrieves all customers.")
                 .WithDescription("Gets a list of all customers in the system.");
-        }
 
+            group.MapPatch("/remove-tag", HandleRemoveTagFromCustomer)
+                .WithName("RemoveTagFromCustomer")
+                .Produces(StatusCodes.Status204NoContent)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Removes a tag from a customer.")
+                .WithDescription("Removes the specified tag from the given customer. Returns no content on success.");
+
+            group.MapPatch("/add-tag", HandleAddTagForCustomer)
+                .WithName("AddTagForCustomer")
+                .Produces(StatusCodes.Status204NoContent)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Adds a tag for a customer.");
+        }
+        #region Handlers
         private static async Task<IResult> HandleCreateCustomer([FromBody] CreateCustomerCommand createCustomerCommand, [FromServices] IMediator mediator)
         {
             var id = await mediator.Send(createCustomerCommand);
@@ -90,5 +106,18 @@ namespace StockMode.WebApi.Endpoints
             var customers = await mediator.Send(query);
             return Results.Ok(customers);
         }
+
+        private static async Task<IResult> HandleRemoveTagFromCustomer([FromBody] RemoveTagCustomerCommand tagCommand, [FromServices] IMediator mediator)
+        {
+            await mediator.Send(tagCommand);
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> HandleAddTagForCustomer([FromBody] AddTagCustomerCommand tagCommand, [FromServices] IMediator mediator)
+        {
+            await mediator.Send(tagCommand);
+            return Results.NoContent();
+        }
+        #endregion
     }
 }

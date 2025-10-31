@@ -24,7 +24,16 @@ namespace StockMode.Application.Features.Customers.Commands.CreateCustomer
 
             var address = new Address(request.AddressDto.Number, request.AddressDto.Street, request.AddressDto.City, request.AddressDto.State, request.AddressDto.ZipCode);
 
-            var constumer = new Customer(request.Name, request.Email, request.PhoneNumber, address);
+            var constumer = new Customer(request.Name, request.Email, request.PhoneNumber, address, request.Notes);
+
+            if (request.TagIds is not null)
+            {
+                foreach (var tagIdDto in request.TagIds)
+                {
+                    var tagId = new TagId(tagIdDto.Id);
+                    constumer.AddTag(tagId);
+                }
+            }
 
             await _customerRepository.AddAsync(constumer);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

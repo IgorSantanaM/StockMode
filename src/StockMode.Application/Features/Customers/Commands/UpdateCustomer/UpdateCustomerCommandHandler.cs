@@ -33,7 +33,16 @@ namespace StockMode.Application.Features.Customers.Commands.UpdateCustomer
 
             var address = new Address(request.AddressDto.Number, request.AddressDto.Street, request.AddressDto.City, request.AddressDto.State, request.AddressDto.ZipCode);
 
-            customer.UpdateDetails(request.Name, request.Email, request.PhoneNumber, address);
+            customer.UpdateDetails(request.Name, request.Email, request.PhoneNumber, address, request.Notes);
+
+            if (request.TagIds is not null)
+            {
+                var newTagIds = request.TagIds.Select(t => new TagId(t.Id));
+                customer.UpdateTags(newTagIds);
+            }
+            else
+                customer.ClearTags();
+
             _customerRepository.Update(customer);
             return _unitOfWork.SaveChangesAsync(cancellationToken);
         }

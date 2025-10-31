@@ -19,6 +19,8 @@ namespace StockMode.Domain.Suppliers
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
         public string? Notes { get; set; }
+        private readonly List<TagId> _tagIds = new();
+        public IReadOnlyCollection<TagId>? TagIds => _tagIds.AsReadOnly();
 
         private Supplier() { }
 
@@ -44,6 +46,32 @@ namespace StockMode.Domain.Suppliers
             PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
             Address = address ?? throw new DomainException("Address cannot be null");
             Notes = notes;
+        }
+
+        public void AddTag(TagId tagId)
+        {
+            if (!_tagIds.Contains(tagId))
+                _tagIds.Add(tagId);
+        }
+
+        public void RemoveTag(TagId tagId)
+        {
+            if (_tagIds.Contains(tagId))
+                _tagIds.Remove(tagId);
+        }
+
+        public void ClearTags()
+        {
+            _tagIds.Clear();
+        }
+
+        public void SetTags(IEnumerable<TagId> tagIds)
+        {
+            _tagIds.Clear();
+            foreach (var tagId in tagIds.Distinct())
+            {
+                _tagIds.Add(tagId);
+            }
         }
     }
 }

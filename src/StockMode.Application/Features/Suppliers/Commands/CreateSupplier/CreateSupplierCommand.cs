@@ -2,4 +2,4 @@
 using StockMode.Application.Common.Dtos;
 
 namespace StockMode.Application.Features.Suppliers.Commands.CreateSupplier;
-public record CreateSupplierCommand(string Name, string CorporateName, string CNPJ, string ContactPerson, string Email, string PhoneNumber, AddressDto AddressDto, string? Notes) : IRequest<int>;
+public record CreateSupplierCommand(string Name, string CorporateName, string CNPJ, string ContactPerson, string Email, string PhoneNumber, AddressDto AddressDto, string? Notes, IReadOnlyCollection<TagIdDto>? TagIds) : IRequest<int>;
