@@ -29,6 +29,9 @@ namespace StockMode.Application.Features.Customers.Validators
             RuleFor(c => c.AddressDto)
                 .NotNull().WithMessage("Address is required.")
                 .SetValidator(new AddressDtoValidator());
+
+            RuleFor(c => c.Notes)
+                .MaximumLength(500).WithMessage("Notes cannot exceed 500 characters.");
         }
     }
 }

@@ -7,5 +7,5 @@ namespace StockMode.Application.Features.Customers.Commands.UpdateCustomer
                                         string Name,
                                         string Email,
                                         string PhoneNumber,
-                                        AddressDto AddressDto) : IRequest;
+                                        AddressDto AddressDto, string? Notes, IEnumerable<TagIdDto>? TagIds) : IRequest;
 }

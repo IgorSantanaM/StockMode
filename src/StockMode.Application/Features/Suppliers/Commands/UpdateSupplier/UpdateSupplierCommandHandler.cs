@@ -27,6 +27,14 @@ namespace StockMode.Application.Features.Suppliers.Commands.UpdateSupplier
 
             supplier.UpdateDetails(request.Name, request.CorporateName, request.CNPJ, request.ContactPerson, request.Email, request.PhoneNumber, address, request.Notes);
 
+            if (request.TagIds is not null)
+            {
+                var newTagIds = request.TagIds.Select(t => new TagId(t.Id));
+                supplier.SetTags(newTagIds);
+            }
+            else
+                supplier.ClearTags();
+
             _supplierRepository.Update(supplier);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }

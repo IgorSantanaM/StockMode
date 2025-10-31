@@ -1,5 +1,6 @@
 ﻿using EasyNetQ;
 using FluentValidation;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
