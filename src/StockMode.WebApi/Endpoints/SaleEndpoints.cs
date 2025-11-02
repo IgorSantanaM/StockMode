@@ -9,6 +9,7 @@ using StockMode.Application.Features.Sales.Commands.CreateSaleItem;
 using StockMode.Application.Features.Sales.Commands.DeleteSale;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Application.Features.Sales.Queries.GetAllSales;
+using StockMode.Application.Features.Sales.Queries.GetPdfSaleById;
 using StockMode.Application.Features.Sales.Queries.GetSaleById;
 using StockMode.Domain.Enums;
 using StockMode.WebApi.Endpoints.Internal;
@@ -89,6 +90,8 @@ namespace StockMode.WebApi.Endpoints
                 .ProducesProblem(StatusCodes.Status500InternalServerError)
                 .WithSummary("Deletes a Sale by its ID.")
                 .WithDescription("Deletes the specified Sale by its ID. Returns no content on success.");
+
+            group.MapGet("/pdf/{id:int}",)
         }
 
         #region Handlers
@@ -154,6 +157,13 @@ namespace StockMode.WebApi.Endpoints
             var command = new DeleteSaleCommand(id);
             await mediator.Send(command);
             return Results.NoContent();
+        }
+
+        private static async Task<IResult> HandleGetSalePDF([FromRoute] int id, [FromServices] IMediator mediator)
+        {
+            var pdfQuery = new GetPdfSaleByIdQuery(id);
+            var pdfBytes = await mediator.Send(pdfQuery);
+            return Results.File(pdfBytes, "application/pdf", $"sale_{id}.pdf");
         }
         #endregion
     }

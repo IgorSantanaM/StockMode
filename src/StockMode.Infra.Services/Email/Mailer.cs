@@ -8,40 +8,8 @@ namespace StockMode.Infra.Services.Email
 {
     public class Mailer(IHtmlMailRenderer htmlRenderer,
         IMailSender mailSender,
-        ILogger<Mailer> logger) : IMailer
+        ILogger<Mailer> logger, IPdfMaker pdfMaker) : IMailer
     {
-        [Obsolete]
-        public async Task SendAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken token)
-        {
-            try
-            {
-                var htmlBody = await htmlRenderer.RenderAsync(emailMessage.TemplateName, emailMessage.Model);
-
-                var message = new MimeMessage();
-
-                message.From.Add(new MailboxAddress("StockMode", "naoresponda@stockmode.com.br"));
-
-                message.To.Add(new MailboxAddress(emailMessage.To, emailMessage.To));
-                message.Subject = emailMessage.Subject;
-
-                var bb = new BodyBuilder
-                {
-                    HtmlBody = htmlBody
-                };
-
-                message.Body = bb.ToMessageBody();
-
-                await mailSender.SendAsync(message, token);
-
-                logger.LogInformation("Email sent to {To} with subject {Subject}", emailMessage.To, emailMessage.Subject);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error sending email to {To} with subject {Subject}", emailMessage.To, emailMessage.Subject);
-                throw;
-            }
-        }
-
         public async Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, CancellationToken token)
         {
             try
