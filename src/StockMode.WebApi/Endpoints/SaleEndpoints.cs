@@ -91,7 +91,13 @@ namespace StockMode.WebApi.Endpoints
                 .WithSummary("Deletes a Sale by its ID.")
                 .WithDescription("Deletes the specified Sale by its ID. Returns no content on success.");
 
-            group.MapGet("/pdf/{id:int}",)
+            group.MapGet("/pdf/{id:int}", HandleGetSalePDF)
+                .WithName("GetSalePDF")
+                .Produces<FileResult>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .ProducesProblem(StatusCodes.Status500InternalServerError)
+                .WithSummary("Retrieves the PDF receipt for a Sale by its ID.")
+                .WithDescription("Generates and retrieves the PDF receipt for the specified Sale by its ID. Returns 404 if not found.");
         }
 
         #region Handlers
