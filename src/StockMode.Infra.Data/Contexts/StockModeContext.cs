@@ -7,6 +7,7 @@ using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 using StockMode.Domain.StockMovements;
 using StockMode.Domain.Suppliers;
+using StockMode.Domain.Tags;
 
 namespace StockMode.Infra.Data.Contexts
 {
@@ -18,6 +19,7 @@ namespace StockMode.Infra.Data.Contexts
         public DbSet<StockMovement> StockMovements { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Tag> Tags { get; set; }
 
         /// <summary>
         /// The constructor now correctly accepts DbContextOptions, which is how the

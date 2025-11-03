@@ -8,4 +8,4 @@ using System.Threading.Tasks;
 
 namespace StockMode.Application.Features.Suppliers.Commands.UpdateSupplier;
 
-public record UpdateSupplierCommand(int Id, string Name, string CorporateName, string CNPJ, string ContactPerson, string Email, string PhoneNumber, AddressDto AddressDto, string? Notes, IEnumerable<TagIdDto>? TagIds) : IRequest;
+public record UpdateSupplierCommand(int Id, string Name, string CorporateName, string CNPJ, string ContactPerson, string Email, string PhoneNumber, AddressDto AddressDto, string? Notes, IEnumerable<int>? TagIds) : IRequest;

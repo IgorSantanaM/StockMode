@@ -73,6 +73,7 @@ namespace StockMode.EmailWorker
                     genericMessage.TemplateName,
                     genericMessage.ModelJson,
                     genericMessage.ModelType,
+                    genericMessage.Attachments,
                     cancellationToken);
 
                 await bus.PubSub.PublishAsync(new DeliveryReport

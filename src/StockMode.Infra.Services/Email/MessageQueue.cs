@@ -28,12 +28,6 @@ namespace StockMode.Infra.Services.Email
             _logger = logger;
         }
 
-        public async Task AddMessageToQueue(string queueName, QueueMessageWrapper queueMessageWrapper)
-            => await channel.Writer.WriteAsync(queueMessageWrapper);
-
-        public async Task<QueueMessageWrapper?> FetchFromQueueAsync(string queueName, CancellationToken token)
-            => await channel.Reader.ReadAsync(token);
-
         public async Task PublishEmailAsync<TModel>(EmailMessage<TModel> emailMessage, CancellationToken cancellationToken = default)
         {
             try
@@ -42,7 +36,8 @@ namespace StockMode.Infra.Services.Email
                     emailMessage.To,
                     emailMessage.Subject,
                     emailMessage.TemplateName,
-                    emailMessage.Model!
+                    emailMessage.Model!,
+                    emailMessage.attachments
                 );
 
                 await _bus.PubSub.PublishAsync(genericMessage, cancellationToken);

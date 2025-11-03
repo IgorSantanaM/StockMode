@@ -2,10 +2,12 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StockMode.Application.Common.Dtos;
 using StockMode.Application.Common.Interfaces;
 using StockMode.Application.Common.Messaging;
 using StockMode.Application.Exceptionns;
 using StockMode.Application.Features.Sales.Dtos;
+using StockMode.Application.PDF;
 using StockMode.Domain.Products;
 using StockMode.Domain.Sales;
 
@@ -15,7 +17,7 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
         IServiceProvider service, 
         IBus bus, 
         IMessageDeliveryReporter reporter,
-        Microsoft.Extensions.Logging.ILogger<SendSaleConfirmationEmailCommandHandler> logger) : IRequestHandler<SendSaleConfirmationEmailCommand>
+       ILogger<SendSaleConfirmationEmailCommandHandler> logger, IPdfMaker pdfMaker) : IRequestHandler<SendSaleConfirmationEmailCommand>
     {
         public async Task Handle(SendSaleConfirmationEmailCommand request, CancellationToken cancellationToken)
         {
@@ -50,12 +52,22 @@ namespace StockMode.Application.Features.Sales.Commands.SendSaleConfirmationEmai
                         i.Quantity,
                         i.PriceAtSale
                     )).ToList());
+                
+                var pdfBytes = pdfMaker.CreatePdfGeneric(mailData, SaleCompletedRenderer.DrawSaleCompletedDetails);
+                var pdfFileName = $"SaleReceipt_{sale.Id}.pdf";
+
+                var attachments = new List<EmailAttachment>
+                {
+                    new EmailAttachment(pdfFileName, pdfBytes, "application/pdf")
+                };
 
                 var emailBody = new EmailMessage<SaleCompletedEmail>(
                     request.Email,
                     $"New Sale Completed for email: {request.Email}",
                     "SaleCompleted",
-                    mailData);
+                    mailData,
+                    attachments
+                    );
 
                 var messageQueue = scope.ServiceProvider.GetRequiredService<IMessageQueue>();
                 await messageQueue.PublishEmailAsync(emailBody, cancellationToken);

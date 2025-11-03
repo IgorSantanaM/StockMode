@@ -17,5 +17,6 @@ await Host.CreateDefaultBuilder(args)
         services.AddMailServices(hostContext.Configuration);
         services.AddTransient<IMailSender, SmptMailSender>();
         services.AddTransient<IMailer, Mailer>();
+        
 
     }).Build().RunAsync();

@@ -7,7 +7,8 @@ namespace StockMode.Infra.Services.Email
     {
         public Task ReportAsync(DeliveryReport report)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Not Implemented!");
+            return Task.CompletedTask;
         }
     }
 }

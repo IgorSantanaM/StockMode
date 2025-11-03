@@ -1,3 +1,5 @@
-﻿namespace StockMode.Application.Common.Messaging;
+﻿using StockMode.Application.Common.Dtos;
 
-public record EmailMessage<TModel>(string To, string Subject, string TemplateName, TModel Model);
+namespace StockMode.Application.Common.Messaging;
+
+public record EmailMessage<TModel>(string To, string Subject, string TemplateName, TModel Model, IEnumerable<EmailAttachment>? attachments);

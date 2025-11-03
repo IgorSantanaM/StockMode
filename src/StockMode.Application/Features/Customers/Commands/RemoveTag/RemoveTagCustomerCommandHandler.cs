@@ -16,7 +16,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.RemoveTag
             if(customer is null)
                 throw new NotFoundException($"Customer with id {request.CustomerId} was not found.", typeof(Customer));
 
-            customer.RemoveTag(new TagId(request.TagId));
+            customer.RemoveTag(request.TagId);
             customerRepository.Update(customer);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

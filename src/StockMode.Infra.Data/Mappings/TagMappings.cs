@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using StockMode.Domain.Tags;
 using StockMode.Infra.Data.Extensions;
 
@@ -12,7 +13,7 @@ namespace StockMode.Infra.Data.Mappings
             builder.ToTable("Tags");
 
             builder.HasKey(t => t.Id);
-
+            
             builder.Property(t => t.Name)
                 .HasMaxLength(100);
 

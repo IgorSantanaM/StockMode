@@ -1,16 +1,20 @@
 ﻿using Microsoft.Extensions.Logging;
 using MimeKit;
+using StockMode.Application.Common.Dtos;
 using StockMode.Application.Common.Interfaces;
-using StockMode.Application.Common.Messaging;
+using StockMode.Application.Features.Sales.Dtos;
+using StockMode.Application.PDF;
+using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 
 namespace StockMode.Infra.Services.Email
 {
     public class Mailer(IHtmlMailRenderer htmlRenderer,
         IMailSender mailSender,
-        ILogger<Mailer> logger, IPdfMaker pdfMaker) : IMailer
+        ILogger<Mailer> logger) : IMailer
     {
-        public async Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, CancellationToken token)
+        public async Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, IEnumerable<EmailAttachment>? attachments, CancellationToken token)
         {
             try
             {
@@ -29,6 +33,14 @@ namespace StockMode.Infra.Services.Email
                 {
                     HtmlBody = htmlBody
                 };
+
+                if(attachments != null)
+                {
+                    foreach (var attachment in attachments)
+                    {
+                        bb.Attachments.Add(attachment.FileName, attachment.Data, ContentType.Parse(attachment.MimeType));
+                    }
+                }
 
                 message.Body = bb.ToMessageBody();
 

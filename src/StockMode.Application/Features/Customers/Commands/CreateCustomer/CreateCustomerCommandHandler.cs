@@ -30,8 +30,7 @@ namespace StockMode.Application.Features.Customers.Commands.CreateCustomer
             {
                 foreach (var tagIdDto in request.TagIds)
                 {
-                    var tagId = new TagId(tagIdDto.Id);
-                    constumer.AddTag(tagId);
+                    constumer.AddTag(tagIdDto);
                 }
             }
 

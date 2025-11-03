@@ -34,8 +34,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.CreateSupplier
             {
                 foreach (var tagIdDto in request.TagIds)
                 {
-                    var tagId = new TagId(tagIdDto.Id);
-                    supplier.AddTag(tagId);
+                    supplier.AddTag(tagIdDto);
                 }
             }
 
