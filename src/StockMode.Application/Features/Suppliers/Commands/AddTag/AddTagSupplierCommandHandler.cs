@@ -15,7 +15,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.AddTag
             if (supplier is null)
                 throw new NotFoundException($"Supplier with id {request.SupplierId} was not found.", typeof(Supplier));
 
-            supplier.AddTag(new TagId(request.TagId));
+            supplier.AddTag(request.TagId);
             supplierRepository.Update(supplier);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }

@@ -16,8 +16,8 @@ namespace StockMode.Domain.Customers
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Address Address { get; set; }
-        private readonly List<TagId> _tagIds = new();
-        public IReadOnlyCollection<TagId> TagIds => _tagIds.AsReadOnly();
+        private readonly List<int> _tagIds = new();
+        public IReadOnlyCollection<int> TagIds => _tagIds.AsReadOnly();
         public string? Notes { get; set; }
 
         private Customer() { }
@@ -52,13 +52,13 @@ namespace StockMode.Domain.Customers
             
         }
 
-        public void AddTag(TagId tagId)
+        public void AddTag(int tagId)
         {
             if (!_tagIds.Contains(tagId))
                 _tagIds.Add(tagId);
         }
 
-        public void RemoveTag(TagId tagId)
+        public void RemoveTag(int tagId)
         {
             if (_tagIds.Contains(tagId))
                 _tagIds.Remove(tagId);
@@ -69,7 +69,7 @@ namespace StockMode.Domain.Customers
             _tagIds.Clear();
         }
 
-        public void UpdateTags(IEnumerable<TagId> newTagIds)
+        public void UpdateTags(IEnumerable<int> newTagIds)
         {
             _tagIds.Clear();
             foreach (var tagId in newTagIds.Distinct())

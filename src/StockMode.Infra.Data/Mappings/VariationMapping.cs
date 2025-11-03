@@ -10,6 +10,7 @@ namespace StockMode.Infra.Data.Mappings
         public override void Configure(EntityTypeBuilder<Variation> builder)
         {
             builder.ToTable("Variations");
+
             builder.HasKey(v => v.Id);
 
             builder.Property(v => v.Name)

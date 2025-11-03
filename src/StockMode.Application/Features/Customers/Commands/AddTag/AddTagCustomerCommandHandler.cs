@@ -15,7 +15,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.AddTag
             if (customer is null)
                 throw new NotFoundException($"Customer with id {request.CustomerId} was not found.", typeof(Customer));
 
-            customer.AddTag(new TagId(request.TagId));
+            customer.AddTag(request.TagId);
             customerRepository.Update(customer);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }

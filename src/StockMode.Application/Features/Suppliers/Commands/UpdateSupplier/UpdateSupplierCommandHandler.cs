@@ -29,8 +29,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.UpdateSupplier
 
             if (request.TagIds is not null)
             {
-                var newTagIds = request.TagIds.Select(t => new TagId(t.Id));
-                supplier.SetTags(newTagIds);
+                supplier.SetTags(request.TagIds);
             }
             else
                 supplier.ClearTags();

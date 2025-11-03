@@ -15,7 +15,7 @@ namespace StockMode.Application.Features.Suppliers.Commands.RemoveTag
             if (supplier is null)
                 throw new NotFoundException($"Supplier with id {request.SupplierId} was not found.", typeof(Supplier));
 
-            supplier.RemoveTag(new TagId(request.TagId));
+            supplier.RemoveTag(request.TagId);
             supplierRepository.Update(supplier);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

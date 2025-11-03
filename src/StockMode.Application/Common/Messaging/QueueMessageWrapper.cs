@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StockMode.Application.Common.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,27 +23,20 @@ namespace StockMode.Application.Common.Messaging
         public string Subject { get; set; } = string.Empty;
         public string TemplateName { get; set; } = string.Empty;
         public string ModelJson { get; set; } = string.Empty;
+        public IEnumerable<EmailAttachment>? Attachments = null;
+
         public Type ModelType { get; set; }
         
         public GenericEmailMessage() { }
 
-        public GenericEmailMessage(string to, string subject, string templateName, object model)
+        public GenericEmailMessage(string to, string subject, string templateName, object model, IEnumerable<EmailAttachment>? attachments = null)
         {
             To = to;
             Subject = subject;
             TemplateName = templateName;
             ModelJson = JsonSerializer.Serialize(model);
             ModelType = model.GetType();
-        }
-
-        public T? GetModel<T>()
-        {
-            return JsonSerializer.Deserialize<T>(ModelJson);
-        }
-
-        public object? GetModel(Type type)
-        {
-            return JsonSerializer.Deserialize(ModelJson, type);
+            Attachments = attachments;
         }
     }
 }

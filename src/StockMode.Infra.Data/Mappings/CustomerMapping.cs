@@ -33,6 +33,7 @@ namespace StockMode.Infra.Data.Mappings
                 addressBuilder.Property(a => a.Number).HasMaxLength(10).HasColumnName("Number").IsRequired();
             });
 
+
             builder.Ignore(c => c.DomainEvents);
         }
     }

@@ -37,8 +37,7 @@ namespace StockMode.Application.Features.Customers.Commands.UpdateCustomer
 
             if (request.TagIds is not null)
             {
-                var newTagIds = request.TagIds.Select(t => new TagId(t.Id));
-                customer.UpdateTags(newTagIds);
+                customer.UpdateTags(request.TagIds);
             }
             else
                 customer.ClearTags();

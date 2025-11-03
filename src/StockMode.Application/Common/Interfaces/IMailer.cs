@@ -1,4 +1,5 @@
-﻿using StockMode.Application.Common.Messaging;
+﻿using StockMode.Application.Common.Dtos;
+using StockMode.Application.Common.Messaging;
 using StockMode.Application.Features.Products.Dtos;
 using StockMode.Application.Features.Sales.Dtos;
 using StockMode.Domain.Sales.Events;
@@ -15,6 +16,6 @@ namespace StockMode.Application.Common.Interfaces
         /// <summary>
         /// Sends email using a JSON model - allows flexible template rendering
         /// </summary>
-        Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, CancellationToken token );
+        Task SendGenericAsync(string to, string subject, string templateName, string modelJson, Type modelType, IEnumerable<EmailAttachment>? attachments = null, CancellationToken token = default);
     }
 }
