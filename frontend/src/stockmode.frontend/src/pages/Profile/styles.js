@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   padding: 2rem;
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
+  transition: background-color 0.3s ease;
 `;
 
 export const Container = styled.div`
@@ -14,13 +15,14 @@ export const Container = styled.div`
 `;
 
 export const ProfileHeader = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadow};
   padding: 2rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  transition: all 0.3s ease;
 `;
 
 export const Avatar = styled.img`
@@ -34,30 +36,34 @@ export const UserInfo = styled.div`
   h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: #1f2937;
+    color: ${props => props.theme.colors.text};
     margin: 0;
+    transition: color 0.3s ease;
   }
   p {
     font-size: 1rem;
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     margin-top: 0.25rem;
+    transition: color 0.3s ease;
   }
 `;
 
 export const Card = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  box-shadow: 0 1px 2px 0 ${props => props.theme.colors.shadow};
   padding: 2rem;
+  transition: all 0.3s ease;
 `;
 
 export const SectionTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
   margin: 0 0 1.5rem 0;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Form = styled.form`
@@ -80,23 +86,28 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 `;
 
 export const Input = styled.input`
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #f9fafb;
-  transition: all 0.2s ease-in-out;
-  color: black;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
   }
 `;
 
@@ -108,28 +119,29 @@ export const ButtonContainer = styled.div`
 
 export const PrimaryButton = styled.button`
   padding: 0.625rem 1.25rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;
 
 export const PreferenceRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: border-color 0.3s ease;
 
-    &:last-child {
-        border-bottom: none;
-    }
+  &:last-child {
+    border-bottom: none;
+  }
 `;

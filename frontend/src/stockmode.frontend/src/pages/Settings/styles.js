@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   padding: 2rem;
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
+  transition: background-color 0.3s ease;
 `;
 
 export const Container = styled.div`
@@ -20,8 +21,9 @@ export const TitleContainer = styled.div`
 export const Title = styled.h2`
   font-size: 1.75rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 export const SettingsLayout = styled.div`
@@ -49,40 +51,42 @@ export const NavButton = styled.button`
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   border: none;
-  background-color: ${({ active }) => (active ? '#eef2ff' : 'transparent')};
-  color: ${({ active }) => (active ? '#4f46e5' : '#374151')};
+  background-color: ${({ active, theme }) => (active ? theme.colors.primaryLight : 'transparent')};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.text)};
   font-weight: 500;
   font-size: 1rem;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #eef2ff;
-    color: #4f46e5;
+    background-color: ${props => props.theme.colors.primaryLight};
+    color: ${props => props.theme.colors.primary};
   }
 `;
 
 export const Paragraph = styled.p`
-    color: black;
-
+  color: ${props => props.theme.colors.text};
+  transition: color 0.3s ease;
 `;
 
 export const ContentCard = styled.div`
   flex-grow: 1;
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadow};
   padding: 2rem;
+  transition: all 0.3s ease;
 `;
 
 export const SectionTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
   margin: 0 0 1.5rem 0;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Form = styled.form`
@@ -105,17 +109,29 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
 `;
 
 export const Input = styled.input`
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #f9fafb;
-  color: black;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
+  }
 `;
 
 export const ButtonContainer = styled.div`
@@ -123,16 +139,22 @@ export const ButtonContainer = styled.div`
   justify-content: flex-end;
   margin-top: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid ${props => props.theme.colors.border};
+  transition: border-color 0.3s ease;
 `;
 
 export const PrimaryButton = styled.button`
   padding: 0.625rem 1.25rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.colors.primaryHover};
+  }
 `;

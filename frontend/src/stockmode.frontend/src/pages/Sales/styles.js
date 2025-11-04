@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: ${props => props.theme.colors.background};
   padding: 20px;
+  transition: background-color 0.3s ease;
 `;
 
 export const Container = styled.div`
@@ -16,10 +17,11 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
+  transition: all 0.3s ease;
 
   div:first-child {
     display: flex;
@@ -29,10 +31,11 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 export const HeaderActions = styled.div`
@@ -45,11 +48,12 @@ export const FiltersSection = styled.div`
   gap: 16px;
   align-items: end;
   margin-bottom: 24px;
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
   flex-wrap: wrap;
+  transition: all 0.3s ease;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -66,36 +70,44 @@ export const FilterGroup = styled.div`
   label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: ${props => props.theme.colors.text};
+    transition: color 0.3s ease;
   }
 `;
 
 export const Input = styled.input`
   padding: 10px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
   border-radius: 8px;
   font-size: 0.875rem;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
   }
 `;
 
 export const Select = styled.select`
   padding: 10px 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
   font-size: 0.875rem;
-  background-color: white;
-  transition: border-color 0.2s;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 `;
 
@@ -104,22 +116,22 @@ export const Button = styled.button`
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: #3b82f6;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
   white-space: nowrap;
   height: fit-content;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 
   &:disabled {
-    background-color: #9ca3af;
+    background-color: ${props => props.theme.colors.textTertiary};
     cursor: not-allowed;
   }
 `;
@@ -136,14 +148,14 @@ export const SalesGrid = styled.div`
 `;
 
 export const SaleCard = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s;
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
+  transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px ${props => props.theme.colors.shadowMedium};
   }
 `;
 
@@ -158,9 +170,10 @@ export const SaleInfo = styled.div`
 
     h3 {
       margin: 0;
-      color: #1f2937;
+      color: ${props => props.theme.colors.text};
       font-size: 1.25rem;
       font-weight: 600;
+      transition: color 0.3s ease;
     }
   }
 
@@ -171,11 +184,12 @@ export const SaleInfo = styled.div`
 
     p {
       margin: 0;
-      color: #6b7280;
+      color: ${props => props.theme.colors.textSecondary};
       font-size: 0.875rem;
+      transition: color 0.3s ease;
 
       strong {
-        color: #374151;
+        color: ${props => props.theme.colors.text};
       }
     }
   }
@@ -194,20 +208,21 @@ export const StatusBadge = styled.span`
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: all 0.3s ease;
   background-color: ${props => {
     switch (props.status) {
-      case 0: return '#fef3c7'; // Pending
-      case 1: return '#d1fae5'; // Completed
-      case 2: return '#fecaca'; // Cancelled
-      default: return '#f3f4f6';
+      case 0: return props.theme.colors.warningLight;
+      case 1: return props.theme.colors.successLight;
+      case 2: return props.theme.colors.dangerLight;
+      default: return props.theme.colors.borderLight;
     }
   }};
   color: ${props => {
     switch (props.status) {
-      case 0: return '#d97706'; // Pending
-      case 1: return '#059669'; // Completed
-      case 2: return '#dc2626'; // Cancelled
-      default: return '#6b7280';
+      case 0: return props.theme.colors.warning;
+      case 1: return props.theme.colors.success;
+      case 2: return props.theme.colors.danger;
+      default: return props.theme.colors.textSecondary;
     }
   }};
 `;
@@ -218,13 +233,15 @@ export const Pagination = styled.div`
   align-items: center;
   gap: 16px;
   padding: 20px;
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
+  transition: all 0.3s ease;
 
   span {
-    color: #374151;
+    color: ${props => props.theme.colors.text};
     font-weight: 500;
+    transition: color 0.3s ease;
   }
 `;
 
@@ -233,16 +250,16 @@ export const PaginationButton = styled.button`
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background-color: ${props => props.disabled ? '#f9fafb' : '#3b82f6'};
-  color: ${props => props.disabled ? '#9ca3af' : 'white'};
-  border: 1px solid ${props => props.disabled ? '#e5e7eb' : '#3b82f6'};
+  background-color: ${props => props.disabled ? props.theme.colors.backgroundTertiary : props.theme.colors.primary};
+  color: ${props => props.disabled ? props.theme.colors.textTertiary : 'white'};
+  border: 1px solid ${props => props.disabled ? props.theme.colors.border : props.theme.colors.primary};
   border-radius: 8px;
   font-weight: 500;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 
   &:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;
 
@@ -252,20 +269,23 @@ export const EmptyState = styled.div`
   align-items: center;
   justify-content: center;
   padding: 60px 20px;
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
   text-align: center;
+  transition: all 0.3s ease;
 
   h3 {
     margin: 16px 0 8px;
-    color: #374151;
+    color: ${props => props.theme.colors.text};
     font-size: 1.5rem;
+    transition: color 0.3s ease;
   }
 
   p {
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     margin-bottom: 24px;
     max-width: 400px;
+    transition: color 0.3s ease;
   }
 `;
