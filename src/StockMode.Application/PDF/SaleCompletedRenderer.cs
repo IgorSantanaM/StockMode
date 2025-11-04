@@ -25,7 +25,7 @@ namespace StockMode.Application.PDF
 
         public static void DrawSaleCompletedDetails(RowDescriptor row, SaleCompletedEmail model)
         {
-            row.ConstantItem(21, Unit.Centimetre).Column(column =>
+            row.RelativeItem().Column(column =>
             {
                 column.Spacing(15);
 
@@ -55,12 +55,12 @@ namespace StockMode.Application.PDF
                 row.RelativeItem().AlignRight().Column(column =>
                 {
                     column.Item().AlignRight().Text("SALE RECEIPT")
-                        .FontSize(28)
+                        .FontSize(24)
                         .FontColor(PrimaryBlue)
                         .Bold();
                     
                     column.Item().PaddingTop(5, Unit.Point).AlignRight().Text($"#{model.SaleId:D6}")
-                        .FontSize(16)
+                        .FontSize(14)
                         .FontColor(SecondaryBlue)
                         .SemiBold();
                 });
@@ -69,20 +69,20 @@ namespace StockMode.Application.PDF
 
         private static void ComposeSaleInfoCard(IContainer container, SaleCompletedEmail model)
         {
-            container.Border(1, Unit.Point).BorderColor(BorderGray).Background(Colors.White).Padding(15, Unit.Point).Row(row =>
+            container.Border(1, Unit.Point).BorderColor(BorderGray).Background(Colors.White).Padding(15, Unit.Point).Column(column =>
             {
-                // Customer information
-                row.RelativeItem().Column(column =>
-                {
-                    column.Spacing(8, Unit.Point);
+                column.Spacing(12, Unit.Point);
 
-                    column.Item().Text("CUSTOMER INFORMATION")
+                // Customer information
+                column.Item().Column(infoColumn =>
+                {
+                    infoColumn.Item().Text("CUSTOMER INFORMATION")
                         .FontSize(9)
                         .FontColor(MediumGray)
                         .Bold()
                         .LetterSpacing(0.5f);
 
-                    column.Item().PaddingTop(5, Unit.Point).Row(infoRow =>
+                    infoColumn.Item().PaddingTop(5, Unit.Point).Row(infoRow =>
                     {
                         infoRow.ConstantItem(60, Unit.Point).Text("Email:")
                             .FontSize(10)
@@ -95,17 +95,15 @@ namespace StockMode.Application.PDF
                 });
 
                 // Sale date and status
-                row.RelativeItem().PaddingLeft(20, Unit.Point).Column(column =>
+                column.Item().Column(detailsColumn =>
                 {
-                    column.Spacing(8, Unit.Point);
-
-                    column.Item().Text("TRANSACTION DETAILS")
+                    detailsColumn.Item().Text("TRANSACTION DETAILS")
                         .FontSize(9)
                         .FontColor(MediumGray)
                         .Bold()
                         .LetterSpacing(0.5f);
 
-                    column.Item().PaddingTop(5, Unit.Point).Row(infoRow =>
+                    detailsColumn.Item().PaddingTop(5, Unit.Point).Row(infoRow =>
                     {
                         infoRow.ConstantItem(60, Unit.Point).Text("Date:")
                             .FontSize(10)
@@ -116,17 +114,16 @@ namespace StockMode.Application.PDF
                             .FontColor(DarkGray);
                     });
 
-                    column.Item().Row(infoRow =>
+                    detailsColumn.Item().PaddingTop(5, Unit.Point).Row(infoRow =>
                     {
                         infoRow.ConstantItem(60, Unit.Point).Text("Status:")
                             .FontSize(10)
                             .FontColor(DarkGray)
                             .SemiBold();
-                        infoRow.RelativeItem().Background(SuccessGreen)
+                        infoRow.AutoItem().Background(SuccessGreen)
                             .PaddingVertical(4, Unit.Point)
                             .PaddingHorizontal(8, Unit.Point)
                             .AlignCenter()
-                            .Width(80, Unit.Point)
                             .Text("COMPLETED")
                             .FontSize(8)
                             .FontColor(Colors.White)
@@ -144,11 +141,10 @@ namespace StockMode.Application.PDF
                 column.Item().Row(titleRow =>
                 {
                     titleRow.RelativeItem().Height(3, Unit.Point).Background(PrimaryBlue);
-                    titleRow.ConstantItem(4, Unit.Point);
                 });
 
                 column.Item().PaddingTop(10, Unit.Point).PaddingBottom(10, Unit.Point).Text("Items Purchased")
-                    .FontSize(16)
+                    .FontSize(14)
                     .FontColor(PrimaryBlue)
                     .Bold();
 
@@ -157,7 +153,7 @@ namespace StockMode.Application.PDF
                 {
                     table.ColumnsDefinition(columns =>
                     {
-                        columns.RelativeColumn(5);    // Product name
+                        columns.RelativeColumn(4);    // Product name
                         columns.RelativeColumn(1.5f); // Quantity
                         columns.RelativeColumn(2);    // Unit price
                         columns.RelativeColumn(2);    // Subtotal
@@ -167,37 +163,33 @@ namespace StockMode.Application.PDF
                     table.Header(header =>
                     {
                         header.Cell().Background(PrimaryBlue)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .Text("Product")
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(Colors.White)
                             .Bold();
 
                         header.Cell().Background(PrimaryBlue)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .AlignCenter()
                             .Text("Qty")
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(Colors.White)
                             .Bold();
 
                         header.Cell().Background(PrimaryBlue)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .AlignRight()
                             .Text("Unit Price")
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(Colors.White)
                             .Bold();
 
                         header.Cell().Background(PrimaryBlue)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .AlignRight()
                             .Text("Subtotal")
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(Colors.White)
                             .Bold();
                     });
@@ -209,46 +201,42 @@ namespace StockMode.Application.PDF
                         var item = items[i];
                         var isEven = i % 2 == 0;
                         var bgColor = isEven ? White : LightGray;
+                        var itemTotal = item.Quantity * item.PriceAtSale;
 
                         table.Cell().Background(bgColor)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .BorderBottom(1, Unit.Point)
                             .BorderColor(BorderGray)
                             .Text(item.Name)
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(DarkGray);
 
                         table.Cell().Background(bgColor)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .BorderBottom(1, Unit.Point)
                             .BorderColor(BorderGray)
                             .AlignCenter()
                             .Text(item.Quantity.ToString())
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(DarkGray)
                             .Bold();
 
                         table.Cell().Background(bgColor)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .BorderBottom(1, Unit.Point)
                             .BorderColor(BorderGray)
                             .AlignRight()
                             .Text(item.PriceAtSale.ToString("C", CultureInfo.CurrentCulture))
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(DarkGray);
 
-                        var itemTotal = item.Quantity * item.PriceAtSale;
                         table.Cell().Background(bgColor)
-                            .PaddingVertical(10, Unit.Point)
-                            .PaddingHorizontal(8, Unit.Point)
+                            .Padding(8, Unit.Point)
                             .BorderBottom(1, Unit.Point)
                             .BorderColor(BorderGray)
                             .AlignRight()
                             .Text(itemTotal.ToString("C", CultureInfo.CurrentCulture))
-                            .FontSize(10)
+                            .FontSize(9)
                             .FontColor(DarkGray)
                             .SemiBold();
                     }
@@ -287,11 +275,10 @@ namespace StockMode.Application.PDF
                     // Subtotal
                     financeColumn.Item().Row(row =>
                     {
-                        row.AutoItem().Text("Subtotal:")
+                        row.RelativeItem().Text("Subtotal:")
                             .FontSize(11)
                             .FontColor(MediumGray)
                             .SemiBold();
-                        row.RelativeItem();
                         row.AutoItem().Text(model.TotalPrice.ToString("C", CultureInfo.CurrentCulture))
                             .FontSize(11)
                             .FontColor(DarkGray);
@@ -302,11 +289,10 @@ namespace StockMode.Application.PDF
                     {
                         financeColumn.Item().Row(row =>
                         {
-                            row.AutoItem().Text("Discount:")
+                            row.RelativeItem().Text("Discount:")
                                 .FontSize(11)
                                 .FontColor(SuccessGreen)
                                 .SemiBold();
-                            row.RelativeItem();
                             row.AutoItem().Text($"- {model.Discount.ToString("C", CultureInfo.CurrentCulture)}")
                                 .FontSize(11)
                                 .FontColor(SuccessGreen)
@@ -322,11 +308,10 @@ namespace StockMode.Application.PDF
                         .Padding(12, Unit.Point)
                         .Row(row =>
                         {
-                            row.AutoItem().Text("TOTAL:")
+                            row.RelativeItem().Text("TOTAL:")
                                 .FontSize(14)
                                 .FontColor(Colors.White)
                                 .Bold();
-                            row.RelativeItem();
                             row.AutoItem().Text(model.FinalPrice.ToString("C", CultureInfo.CurrentCulture))
                                 .FontSize(16)
                                 .FontColor(Colors.White)
@@ -345,23 +330,23 @@ namespace StockMode.Application.PDF
                 column.Item().PaddingTop(15, Unit.Point).AlignCenter().Column(footerColumn =>
                 {
                     footerColumn.Item().Text("Thank you for choosing StockMode!")
-                        .FontSize(14)
+                        .FontSize(12)
                         .FontColor(PrimaryBlue)
                         .Bold();
 
                     footerColumn.Item().PaddingTop(8, Unit.Point).Text("Your satisfaction is our priority")
-                        .FontSize(10)
+                        .FontSize(9)
                         .FontColor(MediumGray)
                         .Italic();
 
                     footerColumn.Item().PaddingTop(12, Unit.Point).Text(text =>
                     {
-                        text.Span("For support: ").FontSize(9).FontColor(MediumGray);
-                        text.Span("support@stockmode.com").FontSize(9).FontColor(SecondaryBlue).SemiBold();
+                        text.Span("For support: ").FontSize(8).FontColor(MediumGray);
+                        text.Span("support@stockmode.com").FontSize(8).FontColor(SecondaryBlue).SemiBold();
                     });
 
                     footerColumn.Item().PaddingTop(4, Unit.Point).Text("StockMode Inc. | www.stockmode.com | +1 (555) 123-4567")
-                        .FontSize(8)
+                        .FontSize(7)
                         .FontColor(MediumGray);
                 });
             });
