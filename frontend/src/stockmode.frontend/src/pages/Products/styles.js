@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   padding: 2rem;
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
+  transition: background-color 0.3s ease;
 `;
 
 export const PageHeader = styled.div`
@@ -21,8 +22,9 @@ export const TitleContainer = styled.div`
 export const Title = styled.h2`
   font-size: 1.75rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 export const PrimaryButton = styled.button`
@@ -31,48 +33,54 @@ export const PrimaryButton = styled.button`
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;
 
 export const Card = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadow};
   overflow: hidden;
+  transition: background-color 0.3s ease;
 `;
 
 export const FilterContainer = styled.div`
   padding: 1.5rem;
   display: flex;
   gap: 1rem;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
 const baseInputStyles = `
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #ffffff;
-  transition: all 0.2s ease-in-out;
-  color: black;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
 
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
   }
 `;
 
@@ -89,18 +97,20 @@ export const Th = styled.th`
   text-align: left;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Td = styled.td`
   padding: 1rem 1.5rem;
   font-size: 0.875rem;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  color: ${props => props.theme.colors.text};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
   vertical-align: middle;
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Tr = styled.tr`
@@ -108,8 +118,9 @@ export const Tr = styled.tr`
     border-bottom: none;
   }
   &:hover {
-    background-color: #f9fafb;
+    background-color: ${props => props.theme.colors.backgroundTertiary};
   }
+  transition: background-color 0.3s ease;
 `;
 
 export const ProductImage = styled.img`
@@ -121,24 +132,26 @@ export const ProductImage = styled.img`
 
 export const StockStatus = styled.span`
   font-weight: 600;
-  color: ${({ stock }) => {
-    if (stock === 0) return '#dc2626'; // Red
-    if (stock <= 10) return '#f59e0b'; // Amber
-    return '#10b981'; // Green
+  color: ${({ stock, theme }) => {
+    if (stock === 0) return theme.colors.danger;
+    if (stock <= 10) return theme.colors.warning;
+    return theme.colors.success;
   }};
+  transition: color 0.3s ease;
 `;
 
 export const ActionButton = styled.button`
   background: none;
   border: none;
   padding: 0.25rem;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   cursor: pointer;
   border-radius: 999px;
+  transition: all 0.3s ease;
   
   &:hover {
-    background-color: #e5e7eb;
-    color: #1f2937;
+    background-color: ${props => props.theme.colors.borderLight};
+    color: ${props => props.theme.colors.text};
   }
 `;
 
@@ -153,15 +166,15 @@ export const PaginationContainer = styled.div`
 
 export const PaginationButton = styled.button`
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  background-color: white;
+  border: 1px solid ${props => props.theme.colors.border};
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
   border-radius: 0.5rem;
-  color: black;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f9fafb;
+    background-color: ${props => props.theme.colors.backgroundTertiary};
   }
 
   &:disabled {
@@ -172,6 +185,6 @@ export const PaginationButton = styled.button`
 
 export const PageInfo = styled.span`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
+  transition: color 0.3s ease;
 `;
-

@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   padding: 2rem;
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
 `;
 
 export const PageHeader = styled.div`
@@ -24,8 +25,9 @@ export const TitleContainer = styled.div`
 export const Title = styled.h1`
   font-size: 1.875rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
+  transition: color 0.3s ease;
 `;
 
 export const PrimaryButton = styled.button`
@@ -34,28 +36,29 @@ export const PrimaryButton = styled.button`
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;
 
 export const Card = styled.div`
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   padding: 1.5rem;
   border-radius: 1rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  box-shadow: 0 1px 2px 0 ${props => props.theme.colors.shadow};
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease;
 `;
 
 export const FilterContainer = styled.div`
@@ -65,19 +68,22 @@ export const FilterContainer = styled.div`
 export const Input = styled.input`
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  color: black;
+  border: 1px solid ${props => props.theme.colors.border};
+  color: ${props => props.theme.colors.text};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #ffffff;
-  transition: all 0.2s ease-in-out;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  transition: all 0.3s ease;
   flex-grow: 1;
-  color: black;
 
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
   }
 `;
 
@@ -96,17 +102,19 @@ export const Th = styled.th`
   padding: 0.75rem 1rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   text-transform: uppercase;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Td = styled.td`
   padding: 1rem;
   font-size: 0.875rem;
-  color: #374151;
-  border-bottom: 1px solid #f3f4f6;
+  color: ${props => props.theme.colors.text};
+  border-bottom: 1px solid ${props => props.theme.colors.borderLight};
   vertical-align: middle;
+  transition: color 0.3s ease, border-color 0.3s ease;
 `;
 
 export const Tr = styled.tr`
@@ -132,14 +140,14 @@ export const ActionButton = styled.button`
   background: none;
   border: none;
   padding: 0.25rem;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   cursor: pointer;
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f3f4f6;
-    color: #1f2937;
+    background-color: ${props => props.theme.colors.borderLight};
+    color: ${props => props.theme.colors.text};
   }
 `;
 
@@ -153,14 +161,15 @@ export const PaginationContainer = styled.div`
 
 export const PaginationButton = styled.button`
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
-  background-color: white;
+  border: 1px solid ${props => props.theme.colors.border};
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #f9fafb;
+    background-color: ${props => props.theme.colors.backgroundTertiary};
   }
 
   &:disabled {
@@ -171,5 +180,6 @@ export const PaginationButton = styled.button`
 
 export const PageInfo = styled.span`
   font-size: 0.875rem;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
+  transition: color 0.3s ease;
 `;
