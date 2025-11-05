@@ -40,7 +40,6 @@ namespace StockMode.WebApi.Middlewares
                     argumentException.Message,
                     null
                 ),
-
                 ValidationException validationEx => (
                     HttpStatusCode.BadRequest,
                     "Validation failed",

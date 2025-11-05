@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserPlus, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { useTheme } from '../../../contexts/ThemeContext';
 import api from '../../../services/api'; 
 import {
   PageContainer, Container, TitleContainer, Title, Form, FormGroup, Label, Input,
@@ -9,6 +10,7 @@ import {
 
 const CustomerCreation = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -131,7 +133,7 @@ const CustomerCreation = () => {
     <PageContainer>
       <Container>
         <TitleContainer>
-          <UserPlus size={32} color="#4f46e5" />
+          <UserPlus size={32} color={theme.colors.primary} />
           <Title>Adicionar Novo Cliente</Title>
         </TitleContainer>
 

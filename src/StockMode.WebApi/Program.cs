@@ -28,7 +28,7 @@ services.AddCors(opt =>
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var authority = builder.Configuration["Auth:Authority"] ?? "http://localhost:5001";
+        var authority = builder.Configuration["Auth:Authority"] ?? "https://localhost:5001";
         options.Authority = authority;
 
         var metadataAddress = builder.Configuration["Auth:MetadataAddress"] ?? "https://host.docker.internal:5001/.well-known/openid-configuration";
@@ -39,7 +39,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", true);
 
         var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
-            ?? new[] { "https://localhost:5001", "http://localhost:5001", "http://stockmode.idp" };
+            ?? new[] { "https://localhost:5001", "https://localhost:5001", "http://stockmode.idp" };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {

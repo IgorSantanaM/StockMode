@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Truck, X } from 'lucide-react';
+import { useTheme } from '../../../contexts/ThemeContext';
 import api from '../../../services/api';
 import {
   PageContainer, Container, TitleContainer, Title, Form, FormGroup, Label, Input,
@@ -41,6 +42,7 @@ const formatZipCode = (value) => {
 
 const SupplierCreation = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: '',
     corporateName: '',
@@ -174,7 +176,7 @@ const SupplierCreation = () => {
     <PageContainer>
       <Container>
         <TitleContainer>
-          <Truck size={32} color="#4f46e5" />
+          <Truck size={32} color={theme.colors.primary} />
           <Title>Adicionar Novo Fornecedor</Title>
         </TitleContainer>
 

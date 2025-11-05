@@ -8,11 +8,12 @@ export const PageContainer = styled.div`
   justify-content: center;
   text-align: center;
   height: 100%;
-  padding: 1rem; // Padding base para telemóveis
-  background-color: #f3f5f7;
+  min-height: 100vh;
+  padding: 1rem;
+  background-color: ${props => props.theme.colors.background};
 
   @media (min-width: 768px) {
-    padding: 2rem; // Aumenta o padding para ecrãs maiores
+    padding: 2rem;
   }
 `;
 
@@ -22,24 +23,24 @@ export const ContentWrapper = styled.div`
 
 export const IconWrapper = styled.div`
   margin-bottom: 2rem;
-  color: #4f46e5;
+  color: ${props => props.theme.colors.primary};
 `;
 
 export const Title = styled.h1`
-  font-size: 2.5rem; // Tamanho de fonte menor para telemóveis
+  font-size: 2.5rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
 
   @media (min-width: 768px) {
-    font-size: 3rem; // Aumenta o tamanho da fonte para ecrãs maiores
+    font-size: 3rem;
   }
 `;
 
 export const Subtitle = styled.h2`
-  font-size: 1.125rem; // Tamanho de fonte menor para telemóveis
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   margin-top: 0.5rem;
 
   @media (min-width: 768px) {
@@ -49,7 +50,7 @@ export const Subtitle = styled.h2`
 
 export const Message = styled.p`
   font-size: 1rem;
-  color: #6b7280;
+  color: ${props => props.theme.colors.textSecondary};
   margin-top: 1rem;
   margin-bottom: 2rem;
 `;
@@ -60,7 +61,7 @@ export const HomeButton = styled(Link)`
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -71,6 +72,6 @@ export const HomeButton = styled(Link)`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 `;

@@ -20,10 +20,10 @@ if (envApiUrl) {
   idpAuthority = envIdpUrl || `${protocol}//${hostname}/idp`;
 } else if (isPortForward) {
   apiBaseUrl = 'http://localhost:8081/api';
-  idpAuthority = 'http://localhost:5001';
+  idpAuthority = 'https://localhost:5001';
 } else if (isDevelopment) {
   apiBaseUrl = 'http://localhost:8080/api'; 
-  idpAuthority = 'http://localhost:5001'; 
+  idpAuthority = 'https://localhost:5001'; 
 } else if (isKubernetes) {
   apiBaseUrl = `${protocol}//${hostname}/api`;
   idpAuthority = `${protocol}//${hostname}/idp`;

@@ -12,8 +12,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
       # For HTTP-only (Development)
-      - IdentityServer__IssuerUri=http://localhost:5001
-      - IdentityServer__PublicOrigin=http://localhost:5001
+      - IdentityServer__IssuerUri=https://localhost:5001
+      - IdentityServer__PublicOrigin=https://localhost:5001
       # Allowed Origins
       - AllowedOrigins__0=http://localhost:5173
       - AllowedOrigins__1=https://localhost:5173
@@ -51,7 +51,7 @@ services:
       - Auth__Authority=http://stockmode.idp:5001
       - Auth__MetadataAddress=http://stockmode.idp:5001/.well-known/openid-configuration
       - Auth__RequireHttpsMetadata=false
-      - Auth__ValidIssuers__0=http://localhost:5001
+      - Auth__ValidIssuers__0=https://localhost:5001
       - Auth__ValidIssuers__1=http://stockmode.idp:5001
     depends_on:
          stockmode.idp:

@@ -29,7 +29,6 @@ namespace StockMode.EmailWorker
                     var bus = scope.ServiceProvider.GetRequiredService<IBus>();
                     logger.LogInformation("Connecting to message bus...");
 
-                    // Subscribe to generic email messages - handles ALL template types
                     await bus.PubSub.SubscribeAsync<GenericEmailMessage>(
                         "generic-email-queue", 
                         async data => await SendGenericEmailAsync(data, stoppingToken), 
