@@ -62,7 +62,7 @@ namespace StockMode.Infra.CrossCutting.IoC
 
             // Get RabbitMQ connection string from configuration
             var rabbitMqConnectionString = configuration.GetConnectionString("RabbitMQ") 
-                ?? "host=localhost;username=guest;password=guest;virtualHost=/";
+                ?? "host=localhost;username=guest;password=guest;virtualHost=mailrabbit";
 
             IBus? bus = RabbitHutch.CreateBus(rabbitMqConnectionString, options =>
             options.EnableNewtonsoftJson());

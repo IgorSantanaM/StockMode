@@ -10,10 +10,8 @@ using StockMode.Infra.Services.Email;
 await Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
-        // Enable the hosted service to process emails from RabbitMQ
         services.AddHostedService<MailSenderHostedService>();
         
-        // Add mail services (RabbitMQ, SMTP, etc.)
         services.AddMailServices(hostContext.Configuration);
         services.AddTransient<IMailSender, SmptMailSender>();
         services.AddTransient<IMailer, Mailer>();
