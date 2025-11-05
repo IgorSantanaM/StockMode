@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: ${props => props.theme.colors.background};
   padding: 20px;
 `;
 
@@ -18,14 +18,14 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
 `;
 
 export const Title = styled.h1`
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
@@ -38,26 +38,26 @@ export const StatusBadge = styled.span`
   font-weight: 500;
   background-color: ${props => {
     switch (props.status) {
-      case 1: return '#fef3c7'; 
-      case 2: return '#d1fae5';
-      case 3: return '#fecaca';
-      default: return '#f3f4f6';
+      case 1: return props.theme.colors.warningLight; 
+      case 2: return props.theme.colors.successLight;
+      case 3: return props.theme.colors.dangerLight;
+      default: return props.theme.colors.backgroundTertiary;
     }
   }};
   color: ${props => {
     switch (props.status) {
-      case 1: return '#d97706'; 
-      case 2: return '#059669'; 
-      case 3: return '#dc2626'; 
-      default: return '#6b7280';
+      case 1: return props.theme.colors.warning; 
+      case 2: return props.theme.colors.success; 
+      case 3: return props.theme.colors.danger; 
+      default: return props.theme.colors.textSecondary;
     }
   }};
 `;
 
 export const Section = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
   overflow: hidden;
 `;
 
@@ -66,18 +66,18 @@ export const SectionTitle = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   gap: 12px;
 `;
 
 export const Card = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
 `;
 
 export const Form = styled.div`
@@ -94,43 +94,44 @@ export const FormGroup = styled.div`
 
 export const Label = styled.label`
   font-weight: 500;
-  color: #374151;
+  color: ${props => props.theme.colors.textSecondary};
   font-size: 0.875rem;
 `;
 
 export const Input = styled.input`
   padding: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
   font-size: 1rem;
-  color: black;
+  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.backgroundTertiary};
   transition: all 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 
   &:disabled {
-    background-color: #f9fafb;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const Select = styled.select`
   padding: 12px;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
   font-size: 1rem;
-  background-color: white;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
   transition: all 0.2s;
-  color: black;
 
   &:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 `;
 
@@ -140,7 +141,7 @@ export const Button = styled.button`
   justify-content: center;
   gap: 8px;
   padding: 12px 24px;
-  background-color: #3b82f6;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 8px;
@@ -150,28 +151,29 @@ export const Button = styled.button`
   white-space: nowrap;
 
   &:hover {
-    background-color: #2563eb;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 
   &:disabled {
-    background-color: #9ca3af;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const SecondaryButton = styled(Button)`
-  background-color: #6b7280;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
   
   &:hover {
-    background-color: #4b5563;
+    background-color: ${props => props.theme.colors.border};
   }
 `;
 
 export const DangerButton = styled(Button)`
-  background-color: #dc2626;
+  background-color: ${props => props.theme.colors.danger};
   
   &:hover {
-    background-color: #b91c1c;
+    opacity: 0.9;
   }
 `;
 
@@ -184,7 +186,7 @@ export const ItemCard = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 8px;
   margin-bottom: 12px;
   
@@ -196,13 +198,13 @@ export const ItemCard = styled.div`
 export const ItemInfo = styled.div`
   h4 {
     margin: 0 0 8px 0;
-    color: #1f2937;
+    color: ${props => props.theme.colors.text};
     font-size: 1.125rem;
   }
   
   p {
     margin: 4px 0;
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     font-size: 0.875rem;
   }
 `;
@@ -215,14 +217,14 @@ export const ItemActions = styled.div`
 export const PriceInfo = styled.div`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #059669;
+  color: ${props => props.theme.colors.success};
 `;
 
 export const TotalSection = styled.div`
-  background: white;
+  background: ${props => props.theme.colors.backgroundSecondary};
   padding: 24px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.shadow};
   text-align: right;
   
   div {
@@ -234,17 +236,17 @@ export const TotalSection = styled.div`
   
   strong {
     font-size: 1.25rem;
-    color: #374151;
+    color: ${props => props.theme.colors.text};
   }
   
   p {
-    color: #6b7280;
+    color: ${props => props.theme.colors.textSecondary};
     margin: 0;
   }
   
   h3 {
     font-size: 1.875rem;
-    color: #059669;
+    color: ${props => props.theme.colors.success};
     margin: 0;
   }
 `;
@@ -272,7 +274,13 @@ export const Alert = styled.div`
   border-radius: 8px;
   font-weight: 500;
   
-  background-color: ${props => props.type === 'success' ? '#d1fae5' : '#fecaca'};
-  color: ${props => props.type === 'success' ? '#059669' : '#dc2626'};
-  border: 1px solid ${props => props.type === 'success' ? '#10b981' : '#f87171'};
+  background-color: ${props => props.type === 'success' 
+    ? props.theme.colors.successLight 
+    : props.theme.colors.dangerLight};
+  color: ${props => props.type === 'success' 
+    ? props.theme.name === 'dark' ? '#86efac' : props.theme.colors.success
+    : props.theme.name === 'dark' ? '#fca5a5' : props.theme.colors.danger};
+  border: 1px solid ${props => props.type === 'success' 
+    ? props.theme.colors.success 
+    : props.theme.colors.danger};
 `;

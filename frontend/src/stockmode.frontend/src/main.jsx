@@ -26,7 +26,7 @@ if (idpUrl) {
   idpAuthority = "http://localhost:5001";
   frontendUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
 } else if (isDevelopment) {
-  idpAuthority = "http://localhost:5001";
+  idpAuthority = "https://localhost:5001";
   frontendUrl = `http://localhost${port && port !== '80' ? ':' + port : ''}`;
 } else if (isKubernetes) {
   idpAuthority = `${protocol}//${hostname}/idp`;

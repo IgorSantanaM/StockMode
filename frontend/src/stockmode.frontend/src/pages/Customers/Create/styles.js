@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 
 export const PageContainer = styled.div`
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
+  min-height: 100vh;
 `;
 
 export const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadow}, 
+              0 2px 4px -2px ${props => props.theme.colors.shadow};
 `;
 
 export const TitleContainer = styled.div`
@@ -19,13 +21,13 @@ export const TitleContainer = styled.div`
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const Title = styled.h2`
   font-size: 1.75rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
 `;
 
@@ -38,10 +40,10 @@ export const Form = styled.form`
 export const SectionTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
   margin: 0;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const FormRow = styled.div`
@@ -58,28 +60,29 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 0.5rem;
 `;
 
 const baseInputStyles = `
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #f9fafb;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
   transition: all 0.2s ease-in-out;
-  color: black;
+  
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 
   &.error {
-    border-color: #ef4444;
+    border-color: ${props => props.theme.colors.danger};
     &:focus {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.dangerLight};
     }
   }
 `;
@@ -87,7 +90,7 @@ const baseInputStyles = `
 export const Input = styled.input`${baseInputStyles}`;
 
 export const ErrorMessage = styled.span`
-  color: #ef4444;
+  color: ${props => props.theme.colors.danger};
   font-size: 0.875rem;
   margin-top: 0.5rem;
 `;
@@ -98,7 +101,7 @@ export const ButtonContainer = styled.div`
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const Button = styled.button`
@@ -106,7 +109,7 @@ export const Button = styled.button`
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -116,21 +119,21 @@ export const Button = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 
   &:disabled {
-    background-color: #a5b4fc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const CancelButton = styled(Button)`
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
 
   &:hover {
-    background-color: #d1d5db;
+    background-color: ${props => props.theme.colors.border};
   }
 `;
 
@@ -141,6 +144,10 @@ export const Alert = styled.div`
   font-weight: 500;
   display: flex;
   align-items: center;
-  color: ${props => props.type === 'success' ? '#065f46' : '#991b1b'};
-  background-color: ${props => props.type === 'success' ? '#d1fae5' : '#fee2e2'};
+  color: ${props => props.type === 'success' 
+    ? props.theme.name === 'dark' ? '#86efac' : '#065f46'
+    : props.theme.name === 'dark' ? '#fca5a5' : '#991b1b'};
+  background-color: ${props => props.type === 'success' 
+    ? props.theme.colors.successLight 
+    : props.theme.colors.dangerLight};
 `;

@@ -1,20 +1,18 @@
-﻿using QRCoder;
-using QuestPDF.Drawing;
-using QuestPDF.Fluent;
+﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using StockMode.Application.Common.Interfaces;
-using StockMode.Application.Helpers;
 
 namespace StockMode.Infra.Services.PDF
 {
     public class PdfMaker : IPdfMaker
     {
-        static PdfMaker() => 
+        static PdfMaker() =>
             QuestPDF.Settings.License = LicenseType.Community;
 
         private void DrawDetails<TModel>(RowDescriptor row, TModel model, Action<RowDescriptor, TModel> renderAction) =>
             renderAction.Invoke(row, model);
+
         public byte[] CreatePdfGeneric<TModel>(TModel data, Action<RowDescriptor, TModel> renderAction)
         {
             var now = DateTimeOffset.UtcNow;

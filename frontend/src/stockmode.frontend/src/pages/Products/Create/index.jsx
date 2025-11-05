@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PackagePlus, X, Plus, Trash2 } from 'lucide-react';
+import { useTheme } from '../../../contexts/ThemeContext';
 import {
   PageContainer, Container, TitleContainer, Title, Form, FormGroup, Label, Input,
   Textarea, ErrorMessage, ButtonContainer, Button, CancelButton, SectionTitle,
@@ -11,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductCreation = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [variations, setVariations] = useState([
@@ -91,7 +93,7 @@ const ProductCreation = () => {
     <PageContainer>
       <Container>
         <TitleContainer>
-          <PackagePlus size={32} color="#4f46e5" />
+          <PackagePlus size={32} color={theme.colors.primary} />
           <Title>Cadastrar Novo Produto</Title>
         </TitleContainer>
 

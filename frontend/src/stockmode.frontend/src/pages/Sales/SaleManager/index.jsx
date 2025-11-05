@@ -14,6 +14,7 @@ import {
   AlertCircle,
   CheckCircle
 } from 'lucide-react';
+import { useTheme } from '../../../contexts/ThemeContext';
 import api from '../../../services/api';
 import {
   PageContainer,
@@ -59,6 +60,7 @@ const SALE_STATUS = {
 const SaleManager = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const isNewSale = !id;
   
   const [sale, setSale] = useState(null);
@@ -391,7 +393,7 @@ const SaleManager = () => {
       <PageContainer>
         <Container>
           <Header>
-            <ShoppingCart size={32} color="#10b981" />
+            <ShoppingCart size={32} color={theme.colors.success} />
             <Title>Nova Venda</Title>
           </Header>
 
@@ -453,13 +455,13 @@ const SaleManager = () => {
       <PageContainer>
         <Container>
           <Header>
-            <ShoppingCart size={32} color="#ef4444" />
+            <ShoppingCart size={32} color={theme.colors.danger} />
             <Title>Venda não encontrada</Title>
           </Header>
           
           <Card>
             <div style={{ textAlign: 'center', padding: '40px' }}>
-              <AlertCircle size={48} color="#ef4444" style={{ marginBottom: '16px' }} />
+              <AlertCircle size={48} color={theme.colors.danger} style={{ marginBottom: '16px' }} />
               <p>A venda solicitada não foi encontrada ou você não tem permissão para acessá-la.</p>
               <Button onClick={() => navigate('/sales')} style={{ marginTop: '16px' }}>
                 Voltar para Vendas
@@ -488,7 +490,7 @@ const SaleManager = () => {
     <PageContainer>
       <Container>
         <Header>
-          <ShoppingCart size={32} color="#10b981" />
+          <ShoppingCart size={32} color={theme.colors.success} />
           <div>
             <Title>Venda #{sale?.id}</Title>
             <StatusBadge status={sale?.status}>

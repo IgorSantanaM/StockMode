@@ -2,15 +2,17 @@ import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   padding: 2rem;
-  background-color: #f3f5f7;
+  background-color: ${props => props.theme.colors.background};
+  min-height: 100vh;
 `;
 
 export const Container = styled.div`
   margin: 0 auto;
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
   border-radius: 1rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 6px -1px ${props => props.theme.colors.shadow}, 
+              0 2px 4px -2px ${props => props.theme.colors.shadow};
 `;
 
 export const TitleContainer = styled.div`
@@ -19,13 +21,13 @@ export const TitleContainer = styled.div`
   gap: 0.75rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const Title = styled.h2`
   font-size: 1.75rem;
   font-weight: bold;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
 `;
 
@@ -38,10 +40,10 @@ export const Form = styled.form`
 export const SectionTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 600;
-  color: #374151;
+  color: ${props => props.theme.colors.text};
   margin: 0;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const FormGroup = styled.div`
@@ -52,29 +54,29 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 0.5rem;
 `;
 
 const baseInputStyles = `
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  color: black;
+  border: 1px solid ${props => props.theme.colors.border};
+  color: ${props => props.theme.colors.text};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #f9fafb;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
   transition: all 0.2s ease-in-out;
 
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 
   &.error {
-    border-color: #ef4444;
+    border-color: ${props => props.theme.colors.danger};
     &:focus {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.dangerLight};
     }
   }
 `;
@@ -83,7 +85,7 @@ export const Input = styled.input`${baseInputStyles}`;
 export const Textarea = styled.textarea`${baseInputStyles} min-height: 120px; resize: vertical;`;
 
 export const ErrorMessage = styled.span`
-  color: #ef4444;
+  color: ${props => props.theme.colors.danger};
   font-size: 0.875rem;
   margin-top: 0.5rem;
 `;
@@ -94,7 +96,7 @@ export const ButtonContainer = styled.div`
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const Button = styled.button`
@@ -102,7 +104,7 @@ export const Button = styled.button`
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.5rem;
-  background-color: #4f46e5;
+  background-color: ${props => props.theme.colors.primary};
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -112,21 +114,21 @@ export const Button = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: #4338ca;
+    background-color: ${props => props.theme.colors.primaryHover};
   }
 
   &:disabled {
-    background-color: #a5b4fc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
 
 export const CancelButton = styled(Button)`
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
 
   &:hover {
-    background-color: #d1d5db;
+    background-color: ${props => props.theme.colors.border};
   }
 `;
 
@@ -137,8 +139,8 @@ export const VariationsContainer = styled.div`
 `;
 
 export const VariationCard = styled.div`
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.75rem;
   padding: 1.5rem;
 `;
@@ -153,22 +155,22 @@ export const VariationHeader = styled.div`
 export const VariationTitle = styled.h4`
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
+  color: ${props => props.theme.colors.text};
   margin: 0;
 `;
 
 export const RemoveButton = styled.button`
   background: none;
   border: none;
-  color: #9ca3af;
+  color: ${props => props.theme.colors.textTertiary};
   cursor: pointer;
   padding: 0.25rem;
   border-radius: 999px;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    color: #ef4444;
-    background-color: #fee2e2;
+    color: ${props => props.theme.colors.danger};
+    background-color: ${props => props.theme.colors.dangerLight};
   }
 `;
 
@@ -190,17 +192,17 @@ export const AddVariationButton = styled.button`
   gap: 0.5rem;
   width: 100%;
   padding: 0.75rem;
-  border: 2px dashed #d1d5db;
+  border: 2px dashed ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   background-color: transparent;
-  color: #4b5563;
+  color: ${props => props.theme.colors.textSecondary};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: #4f46e5;
-    background-color: #eef2ff;
-    color: #4f46e5;
+    border-color: ${props => props.theme.colors.primary};
+    background-color: ${props => props.theme.colors.primaryLight};
+    color: ${props => props.theme.colors.primary};
   }
 `;
