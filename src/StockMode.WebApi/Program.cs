@@ -91,7 +91,7 @@ services.AddSwaggerGen();
 services.AddServices();
 
 builder.Services.AddDbContext<StockModeContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"),
     npgsqlOptionsAction: sqlOptions =>
     {
         sqlOptions.EnableRetryOnFailure(
@@ -113,7 +113,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = service.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Ocorreu um erro ao aplicar as migra��es do banco de dados.");
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
     }
 }
 

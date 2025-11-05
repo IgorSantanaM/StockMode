@@ -55,7 +55,7 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: postgres-db
-        - name: ConnectionStrings__DefaultConnection
+        - name: ConnectionStrings__Postgres
           value: "Host=postgres-service;Database=$(POSTGRES_DB);Username=$(POSTGRES_USER);Password=$(POSTGRES_PASSWORD)"
         - name: ASPNETCORE_ENVIRONMENT 
           value: "Development"

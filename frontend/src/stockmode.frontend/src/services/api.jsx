@@ -22,7 +22,7 @@ if (envApiUrl) {
   apiBaseUrl = 'http://localhost:8081/api';
   idpAuthority = 'https://localhost:5001';
 } else if (isDevelopment) {
-  apiBaseUrl = 'http://localhost:8080/api'; 
+  apiBaseUrl = 'https://localhost:7161/api'; 
   idpAuthority = 'https://localhost:5001'; 
 } else if (isKubernetes) {
   apiBaseUrl = `${protocol}//${hostname}/api`;

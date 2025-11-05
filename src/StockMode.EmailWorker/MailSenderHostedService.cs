@@ -40,7 +40,7 @@ namespace StockMode.EmailWorker
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "Error while connecting to message bus. Retrying in 5 seconds...");
-                    await Task.Delay(5000, stoppingToken);
+                    await Task.Delay(5000, stoppingToken); 
                 }
             }
 

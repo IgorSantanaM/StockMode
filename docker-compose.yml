@@ -11,21 +11,17 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:5001
-      # For HTTP-only (Development)
       - IdentityServer__IssuerUri=https://localhost:5001
       - IdentityServer__PublicOrigin=https://localhost:5001
-      # Allowed Origins
       - AllowedOrigins__0=http://localhost:5173
       - AllowedOrigins__1=https://localhost:5173
       - AllowedOrigins__2=http://localhost
       - AllowedOrigins__3=https://localhost
       - AllowedOrigins__4=http://localhost:80
-      # Client Redirect URIs
       - ClientRedirectUris__0=http://localhost:5173/signin-oidc
       - ClientRedirectUris__1=https://localhost:5173/signin-oidc
       - ClientRedirectUris__2=http://localhost/signin-oidc
       - ClientRedirectUris__3=https://localhost/signin-oidc
-      # Client Post Logout URIs
       - ClientPostLogoutRedirectUris__0=http://localhost:5173/
       - ClientPostLogoutRedirectUris__1=https://localhost:5173/
       - ClientPostLogoutRedirectUris__2=http://localhost/
@@ -44,9 +40,9 @@ services:
       - "8080:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=stockmodedb;Username=stockmodeuser;Password=StockMode123
+      - ConnectionStrings__Postgres=Host=postgres;Port=5432;Database=stockmodedb;Username=stockmodeuser;Password=StockMode123
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=/
+      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit
       - OTLP_Endpoint=http://otel-collector:4317
       - Auth__Authority=http://stockmode.idp:5001
       - Auth__MetadataAddress=http://stockmode.idp:5001/.well-known/openid-configuration
@@ -86,8 +82,8 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
-      - RABBITMQ_VHOST=/
-      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=/
+      - RABBITMQ_VHOST=mailrabbit
+      - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -132,7 +128,7 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-      - RABBITMQ_DEFAULT_VHOST=/
+      - RABBITMQ_DEFAULT_VHOST=mailrabbit
     ports:
       - "5672:5672"
       - "15672:15672"
