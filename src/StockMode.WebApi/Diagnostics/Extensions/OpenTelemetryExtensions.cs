@@ -32,7 +32,6 @@ namespace StockMode.WebApi.Diagnostics.Extensions
                         .AddNpgsql()
                         .AddOtlpExporter(opt =>
                                 opt.Endpoint = otlpEndpoint)
-                        .AddConsoleExporter()
                 )
                 .WithMetrics(metrics => 
                     metrics
