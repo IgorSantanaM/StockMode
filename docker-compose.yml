@@ -7,10 +7,13 @@ services:
       dockerfile: StockMode.IDP/Dockerfile
     ports:
       - "5001:5001"
+      - "5002:5002"
       - "5443:5443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5001
+      - ASPNETCORE_URLS=https://+:5001;http://+:5002
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - IdentityServer__IssuerUri=https://localhost:5001
       - IdentityServer__PublicOrigin=https://localhost:5001
       - AllowedOrigins__0=http://localhost:5173
@@ -28,6 +31,7 @@ services:
       - ClientPostLogoutRedirectUris__3=https://localhost/
     volumes:
       - ./StockMode.IDP/keys:/app/keys
+      - ${USERPROFILE}/.aspnet/https:/https:ro
     networks:
       - app_network
       
@@ -44,11 +48,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__RabbitMQ=host=rabbitmq;username=guest;password=guest;virtualHost=mailrabbit
       - OTLP_Endpoint=http://otel-collector:4317
-      - Auth__Authority=http://stockmode.idp:5001
-      - Auth__MetadataAddress=http://stockmode.idp:5001/.well-known/openid-configuration
+      - Auth__Authority=http://stockmode.idp:5002
+      - Auth__MetadataAddress=http://stockmode.idp:5002/.well-known/openid-configuration
       - Auth__RequireHttpsMetadata=false
       - Auth__ValidIssuers__0=https://localhost:5001
-      - Auth__ValidIssuers__1=http://stockmode.idp:5001
+      - Auth__ValidIssuers__1=http://stockmode.idp:5002
     depends_on:
          stockmode.idp:
             condition: service_started
@@ -144,8 +148,11 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:1.43
     container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
     ports:
       - "16686:16686"
+      - "14250:14250"
     networks:
       - app_network
 

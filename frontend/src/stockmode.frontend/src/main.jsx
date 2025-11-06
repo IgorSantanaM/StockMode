@@ -23,7 +23,7 @@ if (idpUrl) {
   idpAuthority = idpUrl;
   frontendUrl = apiUrl ? apiUrl.replace('/api', '') : `${protocol}//${hostname}${port ? ':' + port : ''}`;
 } else if (isPortForward) {
-  idpAuthority = "http://localhost:5001";
+  idpAuthority = "https://localhost:5001";
   frontendUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
 } else if (isDevelopment) {
   idpAuthority = "https://localhost:5001";
