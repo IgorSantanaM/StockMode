@@ -20,7 +20,7 @@ namespace StockMode.Application.Features.Tags.Queries.GetAllTags
             var whereClauses = new List<string>();
 
             var countSql = new StringBuilder(@"SELECT COUNT(*) FROM ""Tags""");
-            var selectSql = new StringBuilder(@"SELECT ""Name"", ""Color"" FROM ""Tags""");
+            var selectSql = new StringBuilder(@"SELECT * FROM ""Tags""");
 
             if(request.Name is not null)
             {

@@ -64,7 +64,7 @@ export const FilterContainer = styled.div`
   transition: background-color 0.3s ease, border-color 0.3s ease;
 `;
 
-const baseInputStyles = `
+export const Input = styled.input`
   padding: 0.75rem 1rem;
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
@@ -84,8 +84,25 @@ const baseInputStyles = `
   }
 `;
 
-export const Input = styled.input`${baseInputStyles}`;
-export const Select = styled.select`${baseInputStyles}`;
+export const Select = styled.select`
+  padding: 0.75rem 1rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: ${props => props.theme.colors.backgroundSecondary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textTertiary};
+  }
+`;
 
 export const Table = styled.table`
   width: 100%;

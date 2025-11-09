@@ -27,7 +27,6 @@ export const SearchContainer = styled.div`
   position: relative;
   margin-bottom: 1.5rem;
   width: 27.8rem;
-  color: black;
 `;
 
 export const Input = styled.input`
@@ -38,7 +37,6 @@ export const Input = styled.input`
   font-size: 1rem;
   background-color: #ffffff;
   transition: all 0.2s ease-in-out;
-  color: black;
 
   &:focus {
     outline: none;

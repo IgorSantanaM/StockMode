@@ -1,4 +1,3 @@
-using EasyNetQ;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,15 +30,18 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         var authority = builder.Configuration["Auth:Authority"] ?? "https://localhost:5001";
         options.Authority = authority;
 
-        var metadataAddress = builder.Configuration["Auth:MetadataAddress"] ?? "https://host.docker.internal:5001/.well-known/openid-configuration";
-        options.MetadataAddress = metadataAddress;
+        var metadataAddress = builder.Configuration["Auth:MetadataAddress"];
+        if (!string.IsNullOrEmpty(metadataAddress))
+        {
+            options.MetadataAddress = metadataAddress;
+        }
         
         options.Audience = "stockmodeapi";
         
-        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", true);
+        options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", false);
 
         var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
-            ?? new[] { "https://localhost:5001", "https://localhost:5001", "http://stockmode.idp" };
+            ?? new[] { "https://localhost:5001", "http://localhost:5001" };
 
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -52,7 +54,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
 
-        // Para desenvolvimento: aceitar certificados SSL n�o confi�veis
+        // Para desenvolvimento: aceitar certificados SSL não confiáveis
         options.BackchannelHttpHandler = new HttpClientHandler
         {
             ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -75,6 +77,11 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnTokenValidated = ctx =>
             {
                 Console.WriteLine("JWT token validated successfully");
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = ctx =>
+            {
+                Console.WriteLine($"JWT token received: {ctx.Token?.Substring(0, Math.Min(50, ctx.Token?.Length ?? 0))}...");
                 return Task.CompletedTask;
             }
         };

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, X, CheckCircle, AlertCircle } from 'lucide-react';
+import { UserPlus, X, CheckCircle, AlertCircle, Tag, Plus } from 'lucide-react';
 import { useTheme } from '../../../contexts/ThemeContext';
 import api from '../../../services/api'; 
 import {
   PageContainer, Container, TitleContainer, Title, Form, FormGroup, Label, Input,
-  ErrorMessage, ButtonContainer, Button, CancelButton, SectionTitle, FormRow, Alert
+  ErrorMessage, ButtonContainer, Button, CancelButton, SectionTitle, FormRow, Alert,
+  TagsContainer, TagBadge, TagInput, CreateTagButton, SelectedTagsContainer, RemoveTagButton
 } from './styles';
 
 const CustomerCreation = () => {
@@ -28,6 +29,64 @@ const CustomerCreation = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [apiStatus, setApiStatus] = useState({ error: null, success: false });
+  
+  // Tags state
+  const [availableTags, setAvailableTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [newTagName, setNewTagName] = useState('');
+  const [newTagColor, setNewTagColor] = useState('#4f46e5');
+  const [showCreateTag, setShowCreateTag] = useState(false);
+  const [loadingTags, setLoadingTags] = useState(false);
+
+  useEffect(() => {
+    fetchTags();
+  }, []);
+
+  const fetchTags = async () => {
+    try {
+      setLoadingTags(true);
+      const response = await api.get('/tags');
+      setAvailableTags(response.data?.items || response.data || []);
+    } catch (error) {
+      console.error('Error fetching tags:', error);
+    } finally {
+      setLoadingTags(false);
+    }
+  };
+
+  const handleCreateTag = async () => {
+    if (!newTagName.trim()) {
+      alert('Por favor, insira um nome para a tag.');
+      return;
+    }
+
+    try {
+      await api.post('/tags', {
+        name: newTagName.trim(),
+        color: newTagColor
+      });
+      
+      // Refetch all tags to get the updated list
+      await fetchTags();
+      
+      setNewTagName('');
+      setNewTagColor('#4f46e5');
+      setShowCreateTag(false);
+    } catch (error) {
+      console.error('Error creating tag:', error);
+      alert('Erro ao criar tag. Por favor, tente novamente.');
+    }
+  };
+
+  const handleAddTag = (tag) => {
+    if (!selectedTags.find(t => t.id === tag.id)) {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleRemoveTag = (tagId) => {
+    setSelectedTags(selectedTags.filter(t => t.id !== tagId));
+  };
 
   const formatPhoneNumber = (value) => {
     if (!value) return value;
@@ -114,6 +173,21 @@ const CustomerCreation = () => {
 
     try {
       const response = await api.post("customers", payload);
+      const customerId = response.data.id || response.data;
+      
+      // Add tags to customer if any selected
+      if (selectedTags.length > 0 && customerId) {
+        for (const tag of selectedTags) {
+          try {
+            await api.patch('/customers/add-tag', {
+              customerId: customerId,
+              tagId: tag.id
+            });
+          } catch (tagError) {
+            console.error('Error adding tag to customer:', tagError);
+          }
+        }
+      }
       
       setApiStatus({ error: null, success: true });
       console.log("Data sent successfully! ", response.data);
@@ -199,6 +273,109 @@ const CustomerCreation = () => {
                 {errors.zipCode && <ErrorMessage>{errors.zipCode}</ErrorMessage>}
               </FormGroup>
             </FormRow>
+          </div>
+
+          <div>
+            <SectionTitle>
+              <Tag size={20} style={{ marginRight: '0.5rem' }} />
+              Tags (Opcional)
+            </SectionTitle>
+            
+            {selectedTags.length > 0 && (
+              <SelectedTagsContainer>
+                {selectedTags.map(tag => (
+                  <TagBadge key={tag.id} color={tag.color}>
+                    {tag.name}
+                    <RemoveTagButton onClick={() => handleRemoveTag(tag.id)}>
+                      <X size={14} />
+                    </RemoveTagButton>
+                  </TagBadge>
+                ))}
+              </SelectedTagsContainer>
+            )}
+
+            <FormGroup>
+              <Label>Tags Disponíveis</Label>
+              <TagsContainer>
+                {loadingTags && (
+                  <p key="loading" style={{ color: '#6b7280', fontSize: '0.875rem' }}>Carregando tags...</p>
+                )}
+                
+                {!loadingTags && availableTags.length === 0 && (
+                  <p key="no-tags" style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+                    Nenhuma tag disponível. Crie uma nova tag.
+                  </p>
+                )}
+                
+                {!loadingTags && availableTags.length > 0 && (
+                  <React.Fragment key="tags-list">
+                    {availableTags
+                      .filter(tag => !selectedTags.find(st => st.id === tag.id))
+                      .map(tag => (
+                        <TagBadge 
+                          key={tag.id} 
+                          color={tag.color} 
+                          onClick={() => handleAddTag(tag)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          + {tag.name}
+                        </TagBadge>
+                      ))}
+                    
+                    {availableTags.filter(tag => !selectedTags.find(st => st.id === tag.id)).length === 0 && (
+                      <p key="all-added" style={{ color: '#6b7280', fontSize: '0.875rem' }}>
+                        Todas as tags foram adicionadas.
+                      </p>
+                    )}
+                  </React.Fragment>
+                )}
+                
+                {!showCreateTag && (
+                  <CreateTagButton key="create-button" onClick={() => setShowCreateTag(true)}>
+                    <Plus size={16} /> Nova Tag
+                  </CreateTagButton>
+                )}
+              </TagsContainer>
+
+              {showCreateTag && (
+                <div style={{ marginTop: '1rem', padding: '1rem', backgroundColor: theme.colors.backgroundSecondary, borderRadius: '0.5rem' }}>
+                  <FormRow>
+                    <FormGroup>
+                      <Label htmlFor="tagName">Nome da Tag</Label>
+                      <TagInput
+                        type="text"
+                        id="tagName"
+                        value={newTagName}
+                        onChange={(e) => setNewTagName(e.target.value)}
+                        placeholder="Ex: VIP, Atacado, Frequente..."
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label htmlFor="tagColor">Cor</Label>
+                      <Input
+                        type="color"
+                        id="tagColor"
+                        value={newTagColor}
+                        onChange={(e) => setNewTagColor(e.target.value)}
+                        style={{ height: '40px', cursor: 'pointer' }}
+                      />
+                    </FormGroup>
+                  </FormRow>
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem' }}>
+                    <Button type="button" onClick={handleCreateTag} style={{ flex: 1 }}>
+                      Criar Tag
+                    </Button>
+                    <CancelButton type="button" onClick={() => {
+                      setShowCreateTag(false);
+                      setNewTagName('');
+                      setNewTagColor('#4f46e5');
+                    }}>
+                      Cancelar
+                    </CancelButton>
+                  </div>
+                </div>
+              )}
+            </FormGroup>
           </div>
 
           <ButtonContainer>

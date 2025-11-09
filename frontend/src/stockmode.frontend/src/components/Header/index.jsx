@@ -21,7 +21,6 @@ const Header = () => {
   const auth = useAuth();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(''); // Estado para guardar o termo de busca
-  const today = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const navigate = useNavigate();
   
   const handleSearch = (e) => {
@@ -48,9 +47,6 @@ const Header = () => {
     <HeaderContainer>
       <WelcomeMessage>
         <h1>Olá, {userName}!</h1>
-        <p>
-          <Calendar size={16} style={{ marginRight: '0.5rem' }} /> {today}
-        </p>
       </WelcomeMessage>
       <HeaderActions>
         <SearchInputContainer>

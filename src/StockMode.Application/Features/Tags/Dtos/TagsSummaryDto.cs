@@ -1,6 +1,6 @@
 ﻿namespace StockMode.Application.Features.Tags.Dtos
 {
-    public record TagsSummaryDto(string? Name, string? Color)
+    public record TagsSummaryDto(int Id, string? Name, string? Color)
     {
     }
 }

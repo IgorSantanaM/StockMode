@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Layers, PlusCircle, Edit } from 'lucide-react';
 import {
   PageContainer,
@@ -18,20 +18,62 @@ import {
   ActionButton,
 } from './styles';
 import { useNavigate } from 'react-router-dom';
-
-const allVariations = [
-  { id: 1, productName: 'Camiseta Gola V', variationName: 'Branca M', sku: 'CGV-BR-M', costPrice: 15.50, salePrice: 39.90, stockQuantity: 50 },
-  { id: 2, productName: 'Camiseta Gola V', variationName: 'Preta G', sku: 'CGV-PT-G', costPrice: 15.50, salePrice: 39.90, stockQuantity: 8 },
-  { id: 3, productName: 'Calça Jeans Skinny', variationName: 'Azul 42', sku: 'CJS-AZ-42', costPrice: 70.00, salePrice: 129.90, stockQuantity: 25 },
-  { id: 4, productName: 'Calça Jeans Skinny', variationName: 'Preta 40', sku: 'CJS-PT-40', costPrice: 70.00, salePrice: 129.90, stockQuantity: 0 },
-  { id: 5, productName: 'Vestido Floral', variationName: 'Estampa A - P', sku: 'VF-EA-P', costPrice: 85.00, salePrice: 159.90, stockQuantity: 15 },
-  { id: 6, productName: 'Moletom com Capuz', variationName: 'Cinza G', sku: 'MCC-CZ-G', costPrice: 90.00, salePrice: 199.90, stockQuantity: 30 },
-];
+import api from '../../services/api';
+import { LoadingContainer } from '../../util/LoadingContainer';
 
 const Stock = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('Todos');
-  var navigate = useNavigate();
+  const [allVariations, setAllVariations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchStockData();
+  }, []);
+
+  const fetchStockData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await api.get('/products', {
+        params: {
+          page: 1,
+          pageSize: 1000
+        }
+      });
+
+      const products = response.data?.items || response.data || [];
+      
+      // Flatten products and their variations into a single array
+      const variations = [];
+      products.forEach(product => {
+        if (product.variations && product.variations.length > 0) {
+          product.variations.forEach(variation => {
+            variations.push({
+              id: variation.id,
+              productId: product.id,
+              productName: product.name,
+              variationName: variation.name,
+              sku: variation.sku || 'N/A',
+              costPrice: variation.costPrice || 0,
+              salePrice: variation.salePrice || 0,
+              stockQuantity: variation.stockQuantity || 0
+            });
+          });
+        }
+      });
+
+      setAllVariations(variations);
+    } catch (err) {
+      console.error('Error fetching stock data:', err);
+      setError('Erro ao carregar dados de estoque. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getStatus = (stock) => {
     if (stock === 0) return 'Esgotado';
@@ -55,6 +97,42 @@ const Stock = () => {
   const formatCurrency = (value) => {
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
+
+  if (loading) {
+    return <LoadingContainer>Carregando estoque...</LoadingContainer>;
+  }
+
+  if (error) {
+    return (
+      <PageContainer>
+        <PageHeader>
+          <TitleContainer>
+            <Layers size={32} color="#4f46e5" />
+            <Title>Controle de Estoque</Title>
+          </TitleContainer>
+        </PageHeader>
+        <Card>
+          <div style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>
+            <p>{error}</p>
+            <button 
+              onClick={fetchStockData} 
+              style={{ 
+                marginTop: '1rem', 
+                padding: '0.5rem 1rem', 
+                cursor: 'pointer',
+                backgroundColor: '#4f46e5',
+                color: 'white',
+                border: 'none',
+                borderRadius: '0.5rem'
+              }}
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        </Card>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
@@ -127,7 +205,9 @@ const Stock = () => {
         </Table>
         {filteredVariations.length === 0 && (
           <div style={{ padding: '2rem', textAlign: 'center', color: '#6b7280' }}>
-            Nenhum item encontrado para os filtros selecionados.
+            {allVariations.length === 0 
+              ? 'Nenhum produto com variações cadastrado no estoque.'
+              : 'Nenhum item encontrado para os filtros selecionados.'}
           </div>
         )}
       </Card>

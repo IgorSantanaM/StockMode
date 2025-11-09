@@ -64,12 +64,12 @@ export const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-const baseInputStyles = `
+export const Input = styled.input`
   padding: 0.75rem 1rem;
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: ${props => props.theme.colors.backgroundTertiary};
+  background-color: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.text};
   transition: all 0.2s ease-in-out;
   
@@ -86,8 +86,6 @@ const baseInputStyles = `
     }
   }
 `;
-
-export const Input = styled.input`${baseInputStyles}`;
 
 export const ErrorMessage = styled.span`
   color: ${props => props.theme.colors.danger};
@@ -150,4 +148,88 @@ export const Alert = styled.div`
   background-color: ${props => props.type === 'success' 
     ? props.theme.colors.successLight 
     : props.theme.colors.dangerLight};
+`;
+
+export const TagsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+  min-height: 50px;
+`;
+
+export const SelectedTagsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: ${props => props.theme.colors.background};
+  border-radius: 0.5rem;
+  border: 2px dashed ${props => props.theme.colors.border};
+`;
+
+export const TagBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background-color: ${props => props.color || props.theme.colors.primary};
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+`;
+
+export const RemoveTagButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  padding: 0;
+  color: white;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+`;
+
+export const TagInput = styled(Input)`
+  font-size: 0.875rem;
+`;
+
+export const CreateTagButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
+  border: 1px dashed ${props => props.theme.colors.border};
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.colors.border};
+    border-color: ${props => props.theme.colors.primary};
+  }
 `;

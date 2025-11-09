@@ -70,7 +70,7 @@ const Financial = () => {
           params: {
             startDate: firstDayOfMonth.toISOString(),
             endDate: lastDayOfMonth.toISOString(),
-            status: 'Completed', // Only completed sales
+            status: 'Completed', 
             page: 1,
             pageSize: 1000
           }
@@ -96,12 +96,12 @@ const Financial = () => {
         const stats = {
           faturamentoMes: {
             value: formatCurrency(monthlyRevenue),
-            change: '+8.2%', // You can calculate this by comparing with previous month
+            change: '+8.2%', // TODO: Calculate actual revenue change
             isPositive: true
           },
           lucroBruto: {
             value: formatCurrency(monthlyRevenue * 0.35), // Assuming 35% profit margin
-            change: '+5.1%',
+            change: '+5.1%', // TODO: Calculate actual profit change
             isPositive: true
           },
           contasPagar: {
