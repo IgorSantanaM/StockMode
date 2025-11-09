@@ -54,31 +54,51 @@ export const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-const baseInputStyles = `
+export const Input = styled.input`
   padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: 0.5rem;
   font-size: 1rem;
-  background-color: #f9fafb;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
   transition: all 0.2s ease-in-out;
-  color: black;
 
   &:focus {
     outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
   }
 
   &.error {
-    border-color: #ef4444;
+    border-color: ${props => props.theme.colors.danger};
     &:focus {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.dangerLight};
     }
   }
 `;
 
-export const Input = styled.input`${baseInputStyles}`;
-export const Select = styled.select`${baseInputStyles}`;
+export const Select = styled.select`
+  padding: 0.75rem 1rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  color: ${props => props.theme.colors.text};
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &.error {
+    border-color: ${props => props.theme.colors.danger};
+    &:focus {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.dangerLight};
+    }
+  }
+`;
 
 export const ErrorMessage = styled.span`
   color: #ef4444;

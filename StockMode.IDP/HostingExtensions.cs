@@ -19,7 +19,8 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryApiResources(Config.ApiResources)
             .AddInMemoryClients(Config.Clients)
-            .AddTestUsers(TestUsers.Users);
+            .AddTestUsers(TestUsers.Users)
+            .AddDeveloperSigningCredential(); 
 
         builder.Services.AddCors(options =>
         {

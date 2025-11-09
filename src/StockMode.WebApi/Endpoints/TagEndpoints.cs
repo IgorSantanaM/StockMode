@@ -15,7 +15,7 @@ namespace StockMode.WebApi.Endpoints
     {
         public static void DefineEndpoint(WebApplication app)
         {
-            var group =app.MapGroup("/tags").WithTags("Tags");
+            var group = app.MapGroup("api/tags").WithTags("Tags");
 
             group.MapPost("/", HandleCreateTag)
                 .Produces(StatusCodes.Status201Created)

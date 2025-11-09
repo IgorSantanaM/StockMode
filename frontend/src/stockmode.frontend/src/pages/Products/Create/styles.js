@@ -58,12 +58,12 @@ export const Label = styled.label`
   margin-bottom: 0.5rem;
 `;
 
-const baseInputStyles = `
+export const Input = styled.input`
   padding: 0.75rem 1rem;
   border: 1px solid ${props => props.theme.colors.border};
-  color: ${props => props.theme.colors.text};
   border-radius: 0.5rem;
   font-size: 1rem;
+  color: ${props => props.theme.colors.text};
   background-color: ${props => props.theme.colors.backgroundTertiary};
   transition: all 0.2s ease-in-out;
 
@@ -81,8 +81,30 @@ const baseInputStyles = `
   }
 `;
 
-export const Input = styled.input`${baseInputStyles}`;
-export const Textarea = styled.textarea`${baseInputStyles} min-height: 120px; resize: vertical;`;
+export const Textarea = styled.textarea`
+  padding: 0.75rem 1rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.theme.colors.backgroundTertiary};
+  transition: all 0.2s ease-in-out;
+  min-height: 120px;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primaryLight};
+  }
+
+  &.error {
+    border-color: ${props => props.theme.colors.danger};
+    &:focus {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.dangerLight};
+    }
+  }
+`;
 
 export const ErrorMessage = styled.span`
   color: ${props => props.theme.colors.danger};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { ShoppingCart, Package, DollarSign, PlusCircle, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { 
@@ -13,22 +13,177 @@ import {
 } from './styles.js';
 import StatCard from '../../components/StatCard/index.jsx';
 import { useNavigate } from 'react-router-dom';
+import api from '../../services/api.jsx';
+import { LoadingContainer } from '../../util/LoadingContainer.js';
 
-const dailySalesData = [
-  { name: 'Seg', faturamento: 1200, lucro: 450 }, { name: 'Ter', faturamento: 1900, lucro: 700 }, { name: 'Qua', faturamento: 1500, lucro: 550 }, { name: 'Qui', faturamento: 2800, lucro: 1100 }, { name: 'Sex', faturamento: 2390, lucro: 950 }, { name: 'Sáb', faturamento: 3490, lucro: 1400 }, { name: 'Dom', faturamento: 980, lucro: 350 },
-];
-const recentSales = [
-  { id: 'VENDA-00125', customer: 'Ana Clara', amount: 125.50, status: 'Concluída' }, { id: 'VENDA-00124', customer: 'Marcos Silva', amount: 89.90, status: 'Concluída' }, { id: 'VENDA-00123', customer: 'Cliente Balcão', amount: 45.00, status: 'Concluída' }, { id: 'VENDA-00122', customer: 'Juliana Costa', amount: 210.00, status: 'Pendente' },
-];
-const statCardsData = {
-  vendasHoje: { value: 'R$ 1.250,75', change: '+15%', isPositive: true, icon: <DollarSign size={20} /> },
-  lucroHoje: { value: 'R$ 480,30', change: '+12%', isPositive: true, icon: <ArrowUpRight size={20} /> },
-  ticketMedio: { value: 'R$ 83,38', change: '-2%', isPositive: false, icon: <ShoppingCart size={20} /> },
-  baixoEstoque: { value: '8', change: 'itens', isPositive: null, icon: <Package size={20} /> },
+const SALE_STATUS = {
+  1: 'Pendente',
+  2: 'Concluída',
+  3: 'Cancelada'
 };
 
 export default function Home() {
-  var navigate = useNavigate();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  const [dailySalesData, setDailySalesData] = useState([]);
+  const [recentSales, setRecentSales] = useState([]);
+  const [statCardsData, setStatCardsData] = useState({
+    vendasHoje: { value: 'R$ 0,00', change: '+0%', isPositive: true, icon: <DollarSign size={20} /> },
+    lucroHoje: { value: 'R$ 0,00', change: '+0%', isPositive: true, icon: <ArrowUpRight size={20} /> },
+    ticketMedio: { value: 'R$ 0,00', change: '+0%', isPositive: true, icon: <ShoppingCart size={20} /> },
+    baixoEstoque: { value: '0', change: 'itens', isPositive: null, icon: <Package size={20} /> },
+  });
+
+  const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  const formatDate = (dateString) => new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' }).format(new Date(dateString));
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+      // Fetch sales for last 7 days
+      const weekSalesResponse = await api.get('/sales', {
+        params: {
+          startDate: sevenDaysAgo.toISOString(),
+          endDate: now.toISOString(),
+          page: 1,
+          pageSize: 1000
+        }
+      });
+
+      const weekSales = weekSalesResponse.data?.items || weekSalesResponse.data || [];
+
+      // Filter today's sales
+      const todaySales = weekSales.filter(sale => {
+        const saleDate = new Date(sale.saleDate);
+        return saleDate >= today && (sale.status === 2 || sale.status === 'Completed');
+      });
+
+      // Calculate today's stats
+      const todayRevenue = todaySales.reduce((sum, sale) => sum + (sale.finalPrice || 0), 0);
+      const todayProfit = todayRevenue * 0.35; // Assuming 35% profit margin
+      const todayTransactions = todaySales.length;
+      const avgTicket = todayTransactions > 0 ? todayRevenue / todayTransactions : 0;
+
+      // Fetch products for low stock count
+      let lowStockCount = 0;
+      try {
+        const productsResponse = await api.get('/products', {
+          params: { page: 1, pageSize: 1000 }
+        });
+        const products = productsResponse.data?.items || productsResponse.data || [];
+        
+        // Count products with low stock (assuming stockQuantity <= 10)
+        lowStockCount = products.reduce((count, product) => {
+          const variations = product.variations || [];
+          const lowStockVariations = variations.filter(v => v.stockQuantity <= 10 && v.stockQuantity > 0);
+          return count + lowStockVariations.length;
+        }, 0);
+      } catch (err) {
+        console.warn('Could not fetch products for low stock count:', err);
+      }
+
+      // Update stat cards
+      setStatCardsData({
+        vendasHoje: { 
+          value: formatCurrency(todayRevenue), 
+          change: `${todayTransactions} vendas`, 
+          isPositive: true, 
+          icon: <DollarSign size={20} /> 
+        },
+        lucroHoje: { 
+          value: formatCurrency(todayProfit), 
+          change: '+35%', 
+          isPositive: true, 
+          icon: <ArrowUpRight size={20} /> 
+        },
+        ticketMedio: { 
+          value: formatCurrency(avgTicket), 
+          change: todayTransactions > 0 ? `${todayTransactions} vendas` : 'Sem vendas', 
+          isPositive: true, 
+          icon: <ShoppingCart size={20} /> 
+        },
+        baixoEstoque: { 
+          value: lowStockCount.toString(), 
+          change: 'itens', 
+          isPositive: null, 
+          icon: <Package size={20} /> 
+        },
+      });
+
+      // Process daily sales data for chart
+      const dailyData = {};
+      const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+        const dayName = dayNames[date.getDay()];
+        dailyData[dayName] = { name: dayName, faturamento: 0, lucro: 0 };
+      }
+
+      weekSales.forEach(sale => {
+        if (sale.status === 2 || sale.status === 'Completed') {
+          const saleDate = new Date(sale.saleDate);
+          const dayName = dayNames[saleDate.getDay()];
+          if (dailyData[dayName]) {
+            dailyData[dayName].faturamento += sale.finalPrice || 0;
+            dailyData[dayName].lucro += (sale.finalPrice || 0) * 0.35; // 35% profit margin
+          }
+        }
+      });
+
+      setDailySalesData(Object.values(dailyData));
+
+      // Get recent sales
+      const recent = weekSales
+        .filter(sale => sale.status === 2 || sale.status === 'Completed')
+        .sort((a, b) => new Date(b.saleDate) - new Date(a.saleDate))
+        .slice(0, 4)
+        .map(sale => ({
+          id: `VENDA-${sale.id.toString().padStart(6, '0')}`,
+          customer: sale.customerName || 'Cliente Balcão',
+          amount: sale.finalPrice || 0,
+          status: SALE_STATUS[sale.status] || 'Concluída'
+        }));
+
+      setRecentSales(recent);
+
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+      setError('Erro ao carregar dados do dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingContainer>Carregando dashboard...</LoadingContainer>;
+  }
+
+  if (error) {
+    return (
+      <DashboardGrid>
+        <div style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>
+          <p>{error}</p>
+          <button onClick={fetchDashboardData} style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}>
+            Tentar Novamente
+          </button>
+        </div>
+      </DashboardGrid>
+    );
+  }
+
   return (
     <DashboardGrid>
       <StatsGrid>
@@ -66,7 +221,7 @@ export default function Home() {
           <ActionCard>
             <h3 style={{ fontSize: '1.125rem', fontWeight: '600', color: '#1f2937', marginBottom: '1rem', marginTop: 0 }}>Ações Rápidas</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <PrimaryButton onClick={() => navigate("/sales/create")}>
+              <PrimaryButton onClick={() => navigate("/sales/new")}>
                 <PlusCircle size={18} style={{ marginRight: '0.5rem' }} /> Nova Venda
               </PrimaryButton>
               <SecondaryButton onClick={() => navigate("/products/create")}>Adicionar Produto</SecondaryButton>

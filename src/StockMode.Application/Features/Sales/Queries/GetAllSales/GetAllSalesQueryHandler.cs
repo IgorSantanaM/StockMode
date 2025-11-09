@@ -35,17 +35,17 @@ namespace StockMode.Application.Features.Sales.Queries.GetAllSales
                     s.""FinalPrice"",
                     COUNT(si.""Id"") AS ItemCount
                 FROM ""Sales"" AS s
-                LEFT JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId""");
+                LEFT JOIN ""SaleItems"" AS si ON s.""Id"" = si.""SaleId"" ");
 
                 if (request.StartDate.HasValue)
                 {
-                    whereClauses.Add("s.\"SaleDate\" >= @StartDate");
+                    whereClauses.Add("s.\"SaleDate\" >= @StartDate ");
                     parameters.Add("StartDate", request.StartDate.Value);
                 }
 
                 if (request.EndDate.HasValue)
                 {
-                    whereClauses.Add("s.\"SaleDate\" <= @EndDate");
+                    whereClauses.Add("s.\"SaleDate\" <= @EndDate ");
                     parameters.Add("EndDate", request.EndDate.Value);
                 }
 
@@ -62,7 +62,7 @@ namespace StockMode.Application.Features.Sales.Queries.GetAllSales
                     selectSql.Append(whereSql);
                 }
 
-                selectSql.Append(@"GROUP BY s.""Id"", s.""SaleDate"", s.""Status"", s.""PaymentMethod"", s.""FinalPrice""
+                selectSql.Append(@" GROUP BY s.""Id"", s.""SaleDate"", s.""Status"", s.""PaymentMethod"", s.""FinalPrice""
                 ORDER BY s.""SaleDate"" DESC
                 OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;");
 

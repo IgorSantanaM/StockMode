@@ -51,67 +51,66 @@ export default function Login() {
   if (auth.isLoading || isProcessing) {
     return (
       <LoginContainer>
-        <LoginCard>
+        <WelcomeSection>
           <Logo>
             <LogoText>StockMode</LogoText>
             <LogoSubtext>Inventory Management System</LogoSubtext>
           </Logo>
-
-          <WelcomeSection>
+          <div>
             <WelcomeTitle>Starting Login...</WelcomeTitle>
-            <WelcomeText>Please wait</WelcomeText>
-          </WelcomeSection>
+            <WelcomeText>Please wait while we redirect you</WelcomeText>
+          </div>
+        </WelcomeSection>
 
+        <InfoSection>
           <LoginButton disabled>
             <LoadingSpinner />
             Redirecting...
           </LoginButton>
-        </LoginCard>
+        </InfoSection>
       </LoginContainer>
     );
   }
 
   if (auth.isAuthenticated) {
-    // Already logged in; redirect to home
     return null;
   }
 
   return (
     <LoginContainer>
-      <LoginCard>
+      <WelcomeSection>
         <Logo>
           <LogoText>StockMode</LogoText>
           <LogoSubtext>Inventory Management System</LogoSubtext>
         </Logo>
-
-        <WelcomeSection>
+        
+        <div>
           <WelcomeTitle>Welcome to StockMode</WelcomeTitle>
-          <WelcomeText>Manage your inventory with ease and efficiency</WelcomeText>
-        </WelcomeSection>
+          <WelcomeText>
+            Your complete inventory management solution. 
+            Track stock, manage sales, and grow your business with ease.
+          </WelcomeText>
+        </div>
+      </WelcomeSection>
 
-        {error && (
-          <ErrorMessage>
-            {error}
-          </ErrorMessage>
-        )}
+      <InfoSection>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <LoginButton onClick={handleLogin}>
           Access StockMode
         </LoginButton>
 
-        <InfoSection>
-          <InfoText>
-            No registration required - just click to get started!
-          </InfoText>
+        <FeatureList>
+          <FeatureItem index={0}>Real-time inventory tracking</FeatureItem>
+          <FeatureItem index={1}>Financial management</FeatureItem>
+          <FeatureItem index={2}>Sales and customer management</FeatureItem>
+          <FeatureItem index={3}>Supplier relationship management</FeatureItem>
+        </FeatureList>
 
-          <FeatureList>
-            <FeatureItem>Real-time inventory tracking</FeatureItem>
-            <FeatureItem>Financial management</FeatureItem>
-            <FeatureItem>Sales and customer management</FeatureItem>
-            <FeatureItem>Supplier relationship management</FeatureItem>
-          </FeatureList>
-        </InfoSection>
-      </LoginCard>
+        <InfoText>
+          No registration required - just click to get started!
+        </InfoText>
+      </InfoSection>
     </LoginContainer>
   );
 }
