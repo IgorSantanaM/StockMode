@@ -16,4 +16,8 @@
 
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\StockMode.ServiceDefaults\StockMode.ServiceDefaults.csproj" />
+	</ItemGroup>
 </Project>
