@@ -9,6 +9,8 @@ using StockMode.WebApi.Endpoints.Internal;
 using StockMode.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 var services = builder.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -108,6 +110,8 @@ builder.Services.AddDbContext<StockModeContext>(options =>
     }));
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 using (var scope = app.Services.CreateScope())
 {
