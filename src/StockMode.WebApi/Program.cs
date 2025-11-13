@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -37,12 +36,12 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             options.MetadataAddress = metadataAddress;
         }
-        
+
         options.Audience = "stockmodeapi";
-        
+
         options.RequireHttpsMetadata = builder.Configuration.GetValue<bool>("Auth:RequireHttpsMetadata", false);
 
-        var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>() 
+        var validIssuers = builder.Configuration.GetSection("Auth:ValidIssuers").Get<string[]>()
             ?? new[] { "https://localhost:5001", "http://localhost:5001" };
 
         options.TokenValidationParameters = new TokenValidationParameters
@@ -94,18 +93,22 @@ services.AddAuthorization();
 services.AddControllers();
 services.AddMailServices(builder.Configuration);
 
-builder.AddOpenTelemetry();
+if (builder.Environment.IsProduction())
+    builder.AddOpenTelemetry();
+
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddServices();
 
+
+var connectionString = builder.Configuration.GetConnectionString("stockmodedb");
 builder.Services.AddDbContext<StockModeContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"),
+    options.UseNpgsql(connectionString,
     npgsqlOptionsAction: sqlOptions =>
     {
         sqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
+            maxRetryCount: 6,
+            maxRetryDelay: TimeSpan.FromSeconds(3),
             errorCodesToAdd: null);
     }));
 

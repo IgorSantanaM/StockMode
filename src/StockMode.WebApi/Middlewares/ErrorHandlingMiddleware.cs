@@ -55,6 +55,11 @@ namespace StockMode.WebApi.Middlewares
                     notFoundEx.Message,
                     null
                 ),
+                BadHttpRequestException badHttpRequestException => (
+                HttpStatusCode.BadRequest,
+                badHttpRequestException.Message,
+                null
+                ),
                 _ => (
                     HttpStatusCode.InternalServerError,
                     "An unexpected error occurred, try again later.",
