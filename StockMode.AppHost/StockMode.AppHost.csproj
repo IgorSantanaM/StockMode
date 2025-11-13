@@ -12,14 +12,16 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="13.0.0" />
+    <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.5.2" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.0.0" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.0.0" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.NodeJS.Extensions" Version="9.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\src\StockMode.EmailWorker\StockMode.EmailWorker.csproj" />
+    <ProjectReference Include="..\src\StockMode.IDP\StockMode.IDP.csproj" />
     <ProjectReference Include="..\src\StockMode.WebApi\StockMode.WebApi.csproj" />
-    <ProjectReference Include="..\StockMode.IDP\StockMode.IDP.csproj" />
   </ItemGroup>
 
 </Project>

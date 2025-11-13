@@ -22,10 +22,10 @@ if (envApiUrl) {
   apiBaseUrl = 'http://localhost:8081/api';
   idpAuthority = 'https://localhost:5001';
 } else if (isDevelopment) {
-  apiBaseUrl = 'https://localhost:7161/api'; 
+  apiBaseUrl = `${import.meta.env.VITE_API_URL}/api`;
   idpAuthority = 'https://localhost:5001'; 
 } else if (isKubernetes) {
-  apiBaseUrl = `${protocol}//${hostname}/api`;
+  apiBaseUrl = `${protocol}//${hostname}/api`;  
   idpAuthority = `${protocol}//${hostname}/idp`;
 }
 
