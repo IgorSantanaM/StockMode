@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\StockMode.EmailWorker\StockMode.EmailWorker.csproj" />
+    <ProjectReference Include="..\src\StockMode.IDP\StockMode.IDP.csproj" />
     <ProjectReference Include="..\src\StockMode.WebApi\StockMode.WebApi.csproj" />
-    <ProjectReference Include="..\StockMode.IDP\StockMode.IDP.csproj" />
   </ItemGroup>
 
 </Project>
