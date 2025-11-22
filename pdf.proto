@@ -1,0 +1,21 @@
+syntax = "proto3";
+option csharp_namespace = "StockMode.Contracts.Protos";
+package pdf;
+
+service PdfGenerator {
+  rpc GenerateTablePdf (PdfTableRequest) returns (stream PdfChunk);
+}
+
+message PdfTableRequest {
+  string title = 1;
+  repeated string headers = 2;
+  repeated PdfRow rows = 3;
+}
+
+message PdfRow {
+  repeated string cells = 1;
+}
+
+message PdfChunk {
+  bytes data = 1;
+}
