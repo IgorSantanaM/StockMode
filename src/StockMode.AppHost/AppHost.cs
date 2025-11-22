@@ -1,4 +1,3 @@
-using k8s.Models;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);

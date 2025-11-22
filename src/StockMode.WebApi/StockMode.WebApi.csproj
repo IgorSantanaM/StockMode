@@ -32,8 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\StockMode.ServiceDefaults\StockMode.ServiceDefaults.csproj" />
     <ProjectReference Include="..\StockMode.Infra.CrossCutting.IoC\StockMode.Infra.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\StockMode.ServiceDefaults\StockMode.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

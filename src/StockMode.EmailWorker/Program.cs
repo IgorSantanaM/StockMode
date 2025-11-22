@@ -1,6 +1,4 @@
-﻿using EasyNetQ;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StockMode.Application.Common.Interfaces;
 using StockMode.EmailWorker;
@@ -11,10 +9,10 @@ await Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddHostedService<MailSenderHostedService>();
-        
+
         services.AddMailServices(hostContext.Configuration);
         services.AddTransient<IMailSender, SmptMailSender>();
         services.AddTransient<IMailer, Mailer>();
-        
+
 
     }).Build().RunAsync();
