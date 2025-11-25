@@ -11,6 +11,9 @@ jobs:
        uses: actions/setup-dotnet@v3
        with:
         dotnet-version: '10.x'
+
+    -  name: Restore packages
+       run: dotnet restore StockMode.sln
         
     -  name: Build Project
        run: dotnet build --configuration Release --no-restore StockMode.sln
