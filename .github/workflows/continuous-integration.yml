@@ -22,6 +22,14 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+    -  name: Checkout Repository
+       uses: actions/checkout@v4
+
+    -  name: Setup .NET
+       uses: actions/setup-dotnet@v3
+       with:
+        dotnet-version: '10.x'
+        
     -  name: Setup Docker
        uses: docker/setup-docker-action@v4.5.0
        
