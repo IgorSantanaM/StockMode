@@ -17,7 +17,11 @@ jobs:
         
     -  name: Build Project
        run: dotnet build --configuration Release --no-restore StockMode.sln
-        
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     -  name: Setup Docker
        uses: docker/setup-docker-action@v4.5.0
        
