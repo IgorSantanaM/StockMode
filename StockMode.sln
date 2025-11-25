@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.ServiceDefaults",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.AppHost", "src\StockMode.AppHost\StockMode.AppHost.csproj", "{A3225B6A-03EF-DD9A-5EE0-61FFB776CD36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMode.Presentation.WebApi.Tests.Integration", "tests\StockMode.Presentation.WebApi.Tests.Integration\StockMode.Presentation.WebApi.Tests.Integration.csproj", "{45A07685-800D-C56F-B215-9B0712A2AA84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{A3225B6A-03EF-DD9A-5EE0-61FFB776CD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3225B6A-03EF-DD9A-5EE0-61FFB776CD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3225B6A-03EF-DD9A-5EE0-61FFB776CD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A07685-800D-C56F-B215-9B0712A2AA84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A07685-800D-C56F-B215-9B0712A2AA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A07685-800D-C56F-B215-9B0712A2AA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A07685-800D-C56F-B215-9B0712A2AA84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{62531720-82C3-5580-5A07-C8B97A961989} = {CE82CB90-3F12-418B-8ECC-CD0F6D8AB204}
 		{82C6C63F-1699-74B7-F02E-6863CDAE892A} = {A8DCF103-F5B1-4A60-984C-29F22840CB23}
 		{A3225B6A-03EF-DD9A-5EE0-61FFB776CD36} = {A8DCF103-F5B1-4A60-984C-29F22840CB23}
+		{45A07685-800D-C56F-B215-9B0712A2AA84} = {262A7AC3-DB80-4553-A20E-1CD1606E67F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D000B1C-A53B-4205-99FA-5DADF0B5F7C8}
