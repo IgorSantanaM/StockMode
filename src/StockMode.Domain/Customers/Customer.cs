@@ -1,12 +1,6 @@
 ﻿using StockMode.Domain.Core.Exceptions;
 using StockMode.Domain.Core.Model;
-using StockMode.Domain.Sales;
 using StockMode.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StockMode.Domain.Customers
 {
@@ -40,16 +34,26 @@ namespace StockMode.Domain.Customers
             Notes = notes;
         }
 
-        public void UpdateDetails(string newName, string newEmail, string newPhoneNumber, Address newAddress, string? notes)
+        public void UpdateDetails(string? newName, string? newEmail, string? newPhoneNumber, Address? newAddress, string? notes)
         {
             if (string.IsNullOrWhiteSpace(newName))
                 throw new DomainException("Customer name cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(newEmail))
+                throw new DomainException("Email cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(newPhoneNumber))
+                throw new DomainException("Phone number cannot be empty.");
+
+            if (newAddress == null)
+                throw new DomainException("Address cannot be null");
+
             Name = newName;
-            Email = newEmail ?? throw new DomainException("Email cannot be null");
-            PhoneNumber = newPhoneNumber ?? throw new DomainException("Phone number cannot be null");
-            Address = newAddress ?? throw new DomainException("Address cannot be null");
+            Email = newEmail;
+            PhoneNumber = newPhoneNumber;
+            Address = newAddress;
             Notes = notes;
-            
+
         }
 
         public void AddTag(int tagId)
