@@ -24,27 +24,42 @@ namespace StockMode.Domain.Suppliers
 
         private Supplier() { }
 
-        public Supplier(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes = null)
-        {
-            Name = name ?? throw new DomainException("Name cannot be null");
-            CorporateName = corporateName ?? throw new DomainException("Corporate name cannot be null");
-            CNPJ = cnpj ?? throw new DomainException("CNPJ cannot be null");
-            ContactPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
-            Email = email ?? throw new DomainException("Email cannot be null");
-            PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
-            Address = address ?? throw new DomainException("Address cannot be null");
-            Notes = notes;
-        }
+        public Supplier(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes = null) => 
+            ValidateAndSetProperties(name, corporateName, cnpj, contactPerson, email, phoneNumber, address, notes);
 
-        public void UpdateDetails(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes = null)
+        public void UpdateDetails(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes = null) =>
+            ValidateAndSetProperties(name, corporateName, cnpj, contactPerson, email, phoneNumber, address, notes);
+
+        private void ValidateAndSetProperties(string name, string corporateName, string cnpj, string contactPerson, string email, string phoneNumber, Address address, string? notes)
         {
-            Name = name ?? throw new DomainException("Name cannot be null");
-            CorporateName = corporateName ?? throw new DomainException("Corporate name cannot be null");
-            CNPJ = cnpj ?? throw new DomainException("CNPJ cannot be null");
-            ContactPerson = contactPerson ?? throw new DomainException("Contact person cannot be null");
-            Email = email ?? throw new DomainException("Email cannot be null");
-            PhoneNumber = phoneNumber ?? throw new DomainException("Phone number cannot be null");
-            Address = address ?? throw new DomainException("Address cannot be null");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new DomainException("Supplier name cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(corporateName))
+                throw new DomainException("Corporate name cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(cnpj))
+                throw new DomainException("CNPJ cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(contactPerson))
+                throw new DomainException("Contact person cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(email))
+                throw new DomainException("Email cannot be empty.");
+
+            if (string.IsNullOrWhiteSpace(phoneNumber))
+                throw new DomainException("Phone number cannot be empty.");
+
+            if (address is null)
+                throw new DomainException("Address cannot be null.");
+        
+            Name = name;
+            CorporateName = corporateName;
+            CNPJ = cnpj;
+            ContactPerson = contactPerson;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
             Notes = notes;
         }
 
@@ -65,7 +80,7 @@ namespace StockMode.Domain.Suppliers
             _tagIds.Clear();
         }
 
-        public void SetTags(IEnumerable<int> tagIds)
+        public void UpdateTags(IEnumerable<int> tagIds)
         {
             _tagIds.Clear();
             foreach (var tagId in tagIds.Distinct())

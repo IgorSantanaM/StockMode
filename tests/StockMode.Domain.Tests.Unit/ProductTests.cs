@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using StockMode.Domain.Core.Exceptions;
 using StockMode.Domain.Products;
-using System.ComponentModel;
 
 namespace StockMode.Domain.Tests.Unit
 {
@@ -194,7 +193,7 @@ namespace StockMode.Domain.Tests.Unit
             var product = new Product("Test Product", "Test Description");
             product.AddVariation("Test Variation", "TEST-SKU-001", 10.00m, 15.00m, 100);
             var variation = product.Variations.First();
-            var requestsdQuantity = 150; 
+            var requestsdQuantity = 150;
             // Act
             Action act = () => variation.DecreaseStock(requestsdQuantity);
             // Assert

@@ -19,7 +19,7 @@ namespace StockMode.Domain.Tags
 
         public Tag(string name, string? color = null)
         {
-            if(name is null && color is null)
+            if(string.IsNullOrWhiteSpace(name) && string.IsNullOrWhiteSpace(color))
                 throw new DomainException("Tag must have at least a name or a color.");
             Name = name;
             Color = color;
@@ -27,7 +27,7 @@ namespace StockMode.Domain.Tags
 
         public void UpdateDetails(string newName, string? newColor)
         {
-            if (newName is null && newColor is null)
+            if (string.IsNullOrWhiteSpace(newName) && string.IsNullOrWhiteSpace(newColor))
                 throw new DomainException("Tag must have at least a name or a color.");
             Name = newName;
             Color = newColor;
