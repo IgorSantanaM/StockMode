@@ -40,7 +40,7 @@ namespace StockMode.Infra.Data.Mappings
 
             var navigation = builder.Metadata.FindNavigation(nameof(Sale.Items));
 
-            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+            navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasMany(s => s.Items)
                 .WithOne(si => si.Sale)

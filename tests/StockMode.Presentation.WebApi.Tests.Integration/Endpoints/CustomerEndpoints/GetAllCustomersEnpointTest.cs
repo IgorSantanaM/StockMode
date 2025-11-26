@@ -51,5 +51,14 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
             var customers = await response.Content.ReadFromJsonAsync<PagedResult<CustomerSummaryDto>>();
             customers!.Items.Should().NotBeNull();
         }
+
+        [Fact]
+        public async Task GetAllCustomer_ShouldReturnBadRequest_WhenPageIsLessThanOne()
+        {
+            // Act
+            var response = await _client.GetAsync("/api/customers?page=0&pageSize=10");
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
     }
 }

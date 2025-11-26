@@ -4,7 +4,7 @@ namespace StockMode.Domain.Core.Model
 {
     public abstract class Entity<TId> where TId : notnull
     {
-        public TId Id { get; set; }
+        public TId? Id { get; set; }
         private readonly List<Event> _domainEvents = new();
         public IReadOnlyCollection<Event> DomainEvents => _domainEvents.AsReadOnly();
 
@@ -36,11 +36,11 @@ namespace StockMode.Domain.Core.Model
             if (ReferenceEquals(this, compareTo)) return true;
             if (ReferenceEquals(null, compareTo)) return true;
 
-            return Id.Equals(compareTo.Id);
+            return Id!.Equals(compareTo.Id);
         }
 
         public override int GetHashCode() =>
-            (GetType().GetHashCode() * 907) + Id.GetHashCode();
+            (GetType().GetHashCode() * 907) + Id!.GetHashCode();
 
         public override string ToString() =>
             $"{GetType().Name} [Id={Id}]";

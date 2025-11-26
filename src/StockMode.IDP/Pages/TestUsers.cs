@@ -2,7 +2,7 @@
 // See LICENSE in the project root for license information.
 
 using Duende.IdentityServer.Test;
-using IdentityModel;
+using Duende.IdentityModel;
 using System.Security.Claims;
 
 namespace StockMode.IDP;
