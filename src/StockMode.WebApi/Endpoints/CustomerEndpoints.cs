@@ -17,6 +17,7 @@ namespace StockMode.WebApi.Endpoints
 {
     public class CustomerEndpoints : IEndpoints
     {
+        const int MAX_PAGE_SIZE = 50;
         public static void DefineEndpoint(WebApplication app)
         {
             var group = app.MapGroup("/api/customers").WithTags("Customers");
@@ -102,7 +103,7 @@ namespace StockMode.WebApi.Endpoints
 
         private static async Task<IResult> HandleGetAllCustomers(string? name, [FromServices] IMediator mediator,  int page = 1, int pageSize = 10)
         {
-            if (page <= 0 || pageSize <= 0)
+            if (page <= 0 || pageSize <= 0 || pageSize > MAX_PAGE_SIZE)
                 throw new BadHttpRequestException("The page and the page size must be greater than 0.");
 
             var query = new GetAllCustomersQuery(name, page, pageSize); 

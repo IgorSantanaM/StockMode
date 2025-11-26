@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StockMode.Infra.Data.Contexts;
-using StockMode.Infra.Data.Factories;
 using StockMode.WebApi;
-using System.Data;
 using Testcontainers.PostgreSql;
 
 namespace StockMode.Presentation.WebApi.Tests.Integration
@@ -23,7 +21,6 @@ namespace StockMode.Presentation.WebApi.Tests.Integration
                 .WithPortBinding(5432, 5432)
                 .Build();
 
-
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureLogging(logging =>
@@ -35,7 +32,7 @@ namespace StockMode.Presentation.WebApi.Tests.Integration
             {
                 var descriptor = services.SingleOrDefault(
                     d => d.ServiceType == typeof(DbContextOptions<StockModeContext>));
-                
+
                 if (descriptor != null)
                 {
                     services.Remove(descriptor);
@@ -47,11 +44,11 @@ namespace StockMode.Presentation.WebApi.Tests.Integration
                 });
             });
         }
-        
+
         public async Task InitializeAsync()
         {
             await _dbContainer.StartAsync();
-            
+
             using var scope = Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<StockModeContext>();
             await context.Database.MigrateAsync();
