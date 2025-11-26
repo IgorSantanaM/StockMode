@@ -100,8 +100,11 @@ namespace StockMode.WebApi.Endpoints
             return Results.Ok();
         }
 
-        private static async Task<IResult> HandleGetAllCustomers(string? name, int page, int pageSize, [FromServices] IMediator mediator)
+        private static async Task<IResult> HandleGetAllCustomers(string? name, [FromServices] IMediator mediator,  int page = 1, int pageSize = 10)
         {
+            if (page <= 0 || pageSize <= 0)
+                throw new BadHttpRequestException("The page and the page size must be greater than 0.");
+
             var query = new GetAllCustomersQuery(name, page, pageSize); 
             var customers = await mediator.Send(query);
             return Results.Ok(customers);

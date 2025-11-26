@@ -25,7 +25,7 @@ namespace StockMode.Infra.Data.Mappings
 
             var navigation = builder.Metadata.FindNavigation(nameof(Product.Variations));
 
-            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+            navigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.HasMany(p => p.Variations)
                    .WithOne(o => o.Product)
