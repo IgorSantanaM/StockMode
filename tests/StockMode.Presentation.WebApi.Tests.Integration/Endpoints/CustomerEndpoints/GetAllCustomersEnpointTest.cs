@@ -11,6 +11,8 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
 {
     public class GetAllCustomersEnpointTest : IClassFixture<StockModeApiFactory>
     {
+
+        const int MAX_PAGE_SIZE = 50;
         private readonly HttpClient _client;
         private readonly Faker<CreateCustomerCommand> _customerGenerator = new Faker<CreateCustomerCommand>()
             .CustomInstantiator(faker => new CreateCustomerCommand(
@@ -28,7 +30,6 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
                 null,
                 faker.Lorem.Sentence()
                 ));
-           
 
         public GetAllCustomersEnpointTest(StockModeApiFactory factory)
         {
@@ -52,8 +53,45 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
             customers!.Items.Should().NotBeNull();
         }
 
+
         [Fact]
-        public async Task GetAllCustomer_ShouldReturnBadRequest_WhenPageIsLessThanOne()
+        public async Task GetAllCustomers_ShouldReturnBadRequest_WhenPageSizeIsLessThanOne()
+        {
+            // Act
+            var response = await _client.GetAsync("/api/customers?page=1&pageSize=0");
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task GetAllCustomers_ShouldReturnBadRequest_WhenPageSizeIsGreaterThanMaxAllowed()
+        {
+            // Act
+            var response = await _client.GetAsync($"/api/customers?page=1&pageSize={MAX_PAGE_SIZE + 1}");
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task GetAllCustomers_ShouldReturnBadRequest_WhenPageIsNotANumber()
+        {
+            // Act
+            var response = await _client.GetAsync("/api/customers?page=abc&pageSize=10");
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task GetAllCustomers_ShouldReturnBadRequest_WhenPageSizeIsNotANumber()
+        {
+            // Act
+            var response = await _client.GetAsync("/api/customers?page=1&pageSize=abc");
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+       
+        [Fact]
+        public async Task GetAllCustomers_ShouldReturnBadRequest_WhenPageIsLessThanOne()
         {
             // Act
             var response = await _client.GetAsync("/api/customers?page=0&pageSize=10");

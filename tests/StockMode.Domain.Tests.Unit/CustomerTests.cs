@@ -9,8 +9,6 @@ namespace StockMode.Domain.Tests.Unit
 {
     public class CustomerTests
     {
-
-        private readonly Customer _customer;
         [Theory]
         [MemberData(nameof(AddValidTestCustomers))]
         public void CreateCustomer_ShouldSucceed_WithValidParameters(Customer customer)
@@ -32,7 +30,7 @@ namespace StockMode.Domain.Tests.Unit
         public void CreateCustomer_ShouldThrowDomainException_WithInvalidParameters(PlainCustomer customer, string expectedErrorMessage)
         {
             // Arrange & Act
-            Action act = () => new Customer(customer.Name, customer.Email, customer.PhoneNumber, customer.Address, customer.Notes);
+            Action act = () => new Customer(customer.Name!, customer.Email!, customer.PhoneNumber!, customer.Address, customer.Notes);
 
             // Assert
             act.Should().Throw<DomainException>()
