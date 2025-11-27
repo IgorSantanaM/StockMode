@@ -78,7 +78,7 @@ namespace StockMode.WebApi.Endpoints
             var id = await mediator.Send(createCustomerCommand);
 
             ApplicationDiagnostics.CustomerCreatedCounter.Add(1, new KeyValuePair<string, object?>("customer-id", id));
-            return Results.CreatedAtRoute($"GetCustomerById", new { id  });
+            return Results.CreatedAtRoute($"GetCustomerById", new { id });
         }
 
         private static async Task<IResult> HandleGetCustomerById([FromRoute] int id, [FromServices] IMediator mediator)
