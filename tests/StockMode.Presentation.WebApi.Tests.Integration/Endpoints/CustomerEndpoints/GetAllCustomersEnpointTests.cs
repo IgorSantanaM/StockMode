@@ -9,7 +9,8 @@ using System.Net.Http.Json;
 
 namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndpoints
 {
-    public class GetAllCustomersEnpointTest : IClassFixture<StockModeApiFactory>
+    [Collection("Get All Customers Collection")]
+    public class GetAllCustomersEnpointTests : IClassFixture<StockModeApiFactory>
     {
 
         const int MAX_PAGE_SIZE = 50;
@@ -31,7 +32,7 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
                 faker.Lorem.Sentence()
                 ));
 
-        public GetAllCustomersEnpointTest(StockModeApiFactory factory)
+        public GetAllCustomersEnpointTests(StockModeApiFactory factory)
         {
             _client = factory.CreateClient();
         }
