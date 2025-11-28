@@ -90,6 +90,9 @@ namespace StockMode.WebApi.Endpoints
 
         private static async Task<IResult> HandleDeleteCustomer([FromRoute] int id, [FromServices] IMediator mediator)
         {
+            if (id <= 0)
+                throw new BadHttpRequestException("The Id must be greater than 0");
+
             var command = new DeleteCustomerCommand(id);
             await mediator.Send(command);
             return Results.NoContent();

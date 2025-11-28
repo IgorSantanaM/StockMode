@@ -122,7 +122,5 @@ namespace StockMode.Presentation.WebApi.Tests.Integration.Endpoints.CustomerEndp
             // Assert
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
-
-
     }
 }
